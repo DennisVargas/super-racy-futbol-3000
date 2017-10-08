@@ -1,9 +1,6 @@
 package com.dv.superracyfutbol3000;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,6 +14,7 @@ public class MainMenuState extends BasicGameState {
     Image new_game_img = null;
     Image options_img = null;
     Image quit_img = null;
+    Image select_hl_img = null;
 
     public MainMenuState(int stateID){
         this.stateID = stateID;
@@ -29,12 +27,24 @@ public class MainMenuState extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
+        new_game_img = new Image("gfx/main_menu/new_game.png");
+        options_img = new Image("gfx/main_menu/options.png");
+        quit_img = new Image("gfx/main_menu/quit.png");
+        select_hl_img = new Image("gfx/main_menu/highlight.png");
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        //  set background to white
+        g.setColor(Color.white);
+        g.fillRect(0,0,w*s,h*s);
 
+        int new_game_y = 256;
+        int menu_item_spacing = 30;
+        new_game_img.draw((w*s)/2-new_game_img.getWidth()/2,new_game_y,s);
+        options_img.draw((w*s)/2-new_game_img.getWidth()/2,new_game_img.getHeight()+ new_game_y+ menu_item_spacing,s);
+        quit_img.draw((w*s)/2-new_game_img.getWidth()/2,
+                2*(new_game_img.getHeight()+menu_item_spacing)+new_game_y,s);
     }
 
     @Override
