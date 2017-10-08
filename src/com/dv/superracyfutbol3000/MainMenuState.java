@@ -7,9 +7,13 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenuState extends BasicGameState {
     int stateID = -1;
 
+
     int w = SuperRacyFutbol3000.WIDTH;
     int h = SuperRacyFutbol3000.HEIGHT;
     float s = SuperRacyFutbol3000.SCALE;
+
+    int new_game_y = 256;
+    int menu_item_spacing = 30;
 
     Image new_game_img = null;
     Image options_img = null;
@@ -39,8 +43,7 @@ public class MainMenuState extends BasicGameState {
         g.setColor(Color.white);
         g.fillRect(0,0,w*s,h*s);
 
-        int new_game_y = 256;
-        int menu_item_spacing = 30;
+
         new_game_img.draw((w*s)/2-new_game_img.getWidth()/2,new_game_y,s);
         options_img.draw((w*s)/2-new_game_img.getWidth()/2,new_game_img.getHeight()+ new_game_y+ menu_item_spacing,s);
         quit_img.draw((w*s)/2-new_game_img.getWidth()/2,
@@ -49,6 +52,14 @@ public class MainMenuState extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        Input input = gc.getInput();
+        int mouseX = input.getMouseX();
+        int mouseY = input.getMouseY();
 
+        float new_game_minX = (w*s)/2-new_game_img.getWidth()/2;
+        if(mouseX >= new_game_minX &&
+                mouseX <=new_game_minX + new_game_img.getWidth()){
+            System.out.println("over new game");
+        }
     }
 }
