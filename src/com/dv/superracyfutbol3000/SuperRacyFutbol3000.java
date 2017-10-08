@@ -11,13 +11,14 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final int HEIGHT = (WIDTH/16)*9;    // adjust height with 16:9 ratio
     public static final float SCALE = 1.0f;
 
+    public static final int MAINMENUSTATE = 0;
     public SuperRacyFutbol3000() {
         super(NAME);
     }
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-
+        this.addState(new MainMenuState(MAINMENUSTATE));
     }
 
     public static void main(String[] args) throws SlickException{
