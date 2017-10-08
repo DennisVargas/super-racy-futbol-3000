@@ -1,0 +1,31 @@
+
+StartChar: Ecircumflex
+Encoding: 202 202 163
+Width: 440
+VWidth: 0
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+191.122 667.471 m 1
+ 375 668 l 1
+ 373 545 l 1
+ 218 541 l 1
+ 219 415 l 1
+ 375 415 l 1
+ 373 284 l 1
+ 219 280 l 1
+ 219 127 l 1
+ 375 125 l 1
+ 371 0 l 1
+ 71 0 l 1
+ 70 667 l 1
+ 146.649 667.325 l 1
+ 116 723 l 1
+ 242 805.5 l 1
+ 368 763.5 l 1
+ 322 681.5 l 1
+ 248 710 l 1
+ 191.122 667.471 l 1
+EndSplineSet
+EndChar

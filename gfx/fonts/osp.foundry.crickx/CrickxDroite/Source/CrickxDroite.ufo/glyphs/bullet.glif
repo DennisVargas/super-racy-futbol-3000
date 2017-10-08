@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="bullet" format="1">
+  <advance width="413"/>
+  <unicode hex="2022"/>
+  <outline>
+    <contour>
+      <point x="278" y="-1" type="line" smooth="no"/>
+      <point x="129" y="-1" type="line" smooth="no"/>
+      <point x="129" y="170" type="line" smooth="yes"/>
+      <point x="36" y="170" type="line" smooth="yes"/>
+      <point x="35" y="303" type="line" smooth="yes"/>
+      <point x="129" y="303" type="line" smooth="yes"/>
+      <point x="129" y="393" type="line" smooth="no"/>
+      <point x="36" y="393" type="line" smooth="no"/>
+      <point x="35" y="526" type="line" smooth="no"/>
+      <point x="129" y="526" type="line" smooth="no"/>
+      <point x="129" y="665" type="line" smooth="no"/>
+      <point x="278" y="666" type="line" smooth="no"/>
+      <point x="278" y="526" type="line" smooth="no"/>
+      <point x="377" y="526" type="line" smooth="no"/>
+      <point x="377" y="393" type="line" smooth="no"/>
+      <point x="278" y="393" type="line" smooth="no"/>
+      <point x="278" y="303" type="line" smooth="yes"/>
+      <point x="377" y="303" type="line" smooth="yes"/>
+      <point x="377" y="170" type="line" smooth="yes"/>
+      <point x="278" y="170" type="line" smooth="yes"/>
+    </contour>
+  </outline>
+</glyph>

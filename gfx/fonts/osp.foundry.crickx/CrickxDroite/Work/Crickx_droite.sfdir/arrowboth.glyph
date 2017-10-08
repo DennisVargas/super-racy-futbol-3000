@@ -1,0 +1,21 @@
+
+StartChar: arrowboth
+Encoding: 8596 8596 134
+Width: 845
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+608 312 m 0
+ 629 439 l 0
+ 801 245 l 0
+ 565 48 l 0
+ 585 172 l 0
+ 220 172 l 0
+ 200 46 l 0
+ 48 244 l 0
+ 264 441 l 0
+ 243 313 l 0
+ 608 312 l 0
+EndSplineSet
+EndChar

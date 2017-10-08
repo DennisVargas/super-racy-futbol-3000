@@ -1,0 +1,35 @@
+
+StartChar: checkmark
+Encoding: 10003 10003 210
+Width: 695
+Flags: W
+TtInstrs:
+SVTCA[y-axis]
+PUSHW_1
+ 2
+MDAP[rnd]
+PUSHW_1
+ 4
+MDAP[rnd]
+PUSHW_3
+ 0
+ 4
+ 2
+SRP1
+SRP2
+IP
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+94 236 m 1,0,-1
+ 247 142 l 1,1,-1
+ 625 484 l 1,2,-1
+ 604 370 l 1,3,-1
+ 227 11 l 1,4,-1
+ 76 130 l 1,5,-1
+ 94 236 l 1,0,-1
+EndSplineSet
+EndChar

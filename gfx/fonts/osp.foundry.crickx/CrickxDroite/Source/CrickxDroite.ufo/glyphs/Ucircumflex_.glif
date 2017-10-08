@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="Ucircumflex" format="1">
+  <advance width="521"/>
+  <unicode hex="00db"/>
+  <outline>
+    <contour>
+      <point x="132" y="719" type="line" smooth="no"/>
+      <point x="258" y="812" type="line" smooth="no"/>
+      <point x="390" y="766" type="line" smooth="no"/>
+      <point x="344" y="684" type="line" smooth="no"/>
+      <point x="270.5" y="716.5" type="line" smooth="no"/>
+      <point x="211.674" y="668.797" type="line" smooth="no"/>
+      <point x="213.24" y="185.28" type="line" smooth="no"/>
+      <point x="213.24" y="185.28"/>
+      <point x="212.28" y="141.12"/>
+      <point x="248.761" y="141.12" type="curve" smooth="yes"/>
+      <point x="285.24" y="141.12"/>
+      <point x="292.921" y="156.48"/>
+      <point x="305.4" y="181.44" type="curve" smooth="no"/>
+      <point x="304.44" y="668.16" type="line" smooth="no"/>
+      <point x="439.801" y="668.16" type="line" smooth="no"/>
+      <point x="443.641" y="156.48" type="line" smooth="yes"/>
+      <point x="443.641" y="99.8398"/>
+      <point x="391.8" y="1.98367"/>
+      <point x="252.601" y="0.959961" type="curve" smooth="yes"/>
+      <point x="129.72" y="0.0562717"/>
+      <point x="74.9443" y="109.44"/>
+      <point x="75" y="165.12" type="curve" smooth="yes"/>
+      <point x="75.5" y="666" type="line" smooth="no"/>
+      <point x="171.5" y="666" type="line" smooth="no"/>
+    </contour>
+  </outline>
+</glyph>

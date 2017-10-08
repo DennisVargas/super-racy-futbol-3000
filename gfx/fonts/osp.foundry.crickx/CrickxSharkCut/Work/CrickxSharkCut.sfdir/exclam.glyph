@@ -1,0 +1,55 @@
+
+StartChar: exclam
+Encoding: 33 33 22
+Width: 341
+Flags: W
+TtInstrs:
+SVTCA[y-axis]
+PUSHW_1
+ 0
+RCVT
+IF
+PUSHW_1
+ 0
+MDAP[rnd]
+ELSE
+PUSHW_2
+ 0
+ 11
+MIAP[no-rnd]
+EIF
+PUSHW_1
+ 0
+RCVT
+IF
+PUSHW_1
+ 5
+MDAP[rnd]
+ELSE
+PUSHW_2
+ 5
+ 5
+MIAP[no-rnd]
+EIF
+PUSHW_2
+ 4
+ 2
+MIRP[rp0,rnd,grey]
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+295 666 m 1,0,-1
+ 219 185 l 1,1,-1
+ 76 185 l 1,2,-1
+ 154 666 l 1,3,-1
+ 295 666 l 1,0,-1
+208 134 m 1,4,-1
+ 187 0 l 1,5,-1
+ 47 0 l 1,6,-1
+ 71 134 l 1,7,-1
+ 208 134 l 1,4,-1
+EndSplineSet
+EndChar

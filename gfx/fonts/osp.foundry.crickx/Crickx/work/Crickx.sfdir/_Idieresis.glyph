@@ -1,0 +1,70 @@
+
+StartChar: Idieresis
+Encoding: 207 207 170
+Width: 323
+Flags: W
+TtInstrs:
+SVTCA[y-axis]
+PUSHW_1
+ 1
+MDAP[rnd]
+PUSHW_1
+ 9
+MDAP[rnd]
+PUSHW_1
+ 0
+RCVT
+IF
+PUSHW_1
+ 4
+MDAP[rnd]
+ELSE
+PUSHW_2
+ 4
+ 1
+MIAP[no-rnd]
+EIF
+PUSHW_3
+ 0
+ 2
+ 3
+CALL
+PUSHW_1
+ 2
+SRP0
+PUSHW_1
+ 6
+MDRP[rp0,grey]
+PUSHW_1
+ 6
+MDAP[rnd]
+PUSHW_1
+ 0
+SRP0
+PUSHW_1
+ 8
+MDRP[rp0,grey]
+PUSHW_1
+ 8
+MDAP[rnd]
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+271 718 m 1,0,-1
+ 404 721 l 1,1,-1
+ 388 596 l 1,2,-1
+ 287 591 l 1,3,-1
+ 199 -3 l 1,4,-1
+ 57 -3 l 1,5,-1
+ 142 597 l 1,6,-1
+ 35 592 l 1,7,-1
+ 54 711 l 1,8,-1
+ 184 718 l 1,9,-1
+ 171 624 l 1,10,-1
+ 262 628 l 1,11,-1
+ 271 718 l 1,0,-1
+EndSplineSet
+EndChar
