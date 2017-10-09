@@ -12,8 +12,8 @@ public class MainMenuState extends BasicGameState {
     int h = SuperRacyFutbol3000.HEIGHT;
     float s = SuperRacyFutbol3000.SCALE;
 
-    int new_game_y = 256;
-    int menu_item_spacing = 90;
+    int new_game_y = 250;
+    int menu_item_spacing = 50;
 
     boolean on_new_game = false;
     Image [] new_game = new Image[2];
@@ -52,20 +52,20 @@ public class MainMenuState extends BasicGameState {
 
         background.draw(0,0,s);
         if (on_new_game)
-            new_game[0].draw((w*s)/2-new_game[0].getWidth()/2,new_game_y,s);
+            new_game[0].draw((w*s)/8,new_game_y,s);
         else
-            new_game[1].draw((w*s)/2-new_game[1].getWidth()/2,new_game_y,s);
+            new_game[1].draw((w*s)/8,new_game_y,s);
         if (on_options)
-            options[0].draw((w*s)/2-new_game[0].getWidth()/2,
+            options[0].draw((w*s)/8,
                     new_game[0].getHeight()+ new_game_y+ menu_item_spacing,s);
         else
-            options[1].draw((w*s)/2-new_game[0].getWidth()/2,
+            options[1].draw((w*s)/8,
                     new_game[0].getHeight()+ new_game_y+ menu_item_spacing,s);
         if (on_quit)
-            quit[0].draw((w*s)/2-new_game[0].getWidth()/2,
+            quit[0].draw((w*s)/8,
                      new_game_y+ 2*(new_game[0].getHeight()+menu_item_spacing),s);
         else
-            quit[1].draw((w*s)/2-new_game[0].getWidth()/2,
+            quit[1].draw((w*s)/8,
                      new_game_y+ 2*(new_game[0].getHeight()+ menu_item_spacing),s);
     }
 
@@ -75,9 +75,9 @@ public class MainMenuState extends BasicGameState {
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
 
-        float new_game_minX = (w*s)/2-new_game[0].getWidth()/2;
-        float options_minX = (w*s)/2 - options[0].getWidth()/2;
-        float quit_minX = (w*s)/2 - quit[0].getWidth()/2;
+        float new_game_minX = (w*s)/8;
+        float options_minX = new_game_minX ;
+        float quit_minX = new_game_minX ;
 
         if(mouseX >= new_game_minX &&
                 mouseX <=new_game_minX + new_game[0].getWidth()){
@@ -105,6 +105,8 @@ public class MainMenuState extends BasicGameState {
                     mouseY <= new_game_y+3*new_game[0].getHeight()+2*menu_item_spacing){
                 System.out.println("y in quit");
                 on_quit = true;
+                if (input.isMouseButtonDown(0))
+                    System.exit(0);
             }
             else
                 on_quit = false;
