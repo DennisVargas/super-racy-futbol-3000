@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="2017.10.11" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="64" tileheight="64" infinite="0" nextobjectid="12">
- <tileset firstgid="1" source="Main_Menu_background.tsx"/>
- <tileset firstgid="221" name="Field" tilewidth="64" tileheight="64" tilecount="208" columns="13">
-  <image source="groundGrass_mown.png" width="832" height="1024"/>
+ <tileset firstgid="1" name="MainMenu" tilewidth="64" tileheight="64" tilecount="220" columns="20">
+  <image source="../main_menu/MainMenu.png" width="1280" height="720"/>
  </tileset>
  <layer name="Background" width="20" height="12">
-  <data encoding="csv">
-1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
-21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,
-41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,
-84,84,84,84,84,84,84,84,84,85,84,85,84,84,84,84,84,85,84,85,
-104,104,104,104,104,104,104,104,84,85,84,85,104,104,104,104,104,105,84,85,
-84,84,85,85,85,85,85,85,85,85,84,85,84,85,85,85,85,85,85,85,
-104,84,85,105,105,105,105,105,105,105,84,88,88,88,88,88,88,88,88,105,
-84,85,84,84,85,85,84,84,84,85,84,91,92,93,94,95,96,97,98,127,
-84,85,104,104,105,105,85,85,85,85,84,111,112,113,114,115,116,117,118,127,
-84,85,84,85,104,105,105,105,105,105,84,131,132,133,134,135,136,137,138,127,
-84,85,84,84,85,105,105,85,85,85,85,151,152,153,154,155,156,157,158,127,
-104,105,104,104,105,104,105,105,105,105,105,171,172,173,174,175,176,177,178,127
-</data>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC43QRU5EQRQF0Mbd3d3ddRmQkOCMmhHOlAHOBnA2gLNCDgkk5OfTzeCkKqnKrVsvIRKJJJJEMimkkkY6GWSSRTY55JJHPgUUUkQxJZRSRjkVVFJFNTXUUkc9DTTSRDMttNJGOx100kU3PfTSRz8DDDLEMCOMMsY4E0wyxTQz/zAbWGOdR+P4z/31kPdm4wjm/uV3h/UYvu7MxRGrZ9h85llgkSWWWWGVNQ5C5vLTJ+y/G2yyxTY77LLHfiDvd+5f/z3kiGNOOOWMcy5C8oJzDHa85IprbrjljnsevvN++kQD+7COjzzxzAuvvPHOx3feJzTArALAAwAA
+  </data>
  </layer>
  <group name="Selections">
   <objectgroup name="NewGame">
