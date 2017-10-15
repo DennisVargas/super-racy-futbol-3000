@@ -1,9 +1,13 @@
 package com.dv.superracyfutbol3000;
 
+import com.sun.corba.se.impl.orbutil.ObjectWriter;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.Layer;
 import org.newdawn.slick.tiled.TiledMap;
+
+import java.util.ArrayList;
 
 public class MainMenuState extends BasicGameState {
     int stateID = -1;
@@ -31,7 +35,9 @@ public class MainMenuState extends BasicGameState {
     boolean on_3v3 = false;
     Image [] three_v_three = new Image[2];
     //Image select_hl_img = null;
-    TiledMap main_menu_map = null;
+    TiledHelper main_menu_map = null;
+    Layer [] tile_layers = null;
+    ArrayList<Object> object_groups = null;
 
     public MainMenuState(int stateID){
         this.stateID = stateID;
@@ -45,8 +51,8 @@ public class MainMenuState extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         //  load tiled map
-         main_menu_map = new TiledMap("gfx/maps/mown_grass_map2.tmx","gfx/maps/");
-
+        main_menu_map = new TiledHelper("gfx/maps/main_menu_map2.tmx","gfx/maps/");
+        object_groups = main_menu_map.getObjectGroups();
 //        new_game[0] = new Image("gfx/main_menu/new_game1.png");
 //        new_game[1] = new Image("gfx/main_menu/new_game2.png");
 //        options[0] = new Image("gfx/main_menu/options1.png");
@@ -66,6 +72,7 @@ public class MainMenuState extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         //  render map
         main_menu_map.render(0,0);
+
         //  set background to white
 //        g.setColor(Color.white);
 //        g.fillRect(0,0,w*s,h*s);
@@ -104,6 +111,7 @@ public class MainMenuState extends BasicGameState {
         Input input = gc.getInput();
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
+
 
 //        float new_game_minX = (w*s)/8;
 //        float options_minX = new_game_minX ;
