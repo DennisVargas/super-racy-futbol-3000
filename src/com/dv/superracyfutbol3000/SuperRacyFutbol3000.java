@@ -12,6 +12,15 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final float SCALE = 1.0f;
     public static boolean isDebug = false;
     public static final int MAINMENUSTATE = 0;
+
+    private String main_menu_bkgrnd_rsc = "gfx/main_menu/MainMenu2.png";
+    private String main_menu_new_game3_rsc = "gfx/main_menu/new_game3.png";
+    private String main_menu_new_game4_rsc = "gfx/main_menu/new_game4.png";
+    private String main_menu_options3_rsc = "gfx/main_menu/options3.png";
+    private String main_menu_options4_rsc = "gfx/main_menu/options4.png";
+    private String main_menu_quit3_rsc = "gfx/main_menu/quit3.png";
+    private String main_menu_quit4_rsc = "gfx/main_menu/quit4.png";
+
     public SuperRacyFutbol3000() {
         super(NAME);
     }

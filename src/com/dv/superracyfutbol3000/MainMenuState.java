@@ -65,7 +65,7 @@ public class MainMenuState extends BasicGameState {
         selection_bounds.put("new_game", SetMenuSelectionRectangle(left_justified_x,
                 mid_selectionY-menu_item_spacing,new_game[0]));
         selection_bounds.put("options", SetMenuSelectionRectangle(left_justified_x, mid_selectionY, options[0]));
-        selection_bounds.put("quit", SetMenuSelectionRectangle(left_justified_x, mid_selectionY,quit[0]));
+        selection_bounds.put("quit", SetMenuSelectionRectangle(left_justified_x, mid_selectionY+menu_item_spacing,quit[0]));
     }
 
     private Rectangle SetMenuSelectionRectangle(float x, float y, Image img) {
@@ -103,25 +103,24 @@ public class MainMenuState extends BasicGameState {
         Input input = gc.getInput();
         float mouseX = input.getMouseX();
         float mouseY = input.getMouseY();
+        float[]bounds_values = new float[4];    // index: paramets -> 0: minX; 1: minY; 2: maxX; 3: maxY
 
-//        float new_game_minX = (w*s)/8;
-//        float options_minX = new_game_minX;
-//        float quit_minX = new_game_minX ;
 //      Check if mouse is over new game
         // get bounds for new game
-        float minX = selection_bounds.get("new_game").getMinX();
-        float minY = selection_bounds.get("new_game").getMinY();
-        float maxX = selection_bounds.get("new_game").getMaxX();
-        float maxY = selection_bounds.get("new_game").getMaxY();
+        GetSelectionBounds(bounds_values, "new_game");
+        on_new_game = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
+                bounds_values[3], mouseX, mouseY);
 
+        //  get options selection bounds
+        GetSelectionBounds(bounds_values, "options");
+        //  Check mouse hover for options selection
+        on_options = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
+                bounds_values[3], mouseX, mouseY);
 
-
-        if (isMouseHover(minX, minY,maxX,maxY,mouseX,mouseY)  ){
-            if(SuperRacyFutbol3000.isDebug){System.out.println("On New Game");}
-            on_new_game = true;
-        }else{
-            on_new_game = false;
-        }
+        //  get quit selection bounds
+        GetSelectionBounds(bounds_values, "quit");
+        on_quit = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
+                bounds_values[3], mouseX, mouseY);
 
 //        if(mouseX >= new_game_minX &&
 //                mouseX <=new_game_minX + new_game[0].getWidth()){
@@ -161,6 +160,13 @@ public class MainMenuState extends BasicGameState {
 //                on_quit = false;
 //        }else
 //            on_quit = false;
+    }
+
+    private void GetSelectionBounds(float [] x, String selection_name ) {
+        x[0] = selection_bounds.get(selection_name).getMinX();
+        x[1] = selection_bounds.get(selection_name).getMinY();
+        x[2] = selection_bounds.get(selection_name).getMaxX();
+        x[3] = selection_bounds.get(selection_name).getMaxY();
     }
 
     public boolean isMouseHover(float minX, float minY, float maxX, float maxY, float mouseX, float mouseY){
