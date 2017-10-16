@@ -10,12 +10,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainMenuState extends BasicGameState {
-    int stateID = -1;
+public class MainMenuState extends MenuBase {
 
-    private int w = SuperRacyFutbol3000.WIDTH;
-    private int h = SuperRacyFutbol3000.HEIGHT;
-    private float s = SuperRacyFutbol3000.SCALE;
 
     //  Setup initial locations and Spacing variables for menu seletions
     private float mid_selectionY = ((h/2f)+32f)*s;    /*options selection is the 2nd so
@@ -79,28 +75,11 @@ public class MainMenuState extends BasicGameState {
         quit_ent.render(g);
     }
 
-//    private boolean SwapImage(Entity e, boolean on_flag, boolean white_flag, String item_name) {
-//        if (on_flag && !white_flag){
-//            //  then remove grey quit
-//            e.removeImage(ResourceManager.getImage( menu_item_image_paths.get(item_name+"_off")));
-//            //  add white quit
-//            e.addImageWithBoundingBox(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_on")));
-//            return true;
-//        }else if (white_flag && !on_flag){
-//            //  remove white quit
-//            e.removeImage(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_on")));
-//            //  add grey quit
-//            e.addImageWithBoundingBox(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_off")));
-//            return false;
-//        }
-//        return white_flag;
-//    }
-
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        Input input = gc.getInput();
-        float mouseX = input.getMouseX();
-        float mouseY = input.getMouseY();
+        input = gc.getInput();
+        mouseX = input.getMouseX();
+        mouseY = input.getMouseY();
 //      Check if mouse is over new game
         on_new_game = isMouseHover(new_game_ent.getCoarseGrainedMinX(),new_game_ent.getCoarseGrainedMinY(),
                 new_game_ent.getCoarseGrainedMaxX(),new_game_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
@@ -110,12 +89,5 @@ public class MainMenuState extends BasicGameState {
 //      Check if mouse is over quit
         on_quit = isMouseHover(quit_ent.getCoarseGrainedMinX(),quit_ent.getCoarseGrainedMinY(),
                 quit_ent.getCoarseGrainedMaxX(),quit_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
-    }
-
-    public boolean isMouseHover(float minX, float minY, float maxX, float maxY, float mouseX, float mouseY){
-        if( mouseX >= minX && mouseX <= maxX){
-            return (mouseY >= minY && mouseY <= maxY);
-        }else
-            return false;
     }
 }
