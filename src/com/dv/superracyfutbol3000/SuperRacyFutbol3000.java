@@ -14,6 +14,9 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final float SCALE = 1.0f;
     public static boolean isDebug = false;
     public static final int MAINMENUSTATE = 0;
+    public static final int NEWGAMEMENUSTATE = 1;
+    public static final int OPTIONSMENUSTATE = 2;
+    public static final int PLAYSTATE = 3;
 
     public static final String main_menu_bkgrnd_rsc = "com/dv/superracyfutbol3000/gfx/main_menu/MainMenu2.png";
     public static final String main_menu_new_game3_rsc = "com/dv/superracyfutbol3000/gfx/main_menu/new_game3.png";
@@ -32,7 +35,12 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new MainMenuState(MAINMENUSTATE));
+//        this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
+        this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
+//        this.addState(new PlayState(PLAYSTATE));
+
         Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
+
         ResourceManager.loadImage(main_menu_bkgrnd_rsc);
         ResourceManager.loadImage(main_menu_new_game3_rsc);
         ResourceManager.loadImage(main_menu_new_game4_rsc);

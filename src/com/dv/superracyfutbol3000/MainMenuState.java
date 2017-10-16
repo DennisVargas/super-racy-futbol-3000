@@ -1,22 +1,16 @@
 package com.dv.superracyfutbol3000;
 
-import jig.Entity;
 import jig.ResourceManager;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.newdawn.slick.state.transition.Transition;
 
 public class MainMenuState extends MenuBase {
 
-
     //  Setup initial locations and Spacing variables for menu seletions
     private float mid_selectionY = ((h/2f)+32f)*s;    /*options selection is the 2nd so
-                                            this should be centered and new game
-                                            and quit offset from there.*/
+                                                        this should be centered and new game
+                                                        and quit offset from there.*/
     private float menu_item_spacing = 160*s;
     private float left_justified_x = (w*s)*(19f/64f);
 
@@ -27,11 +21,10 @@ public class MainMenuState extends MenuBase {
     private boolean white_options = false;
     private boolean white_quit = false;
 
-
     private Image background = null;
-    private MenuItem new_game_ent;
-    private MenuItem options_ent;
-    private MenuItem quit_ent;
+    private MenuItem new_game;
+    private MenuItem options;
+    private MenuItem quit;
 
 
     public MainMenuState(int stateID){
@@ -46,12 +39,12 @@ public class MainMenuState extends MenuBase {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.main_menu_bkgrnd_rsc);
-        //  initialize Menu entities
-        new_game_ent = new MenuItem(left_justified_x,mid_selectionY-menu_item_spacing,
+        //  initialize Menu Items
+        new_game = new MenuItem(left_justified_x,mid_selectionY-menu_item_spacing,
                 SuperRacyFutbol3000.main_menu_new_game3_rsc,SuperRacyFutbol3000.main_menu_new_game4_rsc);
-        options_ent = new MenuItem(left_justified_x,mid_selectionY,
+        options = new MenuItem(left_justified_x,mid_selectionY,
                 SuperRacyFutbol3000.main_menu_options3_rsc, SuperRacyFutbol3000.main_menu_options4_rsc);
-        quit_ent = new MenuItem(left_justified_x,(mid_selectionY + menu_item_spacing),
+        quit = new MenuItem(left_justified_x,(mid_selectionY + menu_item_spacing),
                 SuperRacyFutbol3000.main_menu_quit3_rsc, SuperRacyFutbol3000.main_menu_quit4_rsc);
     }
 
@@ -61,18 +54,18 @@ public class MainMenuState extends MenuBase {
 //      Draw The Background Image
         background.draw(0,0,s);
 //      Is new game white
-        white_new_game = new_game_ent.SwapImage( on_new_game, white_new_game);
+        white_new_game = new_game.SwapImage( on_new_game, white_new_game);
 
 //      Is new game white
-        white_options = options_ent.SwapImage( on_options, white_options);
+        white_options = options.SwapImage( on_options, white_options);
 
 //      Is quit game white
-        white_quit = quit_ent.SwapImage( on_quit, white_quit);
+        white_quit = quit.SwapImage( on_quit, white_quit);
 
     //  render menu items
-        new_game_ent.render(g);
-        options_ent.render(g);
-        quit_ent.render(g);
+        new_game.render(g);
+        options.render(g);
+        quit.render(g);
     }
 
     @Override
@@ -81,13 +74,19 @@ public class MainMenuState extends MenuBase {
         mouseX = input.getMouseX();
         mouseY = input.getMouseY();
 //      Check if mouse is over new game
-        on_new_game = isMouseHover(new_game_ent.getCoarseGrainedMinX(),new_game_ent.getCoarseGrainedMinY(),
-                new_game_ent.getCoarseGrainedMaxX(),new_game_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
+        if(on_new_game = isMouseHover(new_game.getCoarseGrainedMinX(), new_game.getCoarseGrainedMinY(),
+                new_game.getCoarseGrainedMaxX(), new_game.getCoarseGrainedMaxY(),mouseX,mouseY)){
+
+        }
+
 //      Check if mouse is over options
-        on_options = isMouseHover(options_ent.getCoarseGrainedMinX(),options_ent.getCoarseGrainedMinY(),
-                options_ent.getCoarseGrainedMaxX(),options_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
+        if(on_options = isMouseHover(options.getCoarseGrainedMinX(), options.getCoarseGrainedMinY(),
+                options.getCoarseGrainedMaxX(), options.getCoarseGrainedMaxY(),mouseX,mouseY)){
+            if(input.isMouseButtonDown(0))
+                sbg.enterState(SuperRacyFutbol3000.OPTIONSMENUSTATE);
+        }
 //      Check if mouse is over quit
-        on_quit = isMouseHover(quit_ent.getCoarseGrainedMinX(),quit_ent.getCoarseGrainedMinY(),
-                quit_ent.getCoarseGrainedMaxX(),quit_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
+        on_quit = isMouseHover(quit.getCoarseGrainedMinX(), quit.getCoarseGrainedMinY(),
+                quit.getCoarseGrainedMaxX(), quit.getCoarseGrainedMaxY(),mouseX,mouseY);
     }
 }

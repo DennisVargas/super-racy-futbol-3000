@@ -11,10 +11,6 @@ public abstract class MenuBase extends BasicGameState{
     protected int h = SuperRacyFutbol3000.HEIGHT;
     protected float s = SuperRacyFutbol3000.SCALE;
 
-    MenuBase() {
-        super();
-    }
-
     protected boolean isMouseHover(float minX, float minY, float maxX, float maxY, float mouseX, float mouseY){
         if( mouseX >= minX && mouseX <= maxX){
             return (mouseY >= minY && mouseY <= maxY);
