@@ -1,5 +1,6 @@
 package com.dv.superracyfutbol3000;
 
+import jig.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -28,6 +29,13 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new MainMenuState(MAINMENUSTATE));
+        ResourceManager.loadImage(main_menu_bkgrnd_rsc);
+        ResourceManager.loadImage(main_menu_new_game3_rsc);
+        ResourceManager.loadImage(main_menu_new_game4_rsc);
+        ResourceManager.loadImage(main_menu_options3_rsc  );
+        ResourceManager.loadImage(main_menu_options4_rsc);
+        ResourceManager.loadImage(main_menu_quit3_rsc);
+        ResourceManager.loadImage(main_menu_quit4_rsc);
     }
 
     public static void main(String[] args) throws SlickException{
