@@ -1,16 +1,8 @@
 package com.dv.superracyfutbol3000;
 
-import com.sun.corba.se.impl.orbutil.ObjectWriter;
-import org.mapeditor.core.ObjectGroup;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.Layer;
-import org.newdawn.slick.tiled.TiledMap;
-import org.omg.CORBA.Object;
-import org.newdawn.slick.XMLPackedSheet.*;
-
-import java.util.ArrayList;
 
 public class MainMenuState extends BasicGameState {
     int stateID = -1;
@@ -19,10 +11,10 @@ public class MainMenuState extends BasicGameState {
     int h = SuperRacyFutbol3000.HEIGHT;
     float s = SuperRacyFutbol3000.SCALE;
 
-    int options_y = h/2;    // options selection is the 2nd so
+    int options_y = h/2+16;    // options selection is the 2nd so
                             // this should be centered and new game and quit offset from there.
-    int menu_item_spacing = 128;
-    float left_justified_x = (w*s)/8;
+    int menu_item_spacing = 160;
+    float left_justified_x = (w*s)*(13f/64f);
     public enum MENU_VIEW {Main, NewGame, Options, Quit}
     MENU_VIEW current_menu_view = MENU_VIEW.Main;
     boolean on_new_game = false;
