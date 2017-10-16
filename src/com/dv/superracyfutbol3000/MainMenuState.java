@@ -1,8 +1,12 @@
 package com.dv.superracyfutbol3000;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainMenuState extends BasicGameState {
     int stateID = -1;
@@ -11,12 +15,13 @@ public class MainMenuState extends BasicGameState {
     int h = SuperRacyFutbol3000.HEIGHT;
     float s = SuperRacyFutbol3000.SCALE;
 
-    int options_y = h/2+16;    // options selection is the 2nd so
-                            // this should be centered and new game and quit offset from there.
-    int menu_item_spacing = 160;
+    //  Setup initial locations and Spacing variables for menu seletions
+    float mid_selectionY = ((h/2f)+16f)*s;    /*options selection is the 2nd so
+                                            this should be centered and new game
+                                            and quit offset from there.*/
+    float menu_item_spacing = 160*s;
     float left_justified_x = (w*s)*(13f/64f);
-    public enum MENU_VIEW {Main, NewGame, Options, Quit}
-    MENU_VIEW current_menu_view = MENU_VIEW.Main;
+
     boolean on_new_game = false;
     Image [] new_game = new Image[2];
     boolean on_options = false;
@@ -25,6 +30,8 @@ public class MainMenuState extends BasicGameState {
     Image [] quit = new Image[2];
     Image background = null;
 
+    private float minX, minY, maxX, maxY, mouseX, mouseY;
+    private Map<String, Rectangle> selection_bounds = new HashMap<String,Rectangle>();
     public MainMenuState(int stateID){
         this.stateID = stateID;
     }
@@ -43,6 +50,9 @@ public class MainMenuState extends BasicGameState {
         quit[0] = new Image("gfx/main_menu/quit3.png");
         quit[1] = new Image("gfx/main_menu/quit4.png");
         background = new Image("gfx/main_menu/MainMenu2.png");
+        SetSelectionBounds();
+
+
 //        one_v_one[0] = new Image("gfx/main_menu/1v1_1.png");
 //        one_v_one[1] = new Image("gfx/main_menu/1v1_2.png");
 //        two_v_two[0] = new Image("gfx/main_menu/2v2_1.png");
@@ -51,51 +61,68 @@ public class MainMenuState extends BasicGameState {
 //        three_v_three[1] = new Image("gfx/main_menu/3v3_2.png");
     }
 
+    private void SetSelectionBounds() {
+        selection_bounds.put("new_game", SetMenuSelectionRectangle(left_justified_x,
+                mid_selectionY-menu_item_spacing,new_game[0]));
+        selection_bounds.put("options", SetMenuSelectionRectangle(left_justified_x, mid_selectionY, options[0]));
+        selection_bounds.put("quit", SetMenuSelectionRectangle(left_justified_x, mid_selectionY,quit[0]));
+    }
+
+    private Rectangle SetMenuSelectionRectangle(float x, float y, Image img) {
+        return new Rectangle(x, y, img.getWidth()*s, img.getHeight()*s );
+    }
+
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         //set background to white
-        g.setColor(Color.white);
-        g.fillRect(0,0,w*s,h*s);
+//        g.setColor(Color.white);
+//        g.fillRect(0,0,w*s,h*s);
 
+//      Draw The Background Image
         background.draw(0,0,s);
-        switch(current_menu_view){
-            case Main:
-                if (on_options)
-                    options[1].draw(left_justified_x,options_y*s,s);
-                else
-                    options[0].draw(left_justified_x, options_y*s,s)
-                            /*new_game[0].getHeight()+ new_game_y+ menu_item_spacing,s)*/;
-                if (on_new_game)
-                    new_game[1].draw(left_justified_x,(options_y-menu_item_spacing)*s,s);
-                else
-                    new_game[0].draw(left_justified_x,(options_y-menu_item_spacing)*s,s);
-                if (on_quit)
-                    quit[1].draw(left_justified_x,(options_y +menu_item_spacing)*s,s);
-                else
-                    quit[0].draw(left_justified_x,(options_y + menu_item_spacing)*s,s);
-                break;
-            case NewGame:
-//                if (on_1v1)
-//                    one_v_one[1].draw((w*s)/8, new_game_y,s);
-//                else
-//                    one_v_one[0].draw((w*s)/8, new_game_y, s);
-                break;
-        }
+        //  check if selections are selected or not
+        /*  place options first since its the second selection of 3*/
+        if (on_options)
+            options[1].draw(left_justified_x, mid_selectionY,s);
+        else
+            options[0].draw(left_justified_x, mid_selectionY,s);
 
+        if (on_new_game)
+            new_game[1].draw(left_justified_x, mid_selectionY -menu_item_spacing,s);
+        else
+            new_game[0].draw(left_justified_x, mid_selectionY -menu_item_spacing,s);
+
+        if (on_quit)
+            quit[1].draw(left_justified_x, mid_selectionY +menu_item_spacing,s);
+        else
+            quit[0].draw(left_justified_x, mid_selectionY + menu_item_spacing,s);
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         Input input = gc.getInput();
-        int mouseX = input.getMouseX();
-        int mouseY = input.getMouseY();
+        float mouseX = input.getMouseX();
+        float mouseY = input.getMouseY();
+
+        System.out.println("mousex: "+mouseX+"mouseY: "+mouseY);
+//        float new_game_minX = (w*s)/8;
+//        float options_minX = new_game_minX;
+//        float quit_minX = new_game_minX ;
+//      Check if mouse is over new game
+        // get bounds for new game
+        float minX = selection_bounds.get("new_game").getMinX();
+        float minY = selection_bounds.get("new_game").getMinY();
+        float maxX = selection_bounds.get("new_game").getMaxX();
+        float maxY = selection_bounds.get("new_game").getMaxY();
 
 
-        float new_game_minX = (w*s)/8;
-        float options_minX = new_game_minX;
-        float quit_minX = new_game_minX ;
 
-//        if isMouseHover()
+        if (isMouseHover(minX, minY,maxX,maxY,mouseX,mouseY)  ){
+            System.out.println("Is in New Game!!!!");
+        }else{
+            System.out.println("shit");
+        }
+
 //        if(mouseX >= new_game_minX &&
 //                mouseX <=new_game_minX + new_game[0].getWidth()){
 //            if (mouseY >= new_game_minX && mouseY <= new_game_minX+new_game[0].getHeight()){
@@ -147,4 +174,5 @@ public class MainMenuState extends BasicGameState {
         }else
             return false;
     }
+
 }
