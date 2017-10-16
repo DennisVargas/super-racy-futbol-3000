@@ -119,9 +119,12 @@ public class MainMenuState extends BasicGameState {
 
         if (isMouseHover(minX, minY,maxX,maxY,mouseX,mouseY)  ){
             System.out.println("Is in New Game!!!!");
+            on_new_game = true;
         }else{
-            System.out.println("shit");
+            on_new_game = false;
         }
+
+
 
 //        if(mouseX >= new_game_minX &&
 //                mouseX <=new_game_minX + new_game[0].getWidth()){
