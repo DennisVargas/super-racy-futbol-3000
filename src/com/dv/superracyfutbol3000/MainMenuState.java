@@ -1,5 +1,7 @@
 package com.dv.superracyfutbol3000;
 
+import jig.Entity;
+import jig.ResourceManager;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -11,27 +13,31 @@ import java.util.Map;
 public class MainMenuState extends BasicGameState {
     int stateID = -1;
 
-    int w = SuperRacyFutbol3000.WIDTH;
-    int h = SuperRacyFutbol3000.HEIGHT;
-    float s = SuperRacyFutbol3000.SCALE;
+    private int w = SuperRacyFutbol3000.WIDTH;
+    private int h = SuperRacyFutbol3000.HEIGHT;
+    private float s = SuperRacyFutbol3000.SCALE;
 
     //  Setup initial locations and Spacing variables for menu seletions
-    float mid_selectionY = ((h/2f)+16f)*s;    /*options selection is the 2nd so
+    private float mid_selectionY = ((h/2f)+32f)*s;    /*options selection is the 2nd so
                                             this should be centered and new game
                                             and quit offset from there.*/
-    float menu_item_spacing = 160*s;
-    float left_justified_x = (w*s)*(13f/64f);
+    private float menu_item_spacing = 160*s;
+    private float left_justified_x = (w*s)*(19f/64f);
 
-    boolean on_new_game = false;
-    Image [] new_game = new Image[2];
-    boolean on_options = false;
-    Image [] options = new Image[2];
-    boolean on_quit = false;
-    Image [] quit = new Image[2];
-    Image background = null;
+    private boolean on_new_game = false;
+    private boolean on_options = false;
+    private boolean on_quit = false;
+    private boolean white_new_game = false;
+    private boolean white_options = false;
+    private boolean white_quit = false;
 
-    private float minX, minY, maxX, maxY, mouseX, mouseY;
-    private Map<String, Rectangle> selection_bounds = new HashMap<String,Rectangle>();
+
+    private Image background = null;
+    private MenuItem new_game_ent;
+    private MenuItem options_ent;
+    private MenuItem quit_ent;
+
+
     public MainMenuState(int stateID){
         this.stateID = stateID;
     }
@@ -43,139 +49,72 @@ public class MainMenuState extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        new_game[0] = new Image("gfx/main_menu/new_game3.png");
-        new_game[1] = new Image("gfx/main_menu/new_game4.png");
-        options[0] = new Image("gfx/main_menu/options3.png");
-        options[1] = new Image("gfx/main_menu/options4.png");
-        quit[0] = new Image("gfx/main_menu/quit3.png");
-        quit[1] = new Image("gfx/main_menu/quit4.png");
-        background = new Image("gfx/main_menu/MainMenu2.png");
-        SetSelectionBounds();
-
-
-//        one_v_one[0] = new Image("gfx/main_menu/1v1_1.png");
-//        one_v_one[1] = new Image("gfx/main_menu/1v1_2.png");
-//        two_v_two[0] = new Image("gfx/main_menu/2v2_1.png");
-//        two_v_two[1] = new Image("gfx/main_menu/2v2_2.png");
-//        three_v_three[0] = new Image("gfx/main_menu/3v3_1.png");
-//        three_v_three[1] = new Image("gfx/main_menu/3v3_2.png");
-    }
-
-    private void SetSelectionBounds() {
-        selection_bounds.put("new_game", SetMenuSelectionRectangle(left_justified_x,
-                mid_selectionY-menu_item_spacing,new_game[0]));
-        selection_bounds.put("options", SetMenuSelectionRectangle(left_justified_x, mid_selectionY, options[0]));
-        selection_bounds.put("quit", SetMenuSelectionRectangle(left_justified_x, mid_selectionY+menu_item_spacing,quit[0]));
-    }
-
-    private Rectangle SetMenuSelectionRectangle(float x, float y, Image img) {
-        return new Rectangle(x, y, img.getWidth()*s, img.getHeight()*s );
+        background = ResourceManager.getImage(SuperRacyFutbol3000.main_menu_bkgrnd_rsc);
+        //  initialize Menu entities
+        new_game_ent = new MenuItem(left_justified_x,mid_selectionY-menu_item_spacing,
+                SuperRacyFutbol3000.main_menu_new_game3_rsc,SuperRacyFutbol3000.main_menu_new_game4_rsc);
+        options_ent = new MenuItem(left_justified_x,mid_selectionY,
+                SuperRacyFutbol3000.main_menu_options3_rsc, SuperRacyFutbol3000.main_menu_options4_rsc);
+        quit_ent = new MenuItem(left_justified_x,(mid_selectionY + menu_item_spacing),
+                SuperRacyFutbol3000.main_menu_quit3_rsc, SuperRacyFutbol3000.main_menu_quit4_rsc);
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        //set background to white
-//        g.setColor(Color.white);
-//        g.fillRect(0,0,w*s,h*s);
 
 //      Draw The Background Image
         background.draw(0,0,s);
-        //  check if selections are selected or not
-        /*  place options first since its the second selection of 3*/
-        if (on_options)
-            options[1].draw(left_justified_x, mid_selectionY,s);
-        else
-            options[0].draw(left_justified_x, mid_selectionY,s);
+//      Is new game white
+        white_new_game = new_game_ent.SwapImage( on_new_game, white_new_game);
 
-        if (on_new_game)
-            new_game[1].draw(left_justified_x, mid_selectionY -menu_item_spacing,s);
-        else
-            new_game[0].draw(left_justified_x, mid_selectionY -menu_item_spacing,s);
+//      Is new game white
+        white_options = options_ent.SwapImage( on_options, white_options);
 
-        if (on_quit)
-            quit[1].draw(left_justified_x, mid_selectionY +menu_item_spacing,s);
-        else
-            quit[0].draw(left_justified_x, mid_selectionY + menu_item_spacing,s);
+//      Is quit game white
+        white_quit = quit_ent.SwapImage( on_quit, white_quit);
+
+    //  render menu items
+        new_game_ent.render(g);
+        options_ent.render(g);
+        quit_ent.render(g);
     }
+
+//    private boolean SwapImage(Entity e, boolean on_flag, boolean white_flag, String item_name) {
+//        if (on_flag && !white_flag){
+//            //  then remove grey quit
+//            e.removeImage(ResourceManager.getImage( menu_item_image_paths.get(item_name+"_off")));
+//            //  add white quit
+//            e.addImageWithBoundingBox(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_on")));
+//            return true;
+//        }else if (white_flag && !on_flag){
+//            //  remove white quit
+//            e.removeImage(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_on")));
+//            //  add grey quit
+//            e.addImageWithBoundingBox(ResourceManager.getImage(menu_item_image_paths.get(item_name+"_off")));
+//            return false;
+//        }
+//        return white_flag;
+//    }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         Input input = gc.getInput();
         float mouseX = input.getMouseX();
         float mouseY = input.getMouseY();
-        float[]bounds_values = new float[4];    // index: paramets -> 0: minX; 1: minY; 2: maxX; 3: maxY
-
 //      Check if mouse is over new game
-        // get bounds for new game
-        GetSelectionBounds(bounds_values, "new_game");
-        on_new_game = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
-                bounds_values[3], mouseX, mouseY);
-
-        //  get options selection bounds
-        GetSelectionBounds(bounds_values, "options");
-        //  Check mouse hover for options selection
-        on_options = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
-                bounds_values[3], mouseX, mouseY);
-
-        //  get quit selection bounds
-        GetSelectionBounds(bounds_values, "quit");
-        on_quit = isMouseHover(bounds_values[0], bounds_values[1], bounds_values[2],
-                bounds_values[3], mouseX, mouseY);
-
-//        if(mouseX >= new_game_minX &&
-//                mouseX <=new_game_minX + new_game[0].getWidth()){
-//            if (mouseY >= new_game_minX && mouseY <= new_game_minX+new_game[0].getHeight()){
-//                System.out.println("y in new game");
-//                on_new_game = true;
-//                if (input.isMouseButtonDown(0)){
-//                    // transition to new_game menu
-////                    current_menu_view = MENU_VIEW.NewGame;
-//                }
-//            }
-//            else
-//                on_new_game = false;
-//        }else
-//            on_new_game = false;
-//        if(mouseX >= options_minX &&
-//                mouseX <= options_minX+options[0].getWidth()){
-//            if(mouseY >= new_game_minX+new_game[0].getHeight()+menu_item_spacing &&
-//                    mouseY <= new_game_minX+2*new_game[0].getHeight()+menu_item_spacing){
-//                System.out.println("y in options");
-//                on_options = true;
-//            }else
-//                on_options = false;
-//        }else
-//            on_options = false;
-//        if(mouseX >= quit_minX &&
-//                mouseX <= quit_minX + quit[0].getWidth()){
-//            System.out.println("x in quit");
-//            if(mouseY >= new_game_minX + 2*(new_game[0].getHeight()+menu_item_spacing)&&
-//                    mouseY <= new_game_minX+3*new_game[0].getHeight() + 2*menu_item_spacing){
-//                System.out.println("y in quit");
-//                on_quit = true;
-//                if (input.isMouseButtonDown(0))
-//                    System.exit(0);
-//            }
-//            else
-//                on_quit = false;
-//        }else
-//            on_quit = false;
-    }
-
-    private void GetSelectionBounds(float [] x, String selection_name ) {
-        x[0] = selection_bounds.get(selection_name).getMinX();
-        x[1] = selection_bounds.get(selection_name).getMinY();
-        x[2] = selection_bounds.get(selection_name).getMaxX();
-        x[3] = selection_bounds.get(selection_name).getMaxY();
+        on_new_game = isMouseHover(new_game_ent.getCoarseGrainedMinX(),new_game_ent.getCoarseGrainedMinY(),
+                new_game_ent.getCoarseGrainedMaxX(),new_game_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
+//      Check if mouse is over options
+        on_options = isMouseHover(options_ent.getCoarseGrainedMinX(),options_ent.getCoarseGrainedMinY(),
+                options_ent.getCoarseGrainedMaxX(),options_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
+//      Check if mouse is over quit
+        on_quit = isMouseHover(quit_ent.getCoarseGrainedMinX(),quit_ent.getCoarseGrainedMinY(),
+                quit_ent.getCoarseGrainedMaxX(),quit_ent.getCoarseGrainedMaxY(),mouseX,mouseY);
     }
 
     public boolean isMouseHover(float minX, float minY, float maxX, float maxY, float mouseX, float mouseY){
         if( mouseX >= minX && mouseX <= maxX){
-            if (mouseY >= minY && mouseY <= maxY){
-                return true;
-            }
-            else
-                return false;
+            return (mouseY >= minY && mouseY <= maxY);
         }else
             return false;
     }
