@@ -104,7 +104,6 @@ public class MainMenuState extends BasicGameState {
         float mouseX = input.getMouseX();
         float mouseY = input.getMouseY();
 
-        System.out.println("mousex: "+mouseX+"mouseY: "+mouseY);
 //        float new_game_minX = (w*s)/8;
 //        float options_minX = new_game_minX;
 //        float quit_minX = new_game_minX ;
@@ -118,13 +117,11 @@ public class MainMenuState extends BasicGameState {
 
 
         if (isMouseHover(minX, minY,maxX,maxY,mouseX,mouseY)  ){
-            System.out.println("Is in New Game!!!!");
+            if(SuperRacyFutbol3000.isDebug){System.out.println("On New Game");}
             on_new_game = true;
         }else{
             on_new_game = false;
         }
-
-
 
 //        if(mouseX >= new_game_minX &&
 //                mouseX <=new_game_minX + new_game[0].getWidth()){
@@ -169,7 +166,6 @@ public class MainMenuState extends BasicGameState {
     public boolean isMouseHover(float minX, float minY, float maxX, float maxY, float mouseX, float mouseY){
         if( mouseX >= minX && mouseX <= maxX){
             if (mouseY >= minY && mouseY <= maxY){
-                System.out.println("y in hover");
                 return true;
             }
             else
@@ -177,5 +173,4 @@ public class MainMenuState extends BasicGameState {
         }else
             return false;
     }
-
 }
