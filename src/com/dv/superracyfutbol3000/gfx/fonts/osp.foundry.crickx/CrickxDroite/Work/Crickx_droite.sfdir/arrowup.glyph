@@ -1,0 +1,19 @@
+
+StartChar: arrowup
+Encoding: 8593 8593 131
+Width: 469
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+309 469 m 0
+ 225 0 l 0
+ 164 38 l 0
+ 81 0 l 0
+ 159 469 l 0
+ 42 469 l 0
+ 261 654 l 0
+ 431 469 l 0
+ 309 469 l 0
+EndSplineSet
+EndChar

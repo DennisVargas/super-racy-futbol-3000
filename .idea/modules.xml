@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SuperRacyFutbol3000.iml" filepath="$PROJECT_DIR$/SuperRacyFutbol3000.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../JIG/jig/jig.iml" filepath="$PROJECT_DIR$/../../JIG/jig/jig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../JIG/lib/lib.iml" filepath="$PROJECT_DIR$/../../JIG/lib/lib.iml" />
     </modules>
   </component>
 </project>

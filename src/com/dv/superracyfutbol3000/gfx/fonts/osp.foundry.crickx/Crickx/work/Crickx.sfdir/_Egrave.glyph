@@ -1,0 +1,76 @@
+
+StartChar: Egrave
+Encoding: 200 200 167
+Width: 434
+Flags: W
+TtInstrs:
+SVTCA[y-axis]
+PUSHW_1
+ 13
+MDAP[rnd]
+PUSHW_1
+ 0
+RCVT
+IF
+PUSHW_1
+ 9
+MDAP[rnd]
+ELSE
+PUSHW_2
+ 9
+ 1
+MIAP[no-rnd]
+EIF
+PUSHW_3
+ 12
+ 1
+ 3
+CALL
+PUSHW_3
+ 3
+ 4
+ 3
+CALL
+PUSHW_1
+ 9
+SRP0
+PUSHW_1
+ 6
+MDRP[rp0,min,rnd,grey]
+PUSHW_1
+ 1
+SRP0
+PUSHW_1
+ 14
+MDRP[rp0,min,rnd,grey]
+PUSHW_1
+ 12
+SRP0
+PUSHW_1
+ 15
+MDRP[rp0,grey]
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+390 501 m 1,0,-1
+ 255 496 l 1,1,-1
+ 238 380 l 1,2,-1
+ 371 384 l 1,3,-1
+ 351 260 l 1,4,-1
+ 214 256 l 1,5,-1
+ 200 140 l 1,6,-1
+ 332 143 l 1,7,-1
+ 305 4 l 1,8,-1
+ 30 1 l 1,9,10
+ 55 137 55 137 129 632 c 1,11,-1
+ 197 632 l 1,12,-1
+ 182 697 l 1,13,-1
+ 330 695 l 1,14,-1
+ 349 632 l 1,15,-1
+ 406 634 l 1,16,-1
+ 390 501 l 1,0,-1
+EndSplineSet
+EndChar

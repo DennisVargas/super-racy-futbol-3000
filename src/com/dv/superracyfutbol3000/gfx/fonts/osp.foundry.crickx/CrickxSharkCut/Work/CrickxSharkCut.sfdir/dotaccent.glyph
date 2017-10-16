@@ -1,0 +1,62 @@
+
+StartChar: dotaccent
+Encoding: 729 729 236
+Width: 500
+Flags: W
+TtInstrs:
+PUSHW_4
+ 6
+ 4
+ 0
+ 4
+CALL
+NPUSHW
+ 15
+ 6
+ 6
+ 22
+ 6
+ 38
+ 6
+ 54
+ 6
+ 70
+ 6
+ 86
+ 6
+ 102
+ 6
+ 7
+DELTAP1
+NPUSHW
+ 5
+ 117
+ 6
+ 133
+ 6
+ 2
+DELTAP1
+SVTCA[y-axis]
+PUSHW_4
+ 3
+ 2
+ 9
+ 4
+CALL
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+201 581 m 256,0,1
+ 201 601 201 601 215.5 615.5 c 128,-1,2
+ 230 630 230 630 250 630 c 256,3,4
+ 270 630 270 630 284.5 615.5 c 128,-1,5
+ 299 601 299 601 299 581 c 256,6,7
+ 299 561 299 561 284.5 546.5 c 128,-1,8
+ 270 532 270 532 250 532 c 256,9,10
+ 230 532 230 532 215.5 546.5 c 128,-1,11
+ 201 561 201 561 201 581 c 256,0,1
+EndSplineSet
+EndChar

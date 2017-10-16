@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" nextobjectid="42">
+ <tileset firstgid="1" name="main_menu_sheet" tilewidth="32" tileheight="32" tilecount="440" columns="40">
+  <image source="main_menu_sheet.png" width="1280" height="352"/>
+ </tileset>
+ <layer name="Grass" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3QMQ0AMAzEwLBJ2aT80TQs3lI9WN6vq+psDf1sF/y0j376EZz004/4tI9++hGc9NOP+LSPfn/7PT3pLHEADwAA
+  </data>
+ </layer>
+ <layer name="Quit" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OyQkAIBDAwK3FoxmP/tsxX8H/ImQg/0RIkiRJt0KVGvXkl5dBkxbt5BdJ/ziEl2ykAA8AAA==
+  </data>
+ </layer>
+ <layer name="Options" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OwQ2AIADAQIYQFGcRFPYfij7dgAR6Sf8NQZKkfRwUKdFJF2W6Z079PFSo0ksfNeoTnyRJWsUAZoKAbgAPAAA=
+  </data>
+ </layer>
+ <layer name="Title" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OWVdOcRTA4TdTkrluECFTJENJhpsQMqUIhYw3hkJzknmI+gamvkzly0SmiMjTcmNxbt7Vm6v/b53n4ux19lk7Fvvdez7wkU98ZpAvfGWIb3xnmB/8ZGR0OcnDBCYyiclMIZmppDCNVKYzg5nMYjZzmEsa6Umxf5pnNp8FZLCQRWSymCUsJYtlLGcFK1lFNqtZQw5ryWUd69nARvLIZxMFbKaQLWxlG9sj7isy28FOdlHMbvawlxL2sZ8DHOQQpRymjHKOcJQKjnGcE1RSxUlOcZpqznCWc5znAhcj7rtkdpkrXKWGWq5xnRvUUU8DjTTRTAut3KSNW7Rzmzvc5R73ecBDHvGYJ3TwlGd00hVxXygUCoVCodD/qJ6GOL5vpmWcbhmtkaY/3p/zIo7913Qn8qC/esmrMez38SZBt0TVQ+8Y9t8xkKBbourn7Tj+PxR/vwD3HMHiAA8AAA==
+  </data>
+ </layer>
+ <layer name="Blue Car" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OwREAEAxFwZ8q6IZupBtKlgK4mZHD2wpWAgAAAHBSTKr2e3HX4tYT/0bcPPFvxm0l/uG9DfuGyVgADwAA
+  </data>
+ </layer>
+ <layer name="New Game" width="40" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3O2Q2AIADAUFA8GAW891/OhiVItE3ef0Mws68UMWBEwoQZC1bkfmutgooNOw6cuHDj6bdmZmZmZj/oBRXHbF4ADwAA
+  </data>
+ </layer>
+ <objectgroup name="Selections" width="40" height="24">
+  <object id="15" name="new_game_b" x="128" y="192" width="288" height="64"/>
+  <object id="16" name="options_box" x="192" y="352" width="224" height="64"/>
+  <object id="17" name="quit_box" x="288" y="512" width="128" height="64"/>
+  <object id="41" name="rrr" gid="291" x="992" y="512" width="32" height="32"/>
+ </objectgroup>
+</map>
