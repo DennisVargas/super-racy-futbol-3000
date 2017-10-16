@@ -1,16 +1,14 @@
 package com.dv.superracyfutbol3000;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import jig.ResourceManager;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class NewGameMenuState extends MenuBase {
-
+    Image background = null;
     public NewGameMenuState(int stateID) {
         super();
         this.stateID = stateID;
@@ -23,7 +21,7 @@ public class NewGameMenuState extends MenuBase {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-
+    background = ResourceManager.getImage(SuperRacyFutbol3000.new_game_menu_bkgrnd_rsc);
     }
 
     @Override
@@ -31,6 +29,7 @@ public class NewGameMenuState extends MenuBase {
         Rectangle rect = new Rectangle(0,0,this.w*s,this.h*s);
         graphics.fill(rect);
         graphics.setColor(Color.orange);
+        background.draw();
     }
 
     @Override
