@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="daggerdbl" format="1">
+  <advance width="440"/>
+  <unicode hex="2021"/>
+  <outline>
+    <contour>
+      <point x="47" y="294" type="line" smooth="no"/>
+      <point x="135" y="294" type="line" smooth="no"/>
+      <point x="151" y="393" type="line" smooth="no"/>
+      <point x="60" y="393" type="line" smooth="no"/>
+      <point x="81" y="526" type="line" smooth="no"/>
+      <point x="173" y="526" type="line" smooth="no"/>
+      <point x="196" y="665" type="line" smooth="no"/>
+      <point x="346" y="666" type="line" smooth="no"/>
+      <point x="322" y="526" type="line" smooth="no"/>
+      <point x="421" y="526" type="line" smooth="no"/>
+      <point x="400" y="393" type="line" smooth="no"/>
+      <point x="300" y="393" type="line" smooth="no"/>
+      <point x="283" y="293" type="line" smooth="no"/>
+      <point x="386" y="293" type="line" smooth="no"/>
+      <point x="365" y="161" type="line" smooth="no"/>
+      <point x="261" y="161" type="line" smooth="no"/>
+      <point x="234" y="-1" type="line" smooth="no"/>
+      <point x="86" y="-1" type="line" smooth="no"/>
+      <point x="113" y="161" type="line" smooth="no"/>
+      <point x="25" y="161" type="line" smooth="no"/>
+    </contour>
+  </outline>
+</glyph>

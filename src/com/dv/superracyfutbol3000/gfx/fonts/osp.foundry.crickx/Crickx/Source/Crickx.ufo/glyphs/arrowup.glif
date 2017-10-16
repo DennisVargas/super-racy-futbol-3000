@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="arrowup" format="1">
+  <advance width="410"/>
+  <unicode hex="2191"/>
+  <outline>
+    <contour>
+      <point x="143" y="471" type="line" smooth="no"/>
+      <point x="24" y="461" type="line" smooth="no"/>
+      <point x="81" y="512"/>
+      <point x="149" y="566" type="qcurve" smooth="yes"/>
+      <point x="231" y="631"/>
+      <point x="242" y="641" type="qcurve" smooth="no"/>
+      <point x="286" y="600"/>
+      <point x="400" y="471" type="qcurve" smooth="no"/>
+      <point x="278" y="469" type="line" smooth="no"/>
+      <point x="210" y="1" type="line" smooth="no"/>
+      <point x="153" y="38" type="line" smooth="no"/>
+      <point x="78" y="-3" type="line" smooth="no"/>
+    </contour>
+  </outline>
+</glyph>

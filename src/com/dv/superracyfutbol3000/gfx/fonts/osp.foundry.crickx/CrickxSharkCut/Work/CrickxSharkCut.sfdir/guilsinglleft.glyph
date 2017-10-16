@@ -1,0 +1,38 @@
+
+StartChar: guilsinglleft
+Encoding: 8249 8249 207
+Width: 340
+Flags: W
+TtInstrs:
+SVTCA[y-axis]
+PUSHW_1
+ 0
+MDAP[rnd]
+PUSHW_1
+ 0
+RCVT
+IF
+PUSHW_1
+ 2
+MDAP[rnd]
+ELSE
+PUSHW_2
+ 2
+ 5
+MIAP[no-rnd]
+EIF
+IUP[y]
+IUP[x]
+EndTTInstrs
+LayerCount: 2
+Fore
+SplineSet
+314 408 m 1,0,-1
+ 200 203 l 1,1,-1
+ 273 0 l 1,2,-1
+ 132 0 l 1,3,-1
+ 49 203 l 1,4,-1
+ 182 408 l 1,5,-1
+ 314 408 l 1,0,-1
+EndSplineSet
+EndChar

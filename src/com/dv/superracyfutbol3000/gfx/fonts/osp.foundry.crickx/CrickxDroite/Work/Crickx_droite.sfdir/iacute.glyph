@@ -1,0 +1,20 @@
+
+StartChar: iacute
+Encoding: 237 237 169
+Width: 285
+VWidth: 0
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+101 500 m 13
+ 81.4238 499.976 l 21
+ 80 0 l 5
+ 205.351 1.4248 l 5
+ 202.501 499.627 l 13
+ 184.234 499.957 l 21
+ 257 589.34 l 5
+ 145.616 589.34 l 5
+ 101 500 l 13
+EndSplineSet
+EndChar
