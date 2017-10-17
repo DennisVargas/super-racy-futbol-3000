@@ -18,6 +18,7 @@ public class NewGameMenuState extends MenuBase {
     Vector left_arrow_pos = new Vector(835*s,215*s);
     Vector right_arrow_pos = new Vector(1032*s,215*s);
     Vector back_button_pos = new Vector(90*s,670*s);
+    Vector start_button_pos = new Vector(1188*s,670*s);
     Vector player1__red_pos = new Vector(221*s,445*s);
     Vector player1__blue_pos = new Vector(860*s,445*s);
     Vector red_team_selector_pos = new Vector(318,580);
@@ -33,6 +34,8 @@ public class NewGameMenuState extends MenuBase {
     MenuItem back_button;
     MenuItem red_team_selector;
     MenuItem blue_team_selector;
+    MenuItem start_button;
+
     Image player1_icon;
 
     boolean on_left_arrow = false;
@@ -41,10 +44,10 @@ public class NewGameMenuState extends MenuBase {
     boolean white_right_arrow = false;
     boolean on_back_button = false;
     boolean white_back_button = false;
-    boolean on_team_selector = false;
-    boolean white_team_selector = false;
-    boolean isRedTeam = true;
+    boolean on_start_button = false;
+    boolean white_start_button = false;
 
+    boolean isRedTeam = true;
     boolean beenClicked = false;
 
 
@@ -61,6 +64,8 @@ public class NewGameMenuState extends MenuBase {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.new_game_menu_bkgrnd_rsc);
+        player1_icon = ResourceManager.getImage(SuperRacyFutbol3000.new_game_player1_white_rsc);
+
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt1_rsc);
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt2_rsc);
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt3_rsc);
@@ -73,6 +78,8 @@ public class NewGameMenuState extends MenuBase {
         back_button = new MenuItem(back_button_pos.getX(),back_button_pos.getY(),
                 SuperRacyFutbol3000.new_game_grey_back_button_rsc, SuperRacyFutbol3000.new_game_white_back_button_rsc);
 
+        start_button = new MenuItem(start_button_pos.getX(),start_button_pos.getY(),
+                SuperRacyFutbol3000.new_game_grey_start_rsc, SuperRacyFutbol3000.new_game_white_start_rsc);
         red_team_selector = new MenuItem(red_team_selector_pos.getX(), red_team_selector_pos.getY(),
                 SuperRacyFutbol3000.new_game_red_team_selector_rsc,
                 SuperRacyFutbol3000.new_game_red_team_selector_rsc);
@@ -81,7 +88,7 @@ public class NewGameMenuState extends MenuBase {
                 SuperRacyFutbol3000.new_game_blue_team_selector_rsc,
                 SuperRacyFutbol3000.new_game_blue_team_selector_rsc);
 
-        player1_icon = ResourceManager.getImage(SuperRacyFutbol3000.new_game_player1_white_rsc);
+
 
     }
 
@@ -96,13 +103,18 @@ public class NewGameMenuState extends MenuBase {
         right_arrow.render(graphics);
         left_arrow.render(graphics);
         back_button.render(graphics);
+
+
+
+        start_button.render(graphics);
         red_team_selector.render(graphics);
         blue_team_selector.render(graphics);
-
         white_left_arrow = left_arrow.SwapImage(on_left_arrow, white_left_arrow);
         white_right_arrow = right_arrow.SwapImage(on_right_arrow, white_right_arrow);
         white_back_button = back_button.SwapImage(on_back_button, white_back_button);
-
+        white_start_button = start_button.SwapImage(on_start_button, white_start_button);
+        if(SuperRacyFutbol3000.isDebug)System.out.println("on_start: "+on_start_button);
+        if(SuperRacyFutbol3000.isDebug)System.out.println("white_start: "+white_start_button);
         if (isRedTeam)
             player1_icon.draw(player1__red_pos.getX(), player1__red_pos.getY());
         else
@@ -175,6 +187,20 @@ public class NewGameMenuState extends MenuBase {
             }else if (!input.isMouseButtonDown(0)&&beenClicked)
                 beenClicked = false;
         }
+
+        //  check if mouse hover over start
+        if(isMouseHover(start_button.getCoarseGrainedMinX(),start_button.getCoarseGrainedMinY(),
+                start_button.getCoarseGrainedMaxX(),start_button.getCoarseGrainedMaxY(), mouseX, mouseY)){
+            on_start_button = true;
+            //  if left arrow pressed with left click only decrement on first click
+            if(input.isMousePressed(0)){
+                SuperRacyFutbol3000.play_settings.setPlayers_per_team(players_per_team);
+                SuperRacyFutbol3000.play_settings.setPlayer1_red(isRedTeam);
+                stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
+            }
+        }else
+            on_start_button = false;
+
     }
 
     private void IncrementPlayersPerTeam() {
