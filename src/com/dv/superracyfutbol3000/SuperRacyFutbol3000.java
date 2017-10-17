@@ -33,6 +33,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String new_game_white_right_arrow_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/white_right_arrow1.png";
     public static final String new_game_grey_left_arrow_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/grey_left_arrow1.png";
     public static final String new_game_grey_right_arrow_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/grey_right_arrow1.png";
+    public static final String new_game_grey_back_button_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/grey_back.png";
+    public static final String new_game_white_back_button_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/white_back.png";
 
     public SuperRacyFutbol3000() {
         super(NAME);
@@ -62,6 +64,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
         ResourceManager.loadImage(new_game_menu_ppt1_rsc);
         ResourceManager.loadImage(new_game_menu_ppt2_rsc);
         ResourceManager.loadImage(new_game_menu_ppt3_rsc);
+        ResourceManager.loadImage(new_game_grey_back_button_rsc);
+        ResourceManager.loadImage(new_game_white_back_button_rsc);
     }
 
     public static void main(String[] args) throws SlickException{

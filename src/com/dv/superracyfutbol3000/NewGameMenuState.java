@@ -13,11 +13,13 @@ import java.util.ArrayList;
 
 public class NewGameMenuState extends MenuBase {
     Image background = null;
-    //  set at center of arrows
+
+    //  set at center of entity
     Vector left_arrow_pos = new Vector(835*s,215*s);
     Vector right_arrow_pos = new Vector(1032*s,215*s);
+    Vector back_button_pos = new Vector(118*s,670*s);
 
-    //  set at upper left corner
+    //  set at upper left corner of image
     Vector ppt_pos = new Vector(930*s,195*s );
 
     int players_per_team = 3;
@@ -25,12 +27,17 @@ public class NewGameMenuState extends MenuBase {
     Image players_per_team_img = null;
     MenuItem left_arrow;
     MenuItem right_arrow;
+    MenuItem back_button;
 
     boolean on_left_arrow = false;
     boolean white_left_arrow = false;
     boolean on_right_arrow = false;
     boolean white_right_arrow = false;
+    boolean on_back_button = false;
+    boolean white_back_button = false;
+
     boolean beenClicked = false;
+
 
     public NewGameMenuState(int stateID) {
         super();
@@ -48,11 +55,16 @@ public class NewGameMenuState extends MenuBase {
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt1_rsc);
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt2_rsc);
         players_per_team_img_path.add(SuperRacyFutbol3000.new_game_menu_ppt3_rsc);
+        players_per_team_img = ResourceManager.getImage(players_per_team_img_path.get(players_per_team-1));
+
         left_arrow = new MenuItem(left_arrow_pos.getX(),left_arrow_pos.getY(),
                 SuperRacyFutbol3000.new_game_grey_left_arrow_rsc,SuperRacyFutbol3000.new_game_white_left_arrow_rsc);
         right_arrow = new MenuItem(right_arrow_pos.getX(),right_arrow_pos.getY(),
                 SuperRacyFutbol3000.new_game_grey_right_arrow_rsc, SuperRacyFutbol3000.new_game_white_right_arrow_rsc);
-        players_per_team_img = ResourceManager.getImage(players_per_team_img_path.get(players_per_team-1));
+        back_button = new MenuItem(back_button_pos.getX(),back_button_pos.getY(),
+                SuperRacyFutbol3000.new_game_grey_back_button_rsc, SuperRacyFutbol3000.new_game_white_back_button_rsc);
+
+
     }
 
     @Override
@@ -65,9 +77,11 @@ public class NewGameMenuState extends MenuBase {
 
         right_arrow.render(graphics);
         left_arrow.render(graphics);
+        back_button.render(graphics);
 
         white_left_arrow = left_arrow.SwapImage(on_left_arrow, white_left_arrow);
         white_right_arrow = right_arrow.SwapImage(on_right_arrow, white_right_arrow);
+        white_back_button = back_button.SwapImage(on_back_button, white_back_button);
     }
 
     @Override
@@ -106,6 +120,17 @@ public class NewGameMenuState extends MenuBase {
         }else
             on_right_arrow = false;
 
+        //  check for mouse hover over the back button
+        if (isMouseHover(back_button.getCoarseGrainedMinX(),back_button.getCoarseGrainedMinY(),
+                back_button.getCoarseGrainedMaxX(),back_button.getCoarseGrainedMaxY(),mouseX,mouseY)){
+            if(SuperRacyFutbol3000.isDebug)System.out.println("Back Button Hover!!");
+            on_back_button = true;
+            //  if left arrow pressed with left click only decrement on first click
+            if(input.isMousePressed(0)){
+                stateBasedGame.enterState(SuperRacyFutbol3000.MAINMENUSTATE);
+            }
+        }else
+            on_back_button = false;
 
     }
 
