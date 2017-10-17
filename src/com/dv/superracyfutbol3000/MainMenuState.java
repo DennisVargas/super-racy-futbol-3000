@@ -76,7 +76,8 @@ public class MainMenuState extends MenuBase {
 //      Check if mouse is over new game
         if(on_new_game = isMouseHover(new_game.getCoarseGrainedMinX(), new_game.getCoarseGrainedMinY(),
                 new_game.getCoarseGrainedMaxX(), new_game.getCoarseGrainedMaxY(),mouseX,mouseY)){
-
+            if(input.isMouseButtonDown(0))
+                sbg.enterState(SuperRacyFutbol3000.NEWGAMEMENUSTATE);
         }
 
 //      Check if mouse is over options
@@ -86,7 +87,11 @@ public class MainMenuState extends MenuBase {
                 sbg.enterState(SuperRacyFutbol3000.OPTIONSMENUSTATE);
         }
 //      Check if mouse is over quit
-        on_quit = isMouseHover(quit.getCoarseGrainedMinX(), quit.getCoarseGrainedMinY(),
-                quit.getCoarseGrainedMaxX(), quit.getCoarseGrainedMaxY(),mouseX,mouseY);
+        if(on_quit = isMouseHover(quit.getCoarseGrainedMinX(), quit.getCoarseGrainedMinY(),
+                quit.getCoarseGrainedMaxX(), quit.getCoarseGrainedMaxY(),mouseX,mouseY)){
+            if(input.isMouseButtonDown(0))
+                System.exit(0);
+        }
+
     }
 }
