@@ -17,8 +17,11 @@ public class NewGameMenuState extends MenuBase {
     //  set at center of entity
     Vector left_arrow_pos = new Vector(835*s,215*s);
     Vector right_arrow_pos = new Vector(1032*s,215*s);
-    Vector back_button_pos = new Vector(118*s,670*s);
-
+    Vector back_button_pos = new Vector(90*s,670*s);
+    Vector player1__red_pos = new Vector(221*s,445*s);
+    Vector player1__blue_pos = new Vector(860*s,445*s);
+    Vector red_team_selector_pos = new Vector(318,580);
+    Vector blue_team_selector_pos = new Vector(960,580);
     //  set at upper left corner of image
     Vector ppt_pos = new Vector(930*s,195*s );
 
@@ -28,6 +31,9 @@ public class NewGameMenuState extends MenuBase {
     MenuItem left_arrow;
     MenuItem right_arrow;
     MenuItem back_button;
+    MenuItem red_team_selector;
+    MenuItem blue_team_selector;
+    Image player1_icon;
 
     boolean on_left_arrow = false;
     boolean white_left_arrow = false;
@@ -35,6 +41,9 @@ public class NewGameMenuState extends MenuBase {
     boolean white_right_arrow = false;
     boolean on_back_button = false;
     boolean white_back_button = false;
+    boolean on_team_selector = false;
+    boolean white_team_selector = false;
+    boolean isRedTeam = true;
 
     boolean beenClicked = false;
 
@@ -64,6 +73,15 @@ public class NewGameMenuState extends MenuBase {
         back_button = new MenuItem(back_button_pos.getX(),back_button_pos.getY(),
                 SuperRacyFutbol3000.new_game_grey_back_button_rsc, SuperRacyFutbol3000.new_game_white_back_button_rsc);
 
+        red_team_selector = new MenuItem(red_team_selector_pos.getX(), red_team_selector_pos.getY(),
+                SuperRacyFutbol3000.new_game_red_team_selector_rsc,
+                SuperRacyFutbol3000.new_game_red_team_selector_rsc);
+
+        blue_team_selector = new MenuItem(blue_team_selector_pos.getX(), blue_team_selector_pos.getY(),
+                SuperRacyFutbol3000.new_game_blue_team_selector_rsc,
+                SuperRacyFutbol3000.new_game_blue_team_selector_rsc);
+
+        player1_icon = ResourceManager.getImage(SuperRacyFutbol3000.new_game_player1_white_rsc);
 
     }
 
@@ -78,10 +96,17 @@ public class NewGameMenuState extends MenuBase {
         right_arrow.render(graphics);
         left_arrow.render(graphics);
         back_button.render(graphics);
+        red_team_selector.render(graphics);
+        blue_team_selector.render(graphics);
 
         white_left_arrow = left_arrow.SwapImage(on_left_arrow, white_left_arrow);
         white_right_arrow = right_arrow.SwapImage(on_right_arrow, white_right_arrow);
         white_back_button = back_button.SwapImage(on_back_button, white_back_button);
+
+        if (isRedTeam)
+            player1_icon.draw(player1__red_pos.getX(), player1__red_pos.getY());
+        else
+            player1_icon.draw(player1__blue_pos.getX(), player1__blue_pos.getY());
     }
 
     @Override
@@ -115,7 +140,7 @@ public class NewGameMenuState extends MenuBase {
             if(input.isMousePressed(0)&& !beenClicked){
                 beenClicked = true;
                 IncrementPlayersPerTeam();
-            }else
+            }else if(!input.isMousePressed(0)&& beenClicked)
                 beenClicked = false;
         }else
             on_right_arrow = false;
@@ -132,6 +157,24 @@ public class NewGameMenuState extends MenuBase {
         }else
             on_back_button = false;
 
+        //  check for mouse hover over the team selection region
+        if (isMouseHover(red_team_selector.getCoarseGrainedMinX(),red_team_selector.getCoarseGrainedMinY(),
+                red_team_selector.getCoarseGrainedMaxX(), red_team_selector.getCoarseGrainedMaxY(), mouseX, mouseY)){
+            if(input.isMouseButtonDown(0) && !beenClicked){
+                isRedTeam = true;
+                beenClicked = true;
+            }
+            else if(!input.isMouseButtonDown(0)&&beenClicked)
+                beenClicked = false;
+        }
+        if (isMouseHover(blue_team_selector.getCoarseGrainedMinX(), blue_team_selector.getCoarseGrainedMinY(),
+                blue_team_selector.getCoarseGrainedMaxX(), blue_team_selector.getCoarseGrainedMaxY(), mouseX, mouseY)){
+            if(input.isMouseButtonDown(0)&&!beenClicked){
+                isRedTeam = false;
+                beenClicked = true;
+            }else if (!input.isMouseButtonDown(0)&&beenClicked)
+                beenClicked = false;
+        }
     }
 
     private void IncrementPlayersPerTeam() {
