@@ -3,6 +3,11 @@ package com.dv.superracyfutbol3000;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
+import jig.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -12,6 +17,7 @@ import java.util.ArrayList;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
+    Entity field_bounds;
 
     Cars car1;
 
@@ -22,6 +28,7 @@ public class PlayState extends BasicGameState {
     public PlayState(int stateID) {
         super();
         this.stateID = stateID;
+
     }
 
     @Override
