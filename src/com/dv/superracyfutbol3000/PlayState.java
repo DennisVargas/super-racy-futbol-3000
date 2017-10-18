@@ -5,11 +5,12 @@ import jig.Vector;
 import org.newdawn.slick.*;
 import jig.*;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
@@ -17,7 +18,19 @@ import java.util.ArrayList;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
-    Entity field_bounds;
+    //  field area by left and right goal ellipse
+    //  center = 320x352
+    //  Xradius = 320px
+    //  yradius = 360px
+    //  second ellipse
+    //  center = 960, 352
+    //  same x y radius
+    //  field rect = w:576 h:719
+    //  center = 288x, 359.5
+    //  to test the object is in the field
+    //  get the xMin. check if xMin < 640 if true test if object is in the left circle zone
+    //  else check the object being in the rigt circle
+    //  if circle check fails to find object check
 
     Cars car1;
 
@@ -44,6 +57,18 @@ public class PlayState extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+
+        System.out.println("isDEBUG RENDER GAME");
+        Ellipse ellipse = new Ellipse(319,360,320, 361);
+        Ellipse ellipse2 = new Ellipse(960,360,320, 361);
+        Rectangle rect = new Rectangle(352,0f, 576,719);
+
+        graphics.setColor(Color.red);
+        graphics.fill(ellipse);
+        graphics.fill(ellipse2);
+        graphics.setColor(Color.cyan);
+        graphics.fill(rect);
+
         background.draw();
      //   car1.render(graphics);
     }
