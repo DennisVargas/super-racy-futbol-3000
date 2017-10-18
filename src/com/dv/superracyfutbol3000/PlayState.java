@@ -57,17 +57,20 @@ public class PlayState extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        background.draw();
+        //  debug the bounding areas for containing car and ball movement
+        if (SuperRacyFutbol3000.isDebug) {
+            Ellipse ellipse = new Ellipse(319, 360, 320, 361);
+            Ellipse ellipse2 = new Ellipse(960, 360, 320, 361);
+            Rectangle rect = new Rectangle(352, 0f, 576, 719);
 
-        System.out.println("isDEBUG RENDER GAME");
-        Ellipse ellipse = new Ellipse(319,360,320, 361);
-        Ellipse ellipse2 = new Ellipse(960,360,320, 361);
-        Rectangle rect = new Rectangle(352,0f, 576,719);
+            graphics.setColor(Color.red);
+            graphics.fill(ellipse);
+            graphics.fill(ellipse2);
+            graphics.setColor(Color.cyan);
+            graphics.fill(rect);
+        }
 
-        graphics.setColor(Color.red);
-        graphics.fill(ellipse);
-        graphics.fill(ellipse2);
-        graphics.setColor(Color.cyan);
-        graphics.fill(rect);
 
         background.draw();
      //   car1.render(graphics);
