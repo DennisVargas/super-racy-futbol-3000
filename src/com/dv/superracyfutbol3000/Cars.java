@@ -7,8 +7,9 @@ public class Cars extends Entity {
     private float health_level = 0f;
     private float boost_level = 0f;
     private float acceleration = 0f;
-    private float turn_angle = 0f;
-    private float top_speed = 0f;
+    private double turn_angle = 0;
+    private double max_turn_angle = 60;
+    private float top_speed = 1f;
     private float top_boost_speed = 0f;
     private float max_accel = 0f;
     private float max_boost_vel = 0f;
@@ -16,6 +17,14 @@ public class Cars extends Entity {
 
     public Cars(float x, float y) {
         super(x, y);
+    }
+
+    public double getMax_turn_angle() {
+        return max_turn_angle;
+    }
+
+    public void setMax_turn_angle(double max_turn_angle) {
+        this.max_turn_angle = max_turn_angle;
     }
 
     public float GetHealthLevel() {
@@ -42,7 +51,7 @@ public class Cars extends Entity {
         this.acceleration = acceleration;
     }
 
-    public float GetTurnAngle() {
+    public double GetTurnAngle() {
         return turn_angle;
     }
 
@@ -92,5 +101,6 @@ public class Cars extends Entity {
 
     void ProcessInput(Input i){
         //  if i matches
+
     }
 }
