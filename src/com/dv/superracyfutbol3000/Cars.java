@@ -1,9 +1,9 @@
 package com.dv.superracyfutbol3000;
 
-import jig.Entity;
-import jig.ResourceManager;
-import jig.Vector;
+import jig.*;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Shape;
 
 import static java.lang.Math.abs;
 import static org.newdawn.slick.util.FastTrig.cos;
@@ -34,6 +34,8 @@ public class Cars extends Entity {
         this.player_number = player_number;
         SetCarImage();
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
+        this.debugThis = true;
+
     }
 
     private void SetCarImage() {
@@ -41,7 +43,19 @@ public class Cars extends Entity {
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_red_rsc));
         else
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc));
+        SetBoundingBox();
     }
+
+    private void SetBoundingBox() {
+        Image car_img = ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc);
+        int w = car_img.getWidth();
+        int h = car_img.getHeight();
+
+        this.addShape(new ConvexPolygon(w/4f, h/2f),new Vector(0,h/2));
+        System.out.println(this.getNumShapes());
+
+    }
+
 
     void ProcessInput(Input i){
 
@@ -132,24 +146,4 @@ public class Cars extends Entity {
         }else
             vel = -0.5f*top_speed;
     }
-
-
-/*
-
-		// Steering
-		if (!strictSteering || car.v > 0) {
-			if (keyDown('LEFT')) {
-				car.alfa += steeringAngle;
-			} else if (keyDown('RIGHT')) {
-				car.alfa -= steeringAngle;
-			}
-		}
-		if (car.alfa > 2 * Math.PI) car.alfa %= 2 * Math.PI;
-
-		// Update car's position
-		car.x += car.v * Math.cos(car.alfa);
-		car.y -= car.v * Math.sin(car.alfa);
-
-* */
-
 }
