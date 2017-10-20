@@ -18,9 +18,12 @@ public class Cars extends Entity {
     private float health_level = 0f;
     private float boost_level = 0f;
     private float acceleration = 1.025f;
+
+
+
     private double turn_angle = Math.PI/2;
-    private double max_turn_angle = Math.PI/3;  // turning right 2PI/3 when turning left
-    private double turn_increment = Math.PI/120;
+
+    private double turn_increment = Math.PI/175;
     private float top_speed = 3.5f;
     private float top_boost_speed = 0f;
     private float max_accel = 0f;
@@ -28,7 +31,7 @@ public class Cars extends Entity {
     private float min_vel = 0.25f;
     private float vel = 0.0f;
     private float vel_0 = 0.7f;
-    private float friction = 0.94f; // simulates friction, gravity, and mass
+    private float friction = 0.90f; // simulates friction, gravity, and mass
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
@@ -60,6 +63,14 @@ public class Cars extends Entity {
         this.addShape(new ConvexPolygon(w, h),new Vector(0,0));
         System.out.println(this.getNumShapes());
 
+    }
+
+    public double getTurn_angle() {
+        return turn_angle;
+    }
+
+    public void setTurn_angle(double turn_angle) {
+        this.turn_angle = turn_angle;
     }
 
     void ProcessInput(Input i){

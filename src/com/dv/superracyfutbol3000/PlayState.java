@@ -1,15 +1,9 @@
 package com.dv.superracyfutbol3000;
 
 import jig.ResourceManager;
-import jig.Vector;
 import org.newdawn.slick.*;
-import jig.*;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -70,7 +64,6 @@ public class PlayState extends BasicGameState {
             graphics.setColor(Color.cyan);
             graphics.fill(rect);
         }
-
 
         background.draw();
      //   car1.render(graphics);
