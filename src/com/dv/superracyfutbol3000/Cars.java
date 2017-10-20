@@ -14,8 +14,10 @@ public class Cars extends Entity {
     private float max_accel = 0f;
     private float max_boost_vel = 0f;
     private float deceleration = 0f; // simulates friction, gravity, and mass
+    private int player_number = -1; //  controlling player number
+    private boolean isRed = false;
 
-    public Cars(float x, float y) {
+    public Cars(float x, float y, boolean isRed ) {
         super(x, y);
     }
 
@@ -103,4 +105,7 @@ public class Cars extends Entity {
         //  if i matches
 
     }
+
+
+
 }
