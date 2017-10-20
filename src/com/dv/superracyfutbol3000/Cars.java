@@ -146,6 +146,7 @@ public class Cars extends Entity {
         this.setX(newX);
         this.setY(newY);
     }
+
     private void Accelerate() {
         if(vel <= top_speed) {
             //  if car is moving
@@ -177,6 +178,7 @@ public class Cars extends Entity {
                 vel = -1f*vel_0;
             }
         }else
+            //  half top_speed in reverse
             vel = -0.5f*top_speed;
     }
 }
