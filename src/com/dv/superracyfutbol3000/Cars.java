@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Entity;
+import jig.ResourceManager;
 import org.newdawn.slick.Input;
 
 public class Cars extends Entity {
@@ -17,8 +18,18 @@ public class Cars extends Entity {
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
-    public Cars(float x, float y, boolean isRed ) {
+    public Cars(float x, float y, boolean isRed, int player_number) {
         super(x, y);
+        this.isRed = isRed;
+        this.player_number = player_number;
+        SetCarImage();
+        this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
+    }
+
+    private void SetCarImage() {
+        if(isRed == true)
+            this.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.cars_red_rsc));
+            this.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc));
     }
 
     public double getMax_turn_angle() {
