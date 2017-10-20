@@ -1,7 +1,14 @@
 package com.dv.superracyfutbol3000;
 
 public class Players {
+    public Players(String name, boolean isRed, Controller control_type) {
+        this.name = name;
+        this.isRed = isRed;
+        this.control_type = control_type;
+    }
+
     enum Controller {Keyboard, Gamepad}
+
     String name = "Player ";
     boolean isRed = false;
     Controller control_type = Controller.Keyboard;
@@ -18,7 +25,7 @@ public class Players {
         this.name = name;
     }
 
-    void setIsRed(boolean isRed){
+    void SetIsRed(boolean isRed){
         this.isRed = isRed;
     }
 
