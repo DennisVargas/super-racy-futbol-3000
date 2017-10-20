@@ -53,14 +53,11 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new PlayState(PLAYSTATE));
-        this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new MainMenuState(MAINMENUSTATE));
-
+        this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
 
-
-        Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
-
+        Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
         ResourceManager.loadImage(main_menu_bkgrnd_rsc);
         ResourceManager.loadImage(main_menu_new_game3_rsc);
         ResourceManager.loadImage(main_menu_new_game4_rsc);

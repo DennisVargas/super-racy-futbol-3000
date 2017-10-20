@@ -1,10 +1,8 @@
 package com.dv.superracyfutbol3000;
 
 import jig.ResourceManager;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import jig.Vector;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -44,6 +42,11 @@ public class PlayState extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-
+        //car1.rotate(-0.5f);
+        //car1.translate(0,0.1f);        System.out.println(car1.getRotation());
+        Input input = gameContainer.getInput();
+        car1.ProcessInput(input);
+        car1.UpdateCar();
+        //car1.translate(Vector.getVector(,1f));
     }
 }
