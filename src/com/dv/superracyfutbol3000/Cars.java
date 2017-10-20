@@ -13,6 +13,8 @@ import static org.newdawn.slick.util.FastTrig.cos;
 import static org.newdawn.slick.util.FastTrig.sin;
 
 public class Cars extends Entity {
+
+    Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
     private float acceleration = 1.025f;
@@ -30,19 +32,20 @@ public class Cars extends Entity {
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
+
     enum TurnDirection {Left, Right}
-    public Cars(float x, float y, boolean isRed, int player_number) {
+    public Cars(float x, float y, boolean isRed, Players controlling_player) {
         super(x, y);
         this.isRed = isRed;
+        this.controlling_player = controlling_player;
         this.player_number = player_number;
         SetCarImage();
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
         this.debugThis = true;
-
     }
 
     private void SetCarImage() {
-        if(isRed == true)
+        if(controlling_player.isRed)
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_red_rsc));
         else
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc));
@@ -61,7 +64,6 @@ public class Cars extends Entity {
     }
 
     void ProcessInput(Input i){
-
         if(i.isKeyDown(Input.KEY_UP)){
             Accelerate();
 //            if(i.isKeyDown(Input.KEY_A))
@@ -87,7 +89,6 @@ public class Cars extends Entity {
     }
 
     private void Steer(TurnDirection dir) {
-
         switch(dir){
             case Left:
                 turn_angle+= turn_increment;

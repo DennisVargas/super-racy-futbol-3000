@@ -1,17 +1,21 @@
 package com.dv.superracyfutbol3000;
 
 public class Players {
+
+    enum PlayerType {Human, CPU}
+    enum Controller {Keyboard, Gamepad}
+
+    String name = "Player ";
+    boolean isRed = false;
+    Controller control_type = Controller.Keyboard;
+
+
     public Players(String name, boolean isRed, Controller control_type) {
         this.name = name;
         this.isRed = isRed;
         this.control_type = control_type;
     }
 
-    enum Controller {Keyboard, Gamepad}
-
-    String name = "Player ";
-    boolean isRed = false;
-    Controller control_type = Controller.Keyboard;
 
     public Controller GetControl_type() {
         return control_type;
