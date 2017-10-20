@@ -1,9 +1,12 @@
 package com.dv.superracyfutbol3000;
 
-import jig.*;
+import jig.ConvexPolygon;
+import jig.Entity;
+import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Rectangle;
 
 import static java.lang.Math.abs;
 import static org.newdawn.slick.util.FastTrig.cos;
@@ -48,14 +51,14 @@ public class Cars extends Entity {
 
     private void SetBoundingBox() {
         Image car_img = ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc);
-        int w = car_img.getWidth();
-        int h = car_img.getHeight();
-
-        this.addShape(new ConvexPolygon(w/4f, h/2f),new Vector(0,h/2));
+        float w = car_img.getWidth();
+        float h = car_img.getHeight();
+        Rectangle rect = new Rectangle(this.getX(),this.getY(),w,h);
+        //this.addShape(rect);
+        this.addShape(new ConvexPolygon(w, h),new Vector(0,0));
         System.out.println(this.getNumShapes());
 
     }
-
 
     void ProcessInput(Input i){
 
@@ -75,13 +78,12 @@ public class Cars extends Entity {
             else
                 vel = 0f;
         }
-        if(abs(vel)>0){
+        if(abs(vel)>1.3f){
             if(i.isKeyDown(Input.KEY_A))
                 Steer(TurnDirection.Left);
             if(i.isKeyDown(Input.KEY_D))
                 Steer(TurnDirection.Right);
         }
-
     }
 
     private void Steer(TurnDirection dir) {
