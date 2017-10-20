@@ -34,11 +34,10 @@ public class Cars extends Entity {
 
 
     enum TurnDirection {Left, Right}
-    public Cars(float x, float y, boolean isRed, Players controlling_player) {
+    public Cars(float x, float y, Players controlling_player) {
         super(x, y);
-        this.isRed = isRed;
         this.controlling_player = controlling_player;
-        this.player_number = player_number;
+
         SetCarImage();
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
         this.debugThis = true;
@@ -64,28 +63,52 @@ public class Cars extends Entity {
     }
 
     void ProcessInput(Input i){
-        if(i.isKeyDown(Input.KEY_UP)){
-            Accelerate();
-//            if(i.isKeyDown(Input.KEY_A))
-//                Steer(TurnDirection.Left);
-//            if(i.isKeyDown(Input.KEY_D))
-//                Steer(TurnDirection.Right);
-//            UpdateCar();
-        }else if(i.isKeyDown(Input.KEY_DOWN)){
-            Decelerate();
+        switch(controlling_player.control_type){
+            case Keyboard:
+                if(i.isKeyDown(Input.KEY_UP)){
+                    Accelerate();
+                }else if(i.isKeyDown(Input.KEY_DOWN)){
+                    Decelerate();
 
-        }else {
-            if (abs(vel) > min_vel)
-                vel *= friction;
-            else
-                vel = 0f;
+                }else {
+                    //  If not accelerating or decelerating
+                    //  losing velocity due to friction
+                    if (abs(vel) > min_vel)
+                        vel *= friction;
+                    else
+                        vel = 0f;
+                }
+                if(abs(vel)>1.3f){
+                    if(i.isKeyDown(Input.KEY_A))
+                        Steer(TurnDirection.Left);
+                    if(i.isKeyDown(Input.KEY_D))
+                        Steer(TurnDirection.Right);
+                }
+                break;
+            case Gamepad:
+                int controller_num = controlling_player.GetControllerNumber();
+                if(i.isButton1Pressed(controller_num)){
+                    Accelerate();
+                }else if(i.isButton2Pressed(controller_num)){
+                    Decelerate();
+
+                }else {
+                    //  If not accelerating or decelerating
+                    //  losing velocity due to friction
+                    if (abs(vel) > min_vel)
+                        vel *= friction;
+                    else
+                        vel = 0f;
+                }
+                if(abs(vel)>1.3f){
+                    if(i.isControllerLeft(controller_num))
+                        Steer(TurnDirection.Left);
+                    if(i.isControllerRight(controller_num))
+                        Steer(TurnDirection.Right);
+                }
+                break;
         }
-        if(abs(vel)>1.3f){
-            if(i.isKeyDown(Input.KEY_A))
-                Steer(TurnDirection.Left);
-            if(i.isKeyDown(Input.KEY_D))
-                Steer(TurnDirection.Right);
-        }
+
     }
 
     private void Steer(TurnDirection dir) {
@@ -93,14 +116,10 @@ public class Cars extends Entity {
             case Left:
                 turn_angle+= turn_increment;
                 this.rotate(-(180/Math.PI)*turn_increment);
-                /*if(turn_angle <(Math.PI*2)/3)
-                    turn_angle+= turn_increment;*/
                 break;
             case Right:
                 turn_angle-= turn_increment;
                 this.rotate((180/Math.PI)*turn_increment);
-                /*if(turn_angle> Math.PI/3)
-                    turn_angle-= turn_increment;*/
                 break;
             default:
                 break;
@@ -110,7 +129,7 @@ public class Cars extends Entity {
 //  calculate newX adding to old x the cos of the angle that has ben turned through
 //  the x component of the velocity vector given the turn_angle at the magnitude of vel
         float newX = (float)this.getX()+(float)(vel*cos(turn_angle));
-//  calculate
+//  calculate new Y component
         float newY = (float)this.getY() - (float)(vel*sin(turn_angle));
 
         this.setX(newX);
