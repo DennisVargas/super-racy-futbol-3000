@@ -2,6 +2,8 @@ package com.dv.superracyfutbol3000;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 
@@ -81,13 +83,11 @@ public class Teams {
         if(player.isRed){
             car.rotate(90);
             car.setTurn_angle(0);
-            car.UpdateCar();
             this.red_team.add(car);
         }
         else{
             car.rotate(270f);
             car.setTurn_angle(Math.PI);
-            car.UpdateCar();
             this.blue_team.add(car);
         }
 
