@@ -47,6 +47,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String play_field_rsc = "com/dv/superracyfutbol3000/gfx/play_state/field.png";
     public static final String cars_blue_rsc = "com/dv/superracyfutbol3000/gfx/cars/blue_car.png";
     public static final String cars_red_rsc = "com/dv/superracyfutbol3000/gfx/cars/red_car.png";
+    public static boolean isDebugCarCreation = false;
 
 
     public SuperRacyFutbol3000() {
@@ -101,14 +102,16 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
 
     private static boolean CheckDebug(String[] args) {
         for(String x:args){
-
             if (x.contains("-d") ){
-                isDebug = true;
-                if(x.contains("-dw"))
+
+                if(x.contains("-dw")){
                     if(x.contains("-dwB"))
                         isDebugWallBounce = true;
                     else
                         isWallDebug = true;
+                }
+                else
+                    isDebug = true;
             }
         }
         return false;
