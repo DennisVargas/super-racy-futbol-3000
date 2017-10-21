@@ -18,26 +18,39 @@ public abstract class CollidesHelper {
         //  so do the opposite
         //  decide in play game state which ellipse it needs to pass in.
         //  if its outside of the ellipse then test the rectangle
-        float center_x,center_y,radius_x,radius_y;
-        center_x = e.getCenterX(); center_y =e.getCenterY();
-        radius_x = e.getRadius1(); radius_y = e.getRadius2();
+        float center_x, center_y, radius_x, radius_y,x_center_diff, y_center_diff, radius_x_sq, radius_y_sq;
+        center_x = e.getCenterX();
+        center_y = e.getCenterY();
+        radius_x = e.getRadius1();
+        radius_y = e.getRadius2();
+        radius_x_sq = radius_x*radius_x;
+        radius_y_sq = radius_y*radius_y;
+        x_center_diff = (x-center_x)*(x-center_x);
+        y_center_diff = (y-center_y)*(y-center_y);
+        float x_in_ellipse = x_center_diff / radius_x_sq;
+        float y_in_ellipse = y_center_diff / radius_y_sq;
 
         //  calculate the distance to the center of the ellipse
-        double d_center = sqrt((x-center_x)*(x-center_x)+(y-center_y)*(y-center_y));
-        System.out.println(d_center);
-        if((radius_x < d_center)){
-        //    System.out.println("radiusX");
-            return true;
+        double d_center_circ = sqrt((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y));
+        double in_ellipse = (x_in_ellipse + y_in_ellipse);
+        //System.out.println("Distance to center of ellipse: " + d_center);
+        if(isWallDebug)System.out.println("ellipse Point Test: "+in_ellipse);
+        if (rect.contains(x, y)) {
+            if(isWallDebug)System.out.println("rectangle");
+            return false;
+        } else {
+
+            if ((in_ellipse > 1f)) {
+//                System.out.println("radiusX:" + radius_x + " <" + d_center);
+
+                if(isWallDebug)System.out.println("Out of Ellipse");
+                if(isWallDebug)System.out.println("xterm: "+x_in_ellipse);
+                if(isWallDebug)System.out.println("yterm: "+y_in_ellipse);
+                return true;
+            }
+            return false;
         }
 
-        else if((radius_y < d_center)){
-      //      System.out.println("radiusY");
-            return true;
-        }
-        else if (rect.contains(x,y)){
-            return true;
-        }
-        else return false;
     }
 
 //  runs through all the collision types
