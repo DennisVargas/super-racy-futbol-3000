@@ -196,12 +196,53 @@ public class Cars extends Entity{
             vel = -0.5f*top_speed;
     }
 
-    public void ProcessHit(){
+    public void ProcessHit(CollidesHelper.CollisionType collision_type, Vector next_move, Rectangle rect){
+        //  takes a parameter of collison type and affects the car based on what it ran into.
         //  reduces the health of the cars hit based on the velocity when the hit occured.
         //  shoudl both cars take damage?
         //  that's easy
         //  just only if they are at max speed..they get (1-0.05)*health off
         //  boost hit are worth 0.15 of health. (1-0.15)*health
 
+        if(collision_type == CollidesHelper.CollisionType.Wall){
+            if(isDebugWallBounce)System.out.println("WALL HERE!!!!");
+            //  reverses both x and y the same
+            //  this should be done in components based on direction of movement
+            this.vel *= (-1f)/*1.25f*/;
+            //  ratio by which the car is moved away from the wall
+            float wall_bounce_factor = 0.015625f;
+
+            //  Get newX and newY
+            float newX = next_move.getX();
+            if(isDebugWallBounce)System.out.println("Bounce new_X: "+newX);
+            float newY = next_move.getY();
+            if(isDebugWallBounce)System.out.println("Bounce new_Y: "+newY);
+
+            if(newX > rect.getMaxX())
+                this.setX(newX+newX*(-wall_bounce_factor));
+            else if(newX < rect.getMinX() && newX > 0f){
+                this.setX(newX+newX*(wall_bounce_factor));
+            }else if (newX < 0f){
+                if(isDebugWallBounce)System.out.println("In the X NEG!! "+newX);
+                newX = 1f;
+                this.setX(newX+newX*(wall_bounce_factor));
+                this.setY(newY);
+            }
+
+            else if(newY > SuperRacyFutbol3000.HEIGHT/2f)
+                this.setY(newY+newY*(-wall_bounce_factor));
+            else if (newY < SuperRacyFutbol3000.HEIGHT/2f && newY > 0f){
+                this.setY(newY+newY*(wall_bounce_factor));
+            }
+
+            else if (newY < 0f){
+                newY = 1f;
+                if(isDebugWallBounce)System.out.println("In the Y NEG!! "+newY);
+                this.setY(newY+newY*(wall_bounce_factor));
+                this.setX(newX);
+            }
+
+        }else
+            System.out.println("OtherHitType");
     }
 }
