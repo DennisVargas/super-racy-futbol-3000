@@ -10,8 +10,8 @@ public class Teams {
 
     int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayersPerTeam();
     int total_players = 2*players_per_team;
-    int human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
-    int cpu_players = human_players-total_players;
+    int human_players;
+    int cpu_players = total_players -human_players;
 
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
         this.red_team = red_team;
