@@ -8,7 +8,7 @@ public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
 
-    int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayerPerTeam();
+    int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayersPerTeam();
     int total_players = 2*players_per_team;
     int human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
     int cpu_players = human_players-total_players;
@@ -47,6 +47,8 @@ public class Teams {
 
     public void RenderTeams(Graphics g){
         for (Cars car:blue_team)
+            car.render(g);
+        for(Cars car:red_team)
             car.render(g);
     }
 
