@@ -52,6 +52,15 @@ public class Teams {
             car.render(g);
     }
 
+    public void UpdateTeams(){
+        for (Cars car: red_team){
+            car.UpdateCar();
+        }
+        for (Cars car: blue_team){
+            car.UpdateCar();
+        }
+    }
+
     public Teams(){
         FillTeams();
     }
