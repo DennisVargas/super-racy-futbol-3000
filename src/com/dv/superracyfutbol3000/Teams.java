@@ -28,7 +28,6 @@ public class Teams {
 
         for (i = 0; i < human_players;i++){
             player = SuperRacyFutbol3000.play_settings.players.get(i);
-            AddPlayer(player);
             if(player.isRed)
                 AddPlayer(player, 120f, (i+1)*80f);
             else
