@@ -138,7 +138,7 @@ public class Cars extends Entity {
                 break;
         }
     }
-    public void UpdateCar(){
+    public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
     //  calculate newX adding to old x the cos of the angle that has ben turned through
 //      the x component of the velocity vector given the turn_angle at the magnitude of vel
         float newX = (float)this.getX()+(float)(vel*cos(turn_angle));
