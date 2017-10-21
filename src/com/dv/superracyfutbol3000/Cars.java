@@ -139,14 +139,18 @@ public class Cars extends Entity {
         }
     }
     public void UpdateCar(){
-//  calculate newX adding to old x the cos of the angle that has ben turned through
-//  the x component of the velocity vector given the turn_angle at the magnitude of vel
+    //  calculate newX adding to old x the cos of the angle that has ben turned through
+//      the x component of the velocity vector given the turn_angle at the magnitude of vel
         float newX = (float)this.getX()+(float)(vel*cos(turn_angle));
-//  calculate new Y component
+    //  calculate new Y component
         float newY = (float)this.getY() - (float)(vel*sin(turn_angle));
 
-        this.setX(newX);
-        this.setY(newY);
+        //Check if collisions then if that's all good move the car
+        if(!CheckCollisons(newX, newY)){
+
+            this.setX(newX);
+            this.setY(newY);
+        }
     }
 
     private void Accelerate() {
