@@ -47,4 +47,7 @@ public class PlaySettings {
     public void SetTeams(){
         teams = new Teams();
     }
+    public Teams GetTeams(){
+        return teams;
+    }
 }
