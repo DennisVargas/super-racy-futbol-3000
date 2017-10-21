@@ -6,6 +6,7 @@ import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
 import static java.lang.Math.abs;
@@ -146,12 +147,13 @@ public class Cars extends Entity {
         float newY = (float)this.getY() - (float)(vel*sin(turn_angle));
 
         //Check if collisions then if that's all good move the car
-        if(!CheckCollisons(newX, newY)){
+        if(!CollidesHelper.CheckCollisons(newX, newY, goal_ellipse_bounds, center_rectangle_bounds)){
 
             this.setX(newX);
             this.setY(newY);
         }
     }
+
 
     private void Accelerate() {
         if(vel <= top_speed) {
@@ -186,5 +188,14 @@ public class Cars extends Entity {
         }else
             //  half top_speed in reverse
             vel = -0.5f*top_speed;
+    }
+
+    public void ProcessHit(){
+        //  reduces the health of the cars hit based on the velocity when the hit occured.
+        //  shoudl both cars take damage?
+        //  that's easy
+        //  just only if they are at max speed..they get (1-0.05)*health off
+        //  boost hit are worth 0.15 of health. (1-0.15)*health
+
     }
 }
