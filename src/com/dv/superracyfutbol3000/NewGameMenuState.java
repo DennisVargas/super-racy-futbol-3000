@@ -195,7 +195,7 @@ public class NewGameMenuState extends MenuBase {
             //  if left arrow pressed with left click only decrement on first click
             if(input.isMousePressed(0)){
                 SuperRacyFutbol3000.play_settings.setPlayers_per_team(players_per_team);
-                SuperRacyFutbol3000.play_settings.setPlayer1_red(isRedTeam);
+                //SuperRacyFutbol3000.play_settings.setPlayer1_red(isRedTeam);
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
             }
         }else
