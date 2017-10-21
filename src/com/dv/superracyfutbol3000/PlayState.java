@@ -76,7 +76,7 @@ public class PlayState extends BasicGameState {
         //car1.rotate(-0.5f);
         //car1.translate(0,0.1f);        System.out.println(car1.getRotation());
         Input input = gameContainer.getInput();
-        teams.UpdateTeams();
+        teams.ProcessTeams(input);
 //        car1.ProcessInput(input);
 //        car1.UpdateCar();
         //car1.translate(Vector.getVector(,1f));
