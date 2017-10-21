@@ -21,6 +21,7 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
+        human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         int i = 0;
 
         for (i = 0; i < human_players;i++){
