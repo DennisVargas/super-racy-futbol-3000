@@ -34,12 +34,15 @@ public class Teams {
                 AddPlayer(player, 720f,(i+1)*80f);
         }
         if(i < total_players){
-            for(i=0; i < cpu_players; i++){
+            for(i = human_players; i <= cpu_players; i++){
                 if(this.red_team.size()<3)
                     player = new Players("CPU-"+i,true, Players.Controller.AI);
                 else
                     player = new Players("CPU-"+i, false, Players.Controller.AI);
-                AddPlayer(player);
+                if(player.isRed)
+                    AddPlayer(player, 120f, i*80f);
+                else
+                    AddPlayer(player, 800f,i*80f);
             }
         }
     }
