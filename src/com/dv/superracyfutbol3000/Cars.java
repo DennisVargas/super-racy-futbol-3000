@@ -9,18 +9,18 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.abs;
 import static org.newdawn.slick.util.FastTrig.cos;
 import static org.newdawn.slick.util.FastTrig.sin;
 
-public class Cars extends Entity {
+public class Cars extends Entity{
 
     Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
     private float acceleration = 1.025f;
-
-
+    private float mass = 1f;
 
     private double turn_angle = Math.PI/2;
 
