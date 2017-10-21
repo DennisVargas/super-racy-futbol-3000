@@ -25,6 +25,8 @@ public class Teams {
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
         int i = 0;
+        int red_i =0;//    for spacing teams on the board
+        int blue_i =0;//   first player is at top second middle.
 
         for (i = 0; i < human_players;i++){
             player = SuperRacyFutbol3000.play_settings.players.get(i);
