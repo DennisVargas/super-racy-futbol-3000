@@ -42,7 +42,7 @@ public class Cars extends Entity {
         this.controlling_player = controlling_player;
 
         SetCarImage();
-        this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
+
         this.debugThis = true;
     }
 
@@ -51,7 +51,9 @@ public class Cars extends Entity {
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_red_rsc));
         else
             this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc));
+
         SetBoundingBox();
+        this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
     }
 
     private void SetBoundingBox() {
