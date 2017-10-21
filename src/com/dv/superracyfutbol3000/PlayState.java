@@ -33,12 +33,17 @@ public class PlayState extends BasicGameState {
     public PlayState(int stateID) {
         super();
         this.stateID = stateID;
-
     }
 
     @Override
     public int getID() {
         return this.stateID;
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
     }
 
     @Override
@@ -63,7 +68,7 @@ public class PlayState extends BasicGameState {
             graphics.setColor(Color.cyan);
             graphics.fill(rect);
         }
-
+        teams.RenderTeams(graphics);
     }
 
     @Override
