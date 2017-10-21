@@ -54,13 +54,16 @@ public abstract class CollidesHelper {
     }
 
 //  runs through all the collision types
-    public boolean CheckCollisons(float newX, float newY, Ellipse ellipse, Rectangle rect) {
+    public static CollisionType CheckCollisons(float newX, float newY, Ellipse ellipse, Rectangle rect) {
         //  Check collide with wall
         //  Check collide with goalie
         //  Check collide with ball
         //  Check collide with cars
         //  Check collide with goals
-        return WallCollide(newX, newY, ellipse, rect);
+        if( WallCollide(newX, newY, ellipse, rect))
+            return CollisionType.Wall;
+        else//  more else if to come for other collisions
+            return CollisionType.None;
     }
 
 //    public static void main(String args[]){
