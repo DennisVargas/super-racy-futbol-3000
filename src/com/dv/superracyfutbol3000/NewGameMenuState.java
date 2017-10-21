@@ -4,9 +4,6 @@ import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public class NewGameMenuState extends MenuBase {
     Vector blue_team_selector_pos = new Vector(960,580);
     //  set at upper left corner of image
     Vector ppt_pos = new Vector(930*s,195*s );
+
 
     int players_per_team = 3;
     ArrayList<String> players_per_team_img_path = new ArrayList<String>();
@@ -50,6 +48,7 @@ public class NewGameMenuState extends MenuBase {
     boolean isRedTeam = true;
     boolean beenClicked = false;
 
+    private ArrayList<Players> human_players = new ArrayList<Players>();
 
     public NewGameMenuState(int stateID) {
         super();
@@ -88,8 +87,6 @@ public class NewGameMenuState extends MenuBase {
                 SuperRacyFutbol3000.new_game_blue_team_selector_rsc,
                 SuperRacyFutbol3000.new_game_blue_team_selector_rsc);
 
-
-
     }
 
     @Override
@@ -104,8 +101,6 @@ public class NewGameMenuState extends MenuBase {
         left_arrow.render(graphics);
         back_button.render(graphics);
 
-
-
         start_button.render(graphics);
         red_team_selector.render(graphics);
         blue_team_selector.render(graphics);
@@ -115,6 +110,7 @@ public class NewGameMenuState extends MenuBase {
         white_start_button = start_button.SwapImage(on_start_button, white_start_button);
         if(SuperRacyFutbol3000.isDebug)System.out.println("on_start: "+on_start_button);
         if(SuperRacyFutbol3000.isDebug)System.out.println("white_start: "+white_start_button);
+
         if (isRedTeam)
             player1_icon.draw(player1__red_pos.getX(), player1__red_pos.getY());
         else
@@ -194,12 +190,19 @@ public class NewGameMenuState extends MenuBase {
             on_start_button = true;
             //  if left arrow pressed with left click only decrement on first click
             if(input.isMousePressed(0)){
-                SuperRacyFutbol3000.play_settings.setPlayers_per_team(players_per_team);
-                //SuperRacyFutbol3000.play_settings.setPlayer1_red(isRedTeam);
+                SuperRacyFutbol3000.play_settings.SetPlayersPerTeam(players_per_team);
+                SuperRacyFutbol3000.play_settings.SetHumanPlayers(human_players.size());
+
+                //  default 1 player on keyboard controls for bookmark
+                //  players should activate depending on which control is being used first
+                //  players should also be able to choose which controller they want to use
+                human_players.add(new Players());
+                SuperRacyFutbol3000.play_settings.players = human_players;
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
             }
         }else
             on_start_button = false;
+
 
     }
 
