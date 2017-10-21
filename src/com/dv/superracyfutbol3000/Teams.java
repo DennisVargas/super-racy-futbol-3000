@@ -31,7 +31,7 @@ public class Teams {
         for (i =0; i < total_players; i++){
             if (human_players-- > 0)
                 player = SuperRacyFutbol3000.play_settings.players.get(i);
-            else if(this.red_team.size()<3)
+            else if(this.red_team.size()<players_per_team)
                 player = new Players("CPU-"+i,true, Players.Controller.AI);
             else
                 player = new Players("CPU-"+i, false, Players.Controller.AI);
