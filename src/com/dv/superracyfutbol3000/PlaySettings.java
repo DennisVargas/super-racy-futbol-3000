@@ -3,7 +3,7 @@ package com.dv.superracyfutbol3000;
 import java.util.ArrayList;
 
 public class PlaySettings {
-    ArrayList<Players> players = new ArrayList<Players>();
+    ArrayList<Players> players;
 
     private int players_per_team;
     private int human_players;
@@ -22,7 +22,6 @@ public class PlaySettings {
     public PlaySettings() {
         players_per_team = 1;
         human_players = 1;
-//        player1_red = true;
     }
 
     private void AddPlayer(Players player) {
