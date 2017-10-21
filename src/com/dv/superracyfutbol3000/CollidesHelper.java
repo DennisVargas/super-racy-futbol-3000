@@ -3,9 +3,11 @@ package com.dv.superracyfutbol3000;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.isWallDebug;
 import static java.lang.StrictMath.sqrt;
 
 public abstract class CollidesHelper {
+    enum CollisionType {Wall, Goalie, Car, Ball, Goal, None}
 
     //  takes the x and y of the car and subtract the center x and center y of an ellipse
     //  this ellipse will be on the far goal end of the field.
