@@ -55,10 +55,12 @@ public class Teams {
     }
 
     public void RenderTeams(Graphics g){
-        for (Cars car:blue_team)
+        for (Cars car:blue_team){
             car.render(g);
-        for(Cars car:red_team)
+        }
+        for(Cars car:red_team){
             car.render(g);
+        }
     }
 
     public void UpdateTeams(){
