@@ -19,7 +19,7 @@ public class Cars extends Entity{
     Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
-    private float acceleration = 1.025f;
+    private float acceleration = 1.075f;
     private float mass = 1f;
 
     private double turn_angle = Math.PI/2;
