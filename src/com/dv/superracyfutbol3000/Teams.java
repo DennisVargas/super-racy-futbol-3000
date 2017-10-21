@@ -23,6 +23,7 @@ public class Teams {
     private void FillTeams() {
         Players player = null;
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
+        cpu_players = total_players - human_players;
         int i = 0;
 
         for (i = 0; i < human_players;i++){
