@@ -137,21 +137,28 @@ public class Cars extends Entity{
                 break;
         }
     }
+
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
+        Vector next_move = new Vector(0f,0f);
     //  calculate newX adding to old x the cos of the angle that has ben turned through
 //      the x component of the velocity vector given the turn_angle at the magnitude of vel
         float newX = (float)this.getX()+(float)(vel*cos(turn_angle));
     //  calculate new Y component
         float newY = (float)this.getY() - (float)(vel*sin(turn_angle));
 
-        //Check if collisions then if that's all good move the car
-        if(!CollidesHelper.CheckCollisons(newX, newY, goal_ellipse_bounds, center_rectangle_bounds)){
+        next_move = next_move.setX(newX);
+        next_move = next_move.setY(newY);
 
+        //Check if collisions then if that's all good move the car
+        CollidesHelper.CollisionType collision_type =
+                CollidesHelper.CheckCollisons(newX, newY, goal_ellipse_bounds, center_rectangle_bounds);
+        if(collision_type == CollidesHelper.CollisionType.None){
             this.setX(newX);
             this.setY(newY);
-        }
+        }else
+            ProcessHit(collision_type, next_move, center_rectangle_bounds); // process hit will determine what the newX and newY
+                                                    // direction and magnitude should be after the collision
     }
-
 
     private void Accelerate() {
         if(vel <= top_speed) {
@@ -173,6 +180,7 @@ public class Cars extends Entity{
             vel = top_speed;
         }
     }
+
     private void Decelerate() {
         if(vel >= -0.5f*top_speed){
             if (vel < 0) {
