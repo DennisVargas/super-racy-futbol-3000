@@ -37,6 +37,8 @@ public class Cars extends Entity{
     private boolean isRed = false;
 
     enum TurnDirection {Left, Right}
+
+    //  Cars Constructor
     public Cars(float x, float y, Players controlling_player) {
         super(x, y);
         this.controlling_player = controlling_player;
