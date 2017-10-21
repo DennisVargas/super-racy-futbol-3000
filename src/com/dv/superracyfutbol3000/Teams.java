@@ -1,14 +1,16 @@
 package com.dv.superracyfutbol3000;
 
+import org.newdawn.slick.Graphics;
+
 import java.util.ArrayList;
 
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
 
-    int players_per_team = SuperRacyFutbol3000.play_settings.getPlayers_per_team();
+    int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayerPerTeam();
     int total_players = 2*players_per_team;
-    int human_players = SuperRacyFutbol3000.play_settings.getHuman_players();
+    int human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
     int cpu_players = human_players-total_players;
 
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
@@ -43,6 +45,11 @@ public class Teams {
             this.blue_team.add(new Cars(0,0, player));
     }
 
+    public void RenderTeams(Graphics g){
+        for (Cars car:blue_team)
+            car.render(g);
+    }
+
     public Teams(){
         FillTeams();
     }
@@ -54,8 +61,6 @@ public class Teams {
     public ArrayList<Cars> getBlue_team() {
         return blue_team;
     }
-
-
 
 
 }

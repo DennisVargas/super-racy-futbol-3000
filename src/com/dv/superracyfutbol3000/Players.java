@@ -24,7 +24,11 @@ public class Players {
         this.isRed = isRed;
         this.control_type = control_type;
     }
-
+    public Players(){
+        this.name = "Player 1";
+        this.isRed= false;
+        this.control_type = Controller.Keyboard;
+    }
 
     public Controller GetControl_type() {
         return control_type;
