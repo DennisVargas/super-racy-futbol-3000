@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
 
@@ -54,12 +55,7 @@ public class Teams {
     }
 
     public void UpdateTeams(){
-        for (Cars car: red_team){
-            car.UpdateCar();
-        }
-        for (Cars car: blue_team){
-            car.UpdateCar();
-        }
+
     }
 
     public Teams(){
@@ -75,4 +71,12 @@ public class Teams {
     }
 
 
+    public void ProcessTeams(Input input) {
+        for (Cars car: red_team){
+            car.ProcessInput(input);
+        }
+        for (Cars car: blue_team){
+            car.ProcessInput(input);
+        }
+    }
 }
