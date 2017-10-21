@@ -11,7 +11,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String NAME = "Super Racy Futbol 3000";
     public static final int WIDTH = 1280;   // 1280x(height = 720)
     public static final int HEIGHT = (WIDTH/16)*9;    // adjust height with 16:9 ratio
-    public static final float SCALE = 1.0f;
+    public static final float SCALE = 1f;
     public static boolean isDebug = false;
     public static PlaySettings play_settings = new PlaySettings();
     public static final int MAINMENUSTATE = 0;
@@ -38,8 +38,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String new_game_white_back_button_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/white_back.png";
     public static final String new_game_player1_white_rsc ="com/dv/superracyfutbol3000/gfx/new_game_menu/player1_white.png";
     public static final String new_game_player1_grey_rsc ="com/dv/superracyfutbol3000/gfx/new_game_menu/player1_grey.png";
-    public static String new_game_red_team_selector_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/red_team_selector.png";
-    public static String new_game_blue_team_selector_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/blue_team_selector.png";
+    public static final String new_game_red_team_selector_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/red_team_selector.png";
+    public static final String new_game_blue_team_selector_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/blue_team_selector.png";
     public static final String new_game_grey_start_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/start_game_grey.png";
     public static final String new_game_white_start_rsc = "com/dv/superracyfutbol3000/gfx/new_game_menu/start_game_white.png";
     public static final String play_field_rsc = "com/dv/superracyfutbol3000/gfx/play_state/field.png";
@@ -52,9 +52,10 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+        this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new PlayState(PLAYSTATE));
         this.addState(new MainMenuState(MAINMENUSTATE));
-        this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
+
         this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
 
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);

@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
 
@@ -10,8 +11,8 @@ public class Teams {
 
     int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayersPerTeam();
     int total_players = 2*players_per_team;
-    int human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
-    int cpu_players = human_players-total_players;
+    int human_players;
+    int cpu_players = total_players -human_players;
 
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
         this.red_team = red_team;
@@ -21,35 +22,45 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
+        human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
+        cpu_players = total_players - human_players;
         int i = 0;
 
         for (i = 0; i < human_players;i++){
             player = SuperRacyFutbol3000.play_settings.players.get(i);
-            AddPlayer(player);
+            if(player.isRed)
+                AddPlayer(player, 120f, (i+1)*80f);
+            else
+                AddPlayer(player, 720f,(i+1)*80f);
         }
         if(i < total_players){
-            for(i=0; i < cpu_players; i++){
+            for(i = human_players; i <= cpu_players; i++){
                 if(this.red_team.size()<3)
                     player = new Players("CPU-"+i,true, Players.Controller.AI);
                 else
                     player = new Players("CPU-"+i, false, Players.Controller.AI);
-                AddPlayer(player);
+                if(player.isRed)
+                    AddPlayer(player, 120f, i*80f);
+                else
+                    AddPlayer(player, 800f,i*80f);
             }
         }
     }
 
-    private void AddPlayer(Players player){
+    private void AddPlayer(Players player, float x, float y){
         if(player.isRed)
-            this.red_team.add(new Cars(0,0,player));
+            this.red_team.add(new Cars(x,y,player));
         else
-            this.blue_team.add(new Cars(0,0, player));
+            this.blue_team.add(new Cars(x,y, player));
     }
 
     public void RenderTeams(Graphics g){
-        for (Cars car:blue_team)
+        for (Cars car:blue_team){
             car.render(g);
-        for(Cars car:red_team)
+        }
+        for(Cars car:red_team){
             car.render(g);
+        }
     }
 
     public void UpdateTeams(){
@@ -74,4 +85,12 @@ public class Teams {
     }
 
 
+    public void ProcessTeams(Input input) {
+        for (Cars car: red_team){
+            car.ProcessInput(input);
+        }
+        for (Cars car: blue_team){
+            car.ProcessInput(input);
+        }
+    }
 }
