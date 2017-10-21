@@ -28,10 +28,8 @@ public class PlayState extends BasicGameState {
 
     Cars car1;
 
-    //  temporary team arrays...create a team class later
-    ArrayList<Cars> red_team = new ArrayList<Cars>();
-    ArrayList<Cars> blue_team = new ArrayList<Cars>();
-
+ // Create Teams
+    Teams teams;
     public PlayState(int stateID) {
         super();
         this.stateID = stateID;
@@ -46,12 +44,13 @@ public class PlayState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
-//        car1 = new Cars(640f,320f, new );
+        //teams = new Teams(); // default constructor fills in teams using the play settings in the Application class
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         background.draw();
+
         //  debug the bounding areas for containing car and ball movement
         if (SuperRacyFutbol3000.isDebug) {
             Ellipse ellipse = new Ellipse(319, 360, 320, 361);
@@ -65,8 +64,6 @@ public class PlayState extends BasicGameState {
             graphics.fill(rect);
         }
 
-        background.draw();
-     //   car1.render(graphics);
     }
 
     @Override
