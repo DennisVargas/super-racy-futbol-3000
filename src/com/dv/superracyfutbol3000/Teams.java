@@ -51,10 +51,20 @@ public class Teams {
     }
 
     private void AddPlayer(Players player, float x, float y){
-        if(player.isRed)
-            this.red_team.add(new Cars(x,y,player));
-        else
-            this.blue_team.add(new Cars(x,y, player));
+        Cars car = new Cars(x,y,player);
+        if(player.isRed){
+            car.rotate(90);
+            car.setTurn_angle(0);
+            car.UpdateCar();
+            this.red_team.add(car);
+        }
+        else{
+            car.rotate(270f);
+            car.setTurn_angle(Math.PI);
+            car.UpdateCar();
+            this.blue_team.add(car);
+        }
+
     }
 
     public void RenderTeams(Graphics g){
