@@ -102,12 +102,31 @@ public class Teams {
         }
     }
 
-    public void UpdateTeams(){
+    public void UpdateTeams(Ellipse ellipse1, Ellipse ellipse2,  Rectangle rect){
+
         for (Cars car: red_team){
-            car.UpdateCar();
+            if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
+                car.UpdateCar(ellipse1, rect);
+                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 RED: " + car.controlling_player.name);
+            }
+
+            else{
+                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Red: " + car.controlling_player.name);
+                car.UpdateCar(ellipse2, rect);
+            }
+
         }
         for (Cars car: blue_team){
-            car.UpdateCar();
+            if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
+                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 Blue: " + car.controlling_player.name+" width/2: "+SuperRacyFutbol3000.WIDTH/2 +" CarX: "+car.getX());
+                car.UpdateCar(ellipse1, rect);
+            }
+
+            else{
+                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Blue: " + car.controlling_player.name);
+                car.UpdateCar(ellipse2, rect);
+            }
+
         }
     }
 
