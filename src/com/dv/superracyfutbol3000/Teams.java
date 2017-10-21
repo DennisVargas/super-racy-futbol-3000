@@ -25,33 +25,46 @@ public class Teams {
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
         int i = 0;
+        int red_i =0;//    for spacing teams on the board
+        int blue_i =0;//   first player is at top second middle.
 
-        for (i = 0; i < human_players;i++){
-            player = SuperRacyFutbol3000.play_settings.players.get(i);
-            if(player.isRed)
-                AddPlayer(player, 120f, (i+1)*80f);
+        for (i =0; i < total_players; i++){
+            if (human_players-- > 0)
+                player = SuperRacyFutbol3000.play_settings.players.get(i);
+            else if(this.red_team.size()<3)
+                player = new Players("CPU-"+i,true, Players.Controller.AI);
             else
-                AddPlayer(player, 720f,(i+1)*80f);
-        }
-        if(i < total_players){
-            for(i = human_players; i <= cpu_players; i++){
-                if(this.red_team.size()<3)
-                    player = new Players("CPU-"+i,true, Players.Controller.AI);
-                else
-                    player = new Players("CPU-"+i, false, Players.Controller.AI);
-                if(player.isRed)
-                    AddPlayer(player, 120f, i*80f);
-                else
-                    AddPlayer(player, 800f,i*80f);
+                player = new Players("CPU-"+i, false, Players.Controller.AI);
+
+            if(player.isRed){
+                AddPlayer(player, 128f, red_i*(128f)+224f);
+
+                red_i++;
             }
+
+            else{
+                AddPlayer(player, 1152f,blue_i*(128f)+224f);
+                blue_i++;
+            }
+
         }
     }
 
     private void AddPlayer(Players player, float x, float y){
-        if(player.isRed)
-            this.red_team.add(new Cars(x,y,player));
-        else
-            this.blue_team.add(new Cars(x,y, player));
+        Cars car = new Cars(x,y,player);
+        if(player.isRed){
+            car.rotate(90);
+            car.setTurn_angle(0);
+            car.UpdateCar();
+            this.red_team.add(car);
+        }
+        else{
+            car.rotate(270f);
+            car.setTurn_angle(Math.PI);
+            car.UpdateCar();
+            this.blue_team.add(car);
+        }
+
     }
 
     public void RenderTeams(Graphics g){
