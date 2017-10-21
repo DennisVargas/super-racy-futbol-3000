@@ -36,7 +36,6 @@ public class Cars extends Entity {
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
-
     enum TurnDirection {Left, Right}
     public Cars(float x, float y, Players controlling_player) {
         super(x, y);
@@ -49,16 +48,16 @@ public class Cars extends Entity {
 
     private void SetCarImage() {
         if(controlling_player.isRed)
-            this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_red_rsc));
+            this.addImage(ResourceManager.getImage(cars_red_rsc));
         else
-            this.addImage(ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc));
+            this.addImage(ResourceManager.getImage(cars_blue_rsc));
 
         SetBoundingBox();
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
     }
 
     private void SetBoundingBox() {
-        Image car_img = ResourceManager.getImage(SuperRacyFutbol3000.cars_blue_rsc);
+        Image car_img = ResourceManager.getImage(cars_blue_rsc);
         float w = car_img.getWidth();
         float h = car_img.getHeight();
         Rectangle rect = new Rectangle(this.getX(),this.getY(),w,h);
@@ -122,7 +121,6 @@ public class Cars extends Entity {
                 }
                 break;
         }
-
     }
 
     private void Steer(TurnDirection dir) {
