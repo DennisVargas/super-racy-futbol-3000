@@ -47,11 +47,11 @@ public class Teams {
         }
     }
 
-    private void AddPlayer(Players player){
+    private void AddPlayer(Players player, float x, float y){
         if(player.isRed)
-            this.red_team.add(new Cars(0,0,player));
+            this.red_team.add(new Cars(x,y,player));
         else
-            this.blue_team.add(new Cars(0,0, player));
+            this.blue_team.add(new Cars(x,y, player));
     }
 
     public void RenderTeams(Graphics g){
