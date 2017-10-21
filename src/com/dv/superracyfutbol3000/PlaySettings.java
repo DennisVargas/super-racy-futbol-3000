@@ -5,13 +5,6 @@ import java.util.ArrayList;
 public class PlaySettings {
     ArrayList<Players> players = new ArrayList<Players>();
 
-//    private boolean player1_red; //   determines the team player 1 plays for
-//    private boolean player2_red; //   determines the team player 1 plays for
-//    private boolean player3_red; //   determines the team player 1 plays for
-//    private boolean player4_red; //   determines the team player 1 plays for
-//    private boolean player5_red; //   determines the team player 1 plays for
-//    private boolean player6_red; //   determines the team player 1 plays for
-
     private int players_per_team;
     private int human_players;
 
@@ -35,19 +28,19 @@ public class PlaySettings {
     private void AddPlayer(Players player) {
         players.add(player);
     }
-    public int getHuman_players() {
+    public int GetHumanPlayers() {
         return human_players;
     }
 
-    public void setHuman_players(int human_players) {
+    public void SetHumanPlayers(int human_players) {
         this.human_players = human_players;
     }
 
-    public int getPlayers_per_team() {
+    public int GetPlayersPerTeam() {
         return players_per_team;
     }
 
-    public void setPlayers_per_team(int players_per_team) {
+    public void SetPlayersPerTeam(int players_per_team) {
         this.players_per_team = players_per_team;
     }
 }
