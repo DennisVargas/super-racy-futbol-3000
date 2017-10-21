@@ -37,14 +37,40 @@ public class Teams {
                 player = new Players("CPU-"+i, false, Players.Controller.AI);
 
             if(player.isRed){
-                AddPlayer(player, 128f, red_i*(128f)+224f);
+                switch(players_per_team){
+                    case 1:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*0.5f/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    case 2:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*(1/3f)/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    case 3:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*0.25f/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    default:
+                        break;
+                }
 
-                red_i++;
-            }
-
-            else{
-                AddPlayer(player, 1152f,blue_i*(128f)+224f);
-                blue_i++;
+            }else{
+                switch(players_per_team){
+                    case 1:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*0.5f/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    case 2:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*(1/3f)/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    case 3:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*0.25f/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    default:
+                        break;
+                }
             }
 
         }
