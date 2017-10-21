@@ -63,8 +63,7 @@ public class Cars extends Entity{
         Rectangle rect = new Rectangle(this.getX(),this.getY(),w,h);
         //this.addShape(rect);
         this.addShape(new ConvexPolygon(w, h),new Vector(0,0));
-        System.out.println(this.getNumShapes());
-
+        if(SuperRacyFutbol3000.isDebugCarCreation)System.out.println(this.getNumShapes());
     }
 
     public double getTurn_angle() {
