@@ -25,26 +25,52 @@ public class Teams {
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
         int i = 0;
-        int red_i =0;//    for spacing teams on the board
-        int blue_i =0;//   first player is at top second middle.
+        int red_i =1;//    for spacing teams on the board
+        int blue_i =1;//   first player is at top second middle.
 
         for (i =0; i < total_players; i++){
             if (human_players-- > 0)
                 player = SuperRacyFutbol3000.play_settings.players.get(i);
-            else if(this.red_team.size()<3)
+            else if(this.red_team.size()<players_per_team)
                 player = new Players("CPU-"+i,true, Players.Controller.AI);
             else
                 player = new Players("CPU-"+i, false, Players.Controller.AI);
 
             if(player.isRed){
-                AddPlayer(player, 128f, red_i*(128f)+224f);
+                switch(players_per_team){
+                    case 1:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*0.5f/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    case 2:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*(1/3f)/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    case 3:
+                        AddPlayer(player, 128f, red_i*SuperRacyFutbol3000.HEIGHT*0.25f/*(128f)+224f*/);
+                        red_i++;
+                        break;
+                    default:
+                        break;
+                }
 
-                red_i++;
-            }
-
-            else{
-                AddPlayer(player, 1152f,blue_i*(128f)+224f);
-                blue_i++;
+            }else{
+                switch(players_per_team){
+                    case 1:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*0.5f/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    case 2:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*(1/3f)/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    case 3:
+                        AddPlayer(player, 1152f, blue_i*SuperRacyFutbol3000.HEIGHT*0.25f/*(128f)+224f*/);
+                        blue_i++;
+                        break;
+                    default:
+                        break;
+                }
             }
 
         }
