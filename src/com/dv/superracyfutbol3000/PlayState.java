@@ -12,6 +12,9 @@ import java.util.ArrayList;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
+    Ellipse ellipse = new Ellipse(320, 360, 320, 365);
+    Ellipse ellipse2 = new Ellipse(960, 360, 320, 365);
+    Rectangle rect = new Rectangle(320, 0f, 640, 720);
     //  field area by left and right goal ellipse
     //  center = 320x352
     //  Xradius = 320px
@@ -58,9 +61,7 @@ public class PlayState extends BasicGameState {
 
         //  debug the bounding areas for containing car and ball movement
         if (SuperRacyFutbol3000.isDebug) {
-            Ellipse ellipse = new Ellipse(319, 360, 320, 361);
-            Ellipse ellipse2 = new Ellipse(960, 360, 320, 361);
-            Rectangle rect = new Rectangle(352, 0f, 576, 719);
+
 
             graphics.setColor(Color.red);
             graphics.fill(ellipse);
@@ -77,7 +78,8 @@ public class PlayState extends BasicGameState {
         //car1.translate(0,0.1f);        System.out.println(car1.getRotation());
         Input input = gameContainer.getInput();
         teams.ProcessTeams(input);
-        teams.UpdateTeams();
+
+        teams.UpdateTeams(ellipse,ellipse2,rect);
 //        car1.ProcessInput(input);
 //        car1.UpdateCar();
         //car1.translate(Vector.getVector(,1f));
