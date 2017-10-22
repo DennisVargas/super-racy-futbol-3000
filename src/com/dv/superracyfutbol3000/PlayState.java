@@ -1,14 +1,20 @@
 package com.dv.superracyfutbol3000;
 
+import jig.ConvexPolygon;
+import jig.Entity;
 import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.sin;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
@@ -29,7 +35,6 @@ public class PlayState extends BasicGameState {
     //  else check the object being in the rigt circle
     //  if circle check fails to find object check
 
-    Cars car1;
 
  // Create Teams
     Teams teams;
@@ -52,7 +57,7 @@ public class PlayState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
-        //teams = new Teams(); // default constructor fills in teams using the play settings in the Application class
+
     }
 
     @Override
@@ -61,8 +66,6 @@ public class PlayState extends BasicGameState {
 
         //  debug the bounding areas for containing car and ball movement
         if (SuperRacyFutbol3000.isDebug) {
-
-
             graphics.setColor(Color.red);
             graphics.fill(ellipse);
             graphics.fill(ellipse2);
@@ -74,14 +77,14 @@ public class PlayState extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        //car1.rotate(-0.5f);
-        //car1.translate(0,0.1f);        System.out.println(car1.getRotation());
+
         Input input = gameContainer.getInput();
+        float mouseX = input.getMouseX();
+        float mouseY= input.getMouseY();
+        if(SuperRacyFutbol3000.isMouseDebug)System.out.println("MouseX: " +mouseX+" MouseY: "+mouseY);
         teams.ProcessTeams(input);
 
         teams.UpdateTeams(ellipse,ellipse2,rect);
-//        car1.ProcessInput(input);
-//        car1.UpdateCar();
-        //car1.translate(Vector.getVector(,1f));
+
     }
 }
