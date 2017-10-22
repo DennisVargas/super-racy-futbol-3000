@@ -24,7 +24,7 @@ public class NewGameMenuState extends MenuBase {
     Vector ppt_pos = new Vector(930*s,195*s );
 
 
-    int players_per_team = 3;
+    int players_per_team = 1;
     ArrayList<String> players_per_team_img_path = new ArrayList<String>();
     Image players_per_team_img = null;
     MenuItem left_arrow;
