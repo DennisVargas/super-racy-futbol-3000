@@ -1,17 +1,32 @@
 package com.dv.superracyfutbol3000;
 
+import jig.ConvexPolygon;
+import jig.Entity;
 import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.abs;
+import static java.lang.StrictMath.sin;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
+    Ellipse ellipse = new Ellipse(326, 360, 326, 360);
+    Ellipse ellipse2 = new Ellipse(955, 360, 326, 360);
+    Rectangle rect = new Rectangle(320, 0f, 640, 720);
+    double theta;
+    Vector rotation_test = new Vector(0,0);
+    Rectangle rect2 = new Rectangle (0,0,23,35);
+
     //  field area by left and right goal ellipse
     //  center = 320x352
     //  Xradius = 320px
@@ -26,7 +41,6 @@ public class PlayState extends BasicGameState {
     //  else check the object being in the rigt circle
     //  if circle check fails to find object check
 
-    Cars car1;
 
  // Create Teams
     Teams teams;
@@ -49,7 +63,8 @@ public class PlayState extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
-        //teams = new Teams(); // default constructor fills in teams using the play settings in the Application class
+        rotation_test = rotation_test.setX(rect2.getX());
+        rotation_test = rotation_test.setY(rect2.getY());
     }
 
     @Override
@@ -57,29 +72,57 @@ public class PlayState extends BasicGameState {
         background.draw();
 
         //  debug the bounding areas for containing car and ball movement
-        if (SuperRacyFutbol3000.isDebug) {
-            Ellipse ellipse = new Ellipse(319, 360, 320, 361);
-            Ellipse ellipse2 = new Ellipse(960, 360, 320, 361);
-            Rectangle rect = new Rectangle(352, 0f, 576, 719);
-
-            graphics.setColor(Color.red);
+        if (SuperRacyFutbol3000.isDebugField) {
+            graphics.setColor(Color.white);
             graphics.fill(ellipse);
             graphics.fill(ellipse2);
             graphics.setColor(Color.cyan);
             graphics.fill(rect);
+            if(SuperRacyFutbol3000.isDebugRotationTest){
+                graphics.setColor(Color.pink);
+                graphics.fill(rect2);
+            }
         }
+
         teams.RenderTeams(graphics);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        //car1.rotate(-0.5f);
-        //car1.translate(0,0.1f);        System.out.println(car1.getRotation());
+
         Input input = gameContainer.getInput();
+        float mouseX = input.getMouseX();
+        float mouseY= input.getMouseY();
+        if(SuperRacyFutbol3000.isMouseDebug)System.out.println("MouseX: " +mouseX+" MouseY: "+mouseY);
         teams.ProcessTeams(input);
-        teams.UpdateTeams();
-//        car1.ProcessInput(input);
-//        car1.UpdateCar();
-        //car1.translate(Vector.getVector(,1f));
+
+        teams.UpdateTeams(ellipse,ellipse2,rect);
+
+        if(SuperRacyFutbol3000.isDebugRotationTest){
+            theta+=PI/360;
+            if (theta >= 2*PI)
+                theta%=2*PI;
+
+//        rotation_test = rotation_test.setX((float) (rotation_test.getX() + theta*cos(theta)));
+//        rotation_test = rotation_test.setY((float) (rotation_test.getY() - theta*sin(theta)));
+            float cur_x, cur_y;
+            float next_x, next_y;
+
+            next_x = (float) (ellipse.getRadius1()*cos(theta));
+            next_y = (float) (ellipse.getRadius2()*sin(theta));
+
+        /*if (abs(theta) < PI/2 || abs(theta) > 3*PI/2)*/
+//        if (this.rect2.getX() >= ellipse.getCenterX()){
+//            next_x -= rect2.getWidth();
+//        }
+//        if(this.rect2.getY() >= ellipse.getCenterY()){
+//            next_y -= rect2.getHeight();
+//        }
+
+            rect2.setX((next_x)+320f);
+            rect2.setY((next_y)+360f);
+        }
+
+
     }
 }

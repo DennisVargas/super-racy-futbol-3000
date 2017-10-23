@@ -26,7 +26,7 @@ public class Players {
     }
     public Players(){
         this.name = "Player 1";
-        this.isRed= false;
+        this.isRed= true;
         this.control_type = Controller.Keyboard;
     }
 

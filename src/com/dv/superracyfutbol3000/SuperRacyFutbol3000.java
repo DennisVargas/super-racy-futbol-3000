@@ -13,6 +13,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final int HEIGHT = (WIDTH/16)*9;    // adjust height with 16:9 ratio
     public static final float SCALE = 1f;
     public static boolean isDebug = false;
+    public static boolean isWallDebug = false;
+    public static boolean isDebugWallBounce = false;
     public static PlaySettings play_settings = new PlaySettings();
     public static final int MAINMENUSTATE = 0;
     public static final int NEWGAMEMENUSTATE = 1;
@@ -45,6 +47,14 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String play_field_rsc = "com/dv/superracyfutbol3000/gfx/play_state/field.png";
     public static final String cars_blue_rsc = "com/dv/superracyfutbol3000/gfx/cars/blue_car.png";
     public static final String cars_red_rsc = "com/dv/superracyfutbol3000/gfx/cars/red_car.png";
+    public static boolean isDebugCarCreation = false;
+    public static boolean isDebugCarExtents = false;
+    public static boolean isMouseDebug= false;
+    public static boolean isVelocityDebug;
+    public static boolean isDebugMovingDirection;
+    public static boolean isDebugField;
+    public static boolean isDebugRotationTest;
+
 
     public SuperRacyFutbol3000() {
         super(NAME);
@@ -98,8 +108,29 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
 
     private static boolean CheckDebug(String[] args) {
         for(String x:args){
-            if (x.contentEquals("-d") )
-                return true;
+            if (x.contains("-d") ){
+
+                if(x.contains("-dw")){
+                    if(x.contains("-dwB"))
+                        isDebugWallBounce = true;
+                    else
+                        isWallDebug = true;
+                }
+                if(x.contains("m"))
+                    isMouseDebug = true;
+                if(x.contains("cE"))
+                    isDebugCarExtents = true;
+                if(x.contains("v"))
+                    isVelocityDebug = true;
+                if(x.contains("f"))
+                    isDebugField = true;
+                if(x.contains("rot"))
+                    isDebugRotationTest = true;
+                if(x.contains("Mvd"))
+                    isDebugMovingDirection = true;
+                else
+                    isDebug = true;
+            }
         }
         return false;
     }
