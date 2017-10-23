@@ -205,16 +205,12 @@ public class Cars extends Entity{
         next_move = next_move.setX(newX);
         next_move = next_move.setY(newY);
 
-
-
         facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)*turn_angle));
         facing_direction.DetermineLabel();
         moving_direction = moving_direction.GetMovingDirection(facing_direction, dx, -1f*dy);
         moving_direction.DetermineLabel();
         if(SuperRacyFutbol3000.isVelocityDebug &&
                 controlling_player.GetControl_type() != Players.Controller.AI){
-            System.out.println("Facing Direction: "+facing_direction.getQuadrant_label());
-            System.out.println("Moving Direction: "+moving_direction.getQuadrant_label());
             System.out.println("Velocity X: "+dx);
             System.out.println("Velocity Y: "+-1f*dy);
         }
