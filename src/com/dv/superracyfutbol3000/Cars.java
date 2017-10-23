@@ -35,11 +35,12 @@ public class Cars extends Entity{
 
     private double turn_increment = PI/175; // angular acceleration
     private float top_speed = 3.5f;
+    private float acceleration = 1.075f;
     private float top_boost_speed = 0f;
-    private float max_accel = 0f;
     private float max_boost_vel = 0f;
+
     private float min_vel = 0.25f;
-    private float vel = 0.0f;
+    private float speed = 0.0f;
     private float vel_0 = 0.7f;
     private float friction = 0.90f; // simulates friction, gravity, and mass
     private int player_number = -1; //  controlling player number
@@ -48,6 +49,7 @@ public class Cars extends Entity{
     float dx, dy, dy_180;
 
     enum TurnDirection {Left, Right}
+
 
     //  Cars Constructor
     public Cars(float x, float y, Players controlling_player) {
