@@ -1,20 +1,24 @@
 package com.dv.superracyfutbol3000;
 
-import jig.ConvexPolygon;
-import jig.Entity;
-import jig.ResourceManager;
-import jig.Vector;
+import jig.*;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.util.FastTrig;
 
+import java.math.MathContext;
+import java.util.Scanner;
+
+import static com.dv.superracyfutbol3000.CollidesHelper.*;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static org.newdawn.slick.util.FastTrig.cos;
 import static org.newdawn.slick.util.FastTrig.sin;
 
 public class Cars extends Entity{
+    private float wall_bounce_factor = 0.003f;
 
     Players controlling_player;
     private float health_level = 0f;

@@ -106,10 +106,9 @@ public class Teams {
 
         for (Cars car: red_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
-                car.UpdateCar(ellipse1, rect);
                 if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 RED: " + car.controlling_player.name);
+                car.UpdateCar(ellipse1, rect);
             }
-
             else{
                 if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Red: " + car.controlling_player.name);
                 car.UpdateCar(ellipse2, rect);
