@@ -33,7 +33,7 @@ public class Cars extends Entity{
     private double prev_angle;
     private double turn_angle = PI/2;
 
-    private double turn_increment = Math.PI/175;
+    private double turn_increment = PI/175; // angular acceleration
     private float top_speed = 3.5f;
     private float top_boost_speed = 0f;
     private float max_accel = 0f;
