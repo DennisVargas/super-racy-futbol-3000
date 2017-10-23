@@ -65,8 +65,8 @@ public class PlayState extends BasicGameState {
         background.draw();
 
         //  debug the bounding areas for containing car and ball movement
-        if (SuperRacyFutbol3000.isDebug) {
-            graphics.setColor(Color.red);
+        if (SuperRacyFutbol3000.isDebugField) {
+            graphics.setColor(Color.white);
             graphics.fill(ellipse);
             graphics.fill(ellipse2);
             graphics.setColor(Color.cyan);
