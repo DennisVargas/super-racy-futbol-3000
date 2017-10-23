@@ -58,8 +58,10 @@ public class Cars extends Entity{
 
         SetCarImage();
 
-        this.debugThis = true;
+//        this.debugThis = true;
+//        Entity.setDebug(true);
     }
+
 
     private void SetCarImage() {
         if(controlling_player.isRed)
