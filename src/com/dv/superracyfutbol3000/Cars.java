@@ -451,10 +451,7 @@ public class Cars extends Entity{
                             if(this.getX() < SuperRacyFutbol3000.WIDTH/2){
                                 System.out.println("see Quadrant 2 dx and dy pos; steer right");
                                 Steer(TurnDirection.Right);
-                            }else{
-
                             }
-
                         }
 
                     }
