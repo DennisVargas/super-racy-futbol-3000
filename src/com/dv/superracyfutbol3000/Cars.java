@@ -360,7 +360,7 @@ public class Cars extends Entity{
         System.out.println(moving_direction.getQuadrant_label());
         switch(collision_type){
             case Wall:
-                System.out.println("see Quadrant 3 bouncing away straight on hit");
+                if(isDebugWallBounce)System.out.println("see Quadrant 3 bouncing away straight on hit");
 /*                moving_direction.InvertMovement();
 //                if (dx!=0f && dy !=0f){
 //                    dx *= moving_direction.getDx();
