@@ -182,7 +182,9 @@ public class Cars extends Entity{
         Vector next_move = new Vector(0f,0f);
 
         //  positive =
-        if(controlling_player.control_type != Players.Controller.AI)System.out.println("current angle from zero degrees: " +((180f/Math.PI)*turn_angle));
+        if( isDebugMovingDirection &&
+                controlling_player.control_type != Players.Controller.AI)
+            System.out.println("current angle from zero degrees: "+((180f/Math.PI)*turn_angle));
         //  a vector for each point of the car rectangle next move
         Vector next_front_left = new Vector(0,0); Vector next_front_right = new Vector(0,0);
         Vector next_back_left = new Vector(0,0); Vector next_back_right = new Vector(0,0);
