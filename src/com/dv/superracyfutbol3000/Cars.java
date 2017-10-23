@@ -388,6 +388,11 @@ public class Cars extends Entity{
                 //float wall_bounce_factor = 0.03125f;//.0.03125f;
 
                 //*/
+//               Find the angle of an object and center of ellipse
+                double y_diff = this.getY() - 360;
+                double y_diff_by_a = y_diff/362;
+                double theta = Math.asin(y_diff_by_a);
+                speed*=-1f;
 
                 //  hit occured on right side of field
                 if(newX > rect.getMaxX()){
