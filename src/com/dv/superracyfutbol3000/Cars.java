@@ -73,16 +73,15 @@ public class Cars extends Entity{
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
       //  SetBoundingBox();
     }
-
-    private void SetBoundingBox() {
-        Image car_img = ResourceManager.getImage(cars_blue_rsc);
-        float w = car_img.getWidth();
-        float h = car_img.getHeight();
-        Rectangle rect = new Rectangle(this.getX(),this.getY(),w,h);
-        //this.addShape(rect);
-        this.addShape(new ConvexPolygon(w, h),new Vector(0,0));
-        if(SuperRacyFutbol3000.isDebugCarCreation)System.out.println(this.getNumShapes());
-    }
+//
+//    private void SetBoundingBox() {
+//        Image car_img = ResourceManager.getImage(cars_blue_rsc);
+//        float w = car_img.getWidth();
+//        float h = car_img.getHeight();
+//
+//        this.addShape(new ConvexPolygon(w, h),new Vector(0,0));
+//        if(SuperRacyFutbol3000.isDebugCarCreation)System.out.println(this.getNumShapes());
+//    }
 
     public double getTurn_angle() {
         return turn_angle;
