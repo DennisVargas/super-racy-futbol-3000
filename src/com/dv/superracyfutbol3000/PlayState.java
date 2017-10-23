@@ -18,8 +18,8 @@ import static java.lang.StrictMath.sin;
 public class PlayState extends BasicGameState {
     int stateID;
     Image background;
-    Ellipse ellipse = new Ellipse(320, 360, 320, 365);
-    Ellipse ellipse2 = new Ellipse(960, 360, 320, 365);
+    Ellipse ellipse = new Ellipse(326, 360, 326, 362);
+    Ellipse ellipse2 = new Ellipse(955, 360, 326, 362);
     Rectangle rect = new Rectangle(320, 0f, 640, 720);
     //  field area by left and right goal ellipse
     //  center = 320x352
