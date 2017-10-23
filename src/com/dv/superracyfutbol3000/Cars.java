@@ -68,8 +68,10 @@ public class Cars extends Entity{
             this.addImageWithBoundingBox(ResourceManager.getImage(cars_red_rsc));
             //this.addImage(ResourceManager.getImage(cars_red_rsc));
         else
-        SetBoundingBox();
+            this.addImageWithBoundingBox(ResourceManager.getImage(cars_blue_rsc));
+        //    this.addImage(ResourceManager.getImage(cars_blue_rsc));
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
+      //  SetBoundingBox();
     }
 
     private void SetBoundingBox() {
