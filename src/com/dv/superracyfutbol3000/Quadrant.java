@@ -128,7 +128,10 @@ public class Quadrant {
             System.out.println("reverse, Y increasing " + forward_facing_direction.quadrant_label);
             moving_direction.setDy(1f);
         }
-
+        if(SuperRacyFutbol3000.isDebugMovingDirection) {
+            System.out.println("Facing Direction: " + moving_direction.getQuadrant_label());
+            System.out.println("Moving Direction: " + forward_facing_direction.getQuadrant_label());
+        }
         return moving_direction;
     }
 
