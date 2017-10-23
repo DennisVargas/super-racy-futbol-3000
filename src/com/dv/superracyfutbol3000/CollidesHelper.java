@@ -1,24 +1,34 @@
 package com.dv.superracyfutbol3000;
 
+import jig.Vector;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.isWallDebug;
 import static java.lang.StrictMath.sqrt;
 
+
 public abstract class CollidesHelper {
     enum CollisionType {Wall, Goalie, Car, Ball, Goal, None}
+
 
     //  takes the x and y of the car and subtract the center x and center y of an ellipse
     //  this ellipse will be on the far goal end of the field.
     //  when the car crosses this threshold return true
-    private static boolean WallCollide(float x, float y, Ellipse e, Rectangle rect) {
+    private static boolean WallCollide(Vector v, Ellipse e, Rectangle rect) {
         // calculate if r < sqrt((x-c_x)^2+(y-c_y)^2)
         // then no collision
         //  so do the opposite
         //  decide in play game state which ellipse it needs to pass in.
         //  if its outside of the ellipse then test the rectangle
+        if(isWallDebug)System.out.println("vector_X: "+v.getX()+" vector_y: "+v.getY());
         float center_x, center_y, radius_x, radius_y,x_center_diff, y_center_diff, radius_x_sq, radius_y_sq;
+        //  simpler formulas
+        //  from: ((x-c)^2)/a^2 +((y-d)^2)/b^2 = 1
+        //  q = a^2/b^2
+        //  a>0 and q>0
+        //  (x-c_x)^2 + q(y-c_y)^2 = a^2
+
         center_x = e.getCenterX();
         center_y = e.getCenterY();
         radius_x = e.getRadius1();
