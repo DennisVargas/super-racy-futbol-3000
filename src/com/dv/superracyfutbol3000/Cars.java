@@ -20,6 +20,9 @@ import static org.newdawn.slick.util.FastTrig.sin;
 public class Cars extends Entity{
     private float wall_bounce_factor = 0.003f;
 
+    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY};
+    Quadrant facing_direction = new Quadrant();
+    Quadrant moving_direction = new Quadrant();
     Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
