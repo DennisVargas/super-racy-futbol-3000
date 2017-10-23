@@ -398,15 +398,17 @@ public class Cars extends Entity{
                     if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.first_q){
                         if(dx > 0 && dy < 0)
                             Steer(TurnDirection.Left);
+                       // newY = (float)((this.getY())-(speed)*0.8f*sin(theta));
                     }
 //                  Find the angle of an object and center of ellipse
-                    double y_diff = this.getY() - 360;
-                    double y_diff_by_a = y_diff/362;
-                    double theta = Math.asin(y_diff_by_a);
-                    moving_direction.InvertMovement();
 
-                    newX = this.getX()-(float)(abs(speed*0.6f)*cos(theta));
-                    newY = (float) (this.getY()+dy*(abs(speed*0.6f)*sin(theta)));
+//                    moving_direction.InvertMovement();
+                    //speed *=-1f;
+                    newX = this.getX()-5-(float)(speed*0.8f*cos(theta));//opposite direction to rigth side of  field
+//                    if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.first_q)
+//                        newY = (float)(this.getY()+(speed*0.8f*sin(theta)));
+
+
 //                  ===================================================
 
                     this.setY(newY);
