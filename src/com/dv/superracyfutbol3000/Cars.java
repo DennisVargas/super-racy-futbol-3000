@@ -151,125 +151,353 @@ public class Cars extends Entity{
     }
 
     private void Steer(TurnDirection dir) {
+        prev_angle = turn_angle;
         switch(dir){
-            case Left:
-                turn_angle+= turn_increment;
-                this.rotate(-(180/Math.PI)*turn_increment);
+            case Left :
+                if (!reverse)
+                    turn_angle += turn_increment;
+                else
+                    turn_angle -= turn_increment;
+                this.rotate(-(180f/ PI)*turn_increment);
                 break;
             case Right:
-                turn_angle-= turn_increment;
-                this.rotate((180/Math.PI)*turn_increment);
+                /*if(abs(turn_angle)>=(2f*PI))
+                    turn_angle = 0;
+                else*/
+                if (!reverse)
+                    turn_angle -= turn_increment;
+                else
+                    turn_angle += turn_increment;
+                this.rotate((180f/ PI)*turn_increment);
                 break;
             default:
                 break;
         }
+        turned = true;
+        turn_angle%=2*PI;
     }
 
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
+        //  center next move
         Vector next_move = new Vector(0f,0f);
+
+        //  positive =
+        if(controlling_player.control_type != Players.Controller.AI)System.out.println("current angle from zero degrees: " +((180f/Math.PI)*turn_angle));
+        //  a vector for each point of the car rectangle next move
+        Vector next_front_left = new Vector(0,0); Vector next_front_right = new Vector(0,0);
+        Vector next_back_left = new Vector(0,0); Vector next_back_right = new Vector(0,0);
+
     //  calculate newX adding to old x the cos of the angle that has ben turned through
-//      the x component of the velocity vector given the turn_angle at the magnitude of vel
-        float newX = (float)this.getX()+(float)(vel*cos(turn_angle));
+//      the x component of the velocity vector given the turn_angle at the magnitude of speed
+        //  the positive and negative will give weight to the turning direction however when choosing degrees from facing zero
+        //  abs should be used in calculations. Since -360 degrees != 360 degrees == 180 degrees
+        // Speed and Direction -> velocity
+        float dx = (float)(speed*cos(turn_angle));  // change in x direction
+        float dy = (float)(speed*sin(turn_angle));  // change in y direction
+        float dy_180 = (float)(speed*sin(turn_angle+PI));  // change in y direction
+
+        float newX = this.getX()+dx;
     //  calculate new Y component
-        float newY = (float)this.getY() - (float)(vel*sin(turn_angle));
+        float newY = this.getY() + dy_180;  // dy 180 inverts the y coordinate system
 
         next_move = next_move.setX(newX);
         next_move = next_move.setY(newY);
 
-        //Check if collisions then if that's all good move the car
-        CollidesHelper.CollisionType collision_type =
-                CollidesHelper.CheckCollisons(newX, newY, goal_ellipse_bounds, center_rectangle_bounds);
-        if(collision_type == CollidesHelper.CollisionType.None){
+
+
+        facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)*turn_angle));
+        facing_direction.DetermineLabel();
+        moving_direction = moving_direction.GetMovingDirection(facing_direction, dx, -1f*dy);
+        moving_direction.DetermineLabel();
+        if(SuperRacyFutbol3000.isVelocityDebug &&
+                controlling_player.GetControl_type() != Players.Controller.AI){
+            System.out.println("Facing Direction: "+facing_direction.getQuadrant_label());
+            System.out.println("Moving Direction: "+moving_direction.getQuadrant_label());
+            System.out.println("Velocity X: "+dx);
+            System.out.println("Velocity Y: "+-1f*dy);
+        }
+
+
+        //Check if collisions then if that's all good move the car.
+        //  collisions must be checked at each of the four points of the car
+        //  based on which point detects which side of the car collided and
+        //  how to steer the car in towards the circle
+
+        //  create a collision type for catch when a collision occurs
+        CollisionType collision_type = CollisionType.None;
+
+        float minX, maxX, minY, maxY;
+        Shape car_box = this.getGloballyTransformedShapes().getFirst();
+        minX = car_box.getMinX();
+        maxX = car_box.getMaxX();
+        minY = car_box.getMinY();
+        maxY = car_box.getMaxY();
+
+
+        //  check all extents
+        CarExtentNames collide_point_name;
+        Vector[] collisions_check = new Vector[4];
+        collisions_check[0]  = new Vector(minX, minY);
+        collisions_check[1] = new Vector (maxX, maxY);
+        collisions_check[2] = new Vector(maxX, minY);
+        collisions_check[3] = new Vector(minX,maxY);
+
+
+        // if minX clear skip
+        int i;
+        for (i = 0; i < collisions_check.length;i++){
+            //  We already know what side of the field we are on. proper ellipse is passed in.
+            collision_type = CheckCollisions(collisions_check[i],goal_ellipse_bounds, center_rectangle_bounds);
+            if(isWallDebug)System.out.println("collision result" + collision_type);
+
+            if (collision_type != CollisionType.None){
+                if(isWallDebug)System.out.println("index i");
+                collide_point_name = GetCollidePointName(i);
+                break;
+            }
+        }
+
+        if(collision_type == CollisionType.None){
+            /*if(SuperRacyFutbol3000.isVelocityDebug &&
+                    controlling_player.GetControl_type() != Players.Controller.AI){
+                System.out.println("velocity_X: "+(newX-this.getX()));
+                System.out.println("velocity_Y: "+(newY-this.getY()));
+            }*/
             this.setX(newX);
             this.setY(newY);
-        }else
-            ProcessHit(collision_type, next_move, center_rectangle_bounds); // process hit will determine what the newX and newY
-                                                    // direction and magnitude should be after the collision
+        }else if(collision_type == CollisionType.Wall){
+            // process hit will determine what the newX and newY
+            // direction and magnitude should be after the collision
+            ProcessHit(collision_type, next_move, center_rectangle_bounds);
+        }
+    }
+
+    private CarExtentNames GetCollidePointName(int index) {
+        switch(index){
+            case 0:
+                return CarExtentNames.minXY;
+
+            case 1:
+                return CarExtentNames.maxXY;
+
+            case 2:
+                return CarExtentNames.maxMinXY;
+
+            case 3:
+                return CarExtentNames.minMaxXY;
+
+            default:
+                return null;
+        }
     }
 
     private void Accelerate() {
-        if(vel <= top_speed) {
+//        if (reverse){
+//            turn_angle += Math.PI;
+//            reverse = false;
+//        }
+        if(speed <= top_speed) {
             //  if car is moving
-            if (vel > 0) {
-                vel *= acceleration;
+            if (speed > 0) {
+                speed *= acceleration;
             }
             //  car moving in reverse
             //  change direction
-            else if (vel < -min_vel) {
-                vel *= (1 - (acceleration - 1) * 6);
+            else if (speed < -min_vel) {
+                speed *= (1 - (acceleration - 1) * 6);
             } else {
                 //  car is stopped
                 //  this is first acceleration
                 //  start slow normal accel == 1.25
-                vel = vel_0;
+                speed = vel_0;
             }
         }else{
-            vel = top_speed;
+            speed = top_speed;
         }
     }
 
     private void Decelerate() {
-        if(vel >= -0.5f*top_speed){
-            if (vel < 0) {
-                vel *= acceleration;
-            } else if (vel > min_vel) {
-                vel *= 1 - (acceleration - 1)*6;
+//        if (!reverse){
+//            turn_angle = turn_angle-Math.PI;
+//            reverse = true;
+//        }
+        if(speed >= -0.5f*top_speed){
+            if (speed < 0) {
+                speed *= acceleration;
+            } else if (speed > min_vel) {
+                speed *= 1 - (acceleration - 1)*6;
                 System.out.println("decel: "+(1-(acceleration-1)*2));
             } else {
-                vel = -1f*vel_0;
+                speed = -1f*vel_0;
             }
         }else
             //  half top_speed in reverse
-            vel = -0.5f*top_speed;
+            speed = -0.5f*top_speed;
     }
 
-    public void ProcessHit(CollidesHelper.CollisionType collision_type, Vector next_move, Rectangle rect){
+    public double getTurn_increment() {
+        return turn_increment;
+    }
+
+    public void setTurn_increment(double turn_increment) {
+        this.turn_increment = turn_increment;
+    }
+
+    public void ProcessHit(CollisionType collision_type, Vector next_move, Rectangle rect){
         //  takes a parameter of collison type and affects the car based on what it ran into.
         //  reduces the health of the cars hit based on the velocity when the hit occured.
         //  shoudl both cars take damage?
         //  that's easy
         //  just only if they are at max speed..they get (1-0.05)*health off
         //  boost hit are worth 0.15 of health. (1-0.15)*health
+        //  Get newX and newY
+        float newX = next_move.getX();
+        if(isDebugWallBounce)System.out.println("ProcessHit new_X: "+newX);
+        float newY = next_move.getY();
+        if(isDebugWallBounce)System.out.println("ProcessHit new_Y: "+newY);
 
-        if(collision_type == CollidesHelper.CollisionType.Wall){
-            if(isDebugWallBounce)System.out.println("WALL HERE!!!!");
-            //  reverses both x and y the same
-            //  this should be done in components based on direction of movement
-            this.vel *= (-1f)/*1.25f*/;
-            //  ratio by which the car is moved away from the wall
-            float wall_bounce_factor = 0.015625f;
+        float dx = newX - this.getX();
+        float dy = newY - this.getY();
 
-            //  Get newX and newY
-            float newX = next_move.getX();
-            if(isDebugWallBounce)System.out.println("Bounce new_X: "+newX);
-            float newY = next_move.getY();
-            if(isDebugWallBounce)System.out.println("Bounce new_Y: "+newY);
+        System.out.println(moving_direction.getQuadrant_label());
+        switch(collision_type){
+            case Wall:
+                System.out.println("see Quadrant 3 bouncing away straight on hit");
+/*                moving_direction.InvertMovement();
+//                if (dx!=0f && dy !=0f){
+//                    dx *= moving_direction.getDx();
+//                    dy *= moving_direction.getDy();
+//                }else{
+//                    dx = moving_direction.getDx();
+//                    dy = moving_direction.getDy();
+//                }
 
-            if(newX > rect.getMaxX())
-                this.setX(newX+newX*(-wall_bounce_factor));
-            else if(newX < rect.getMinX() && newX > 0f){
-                this.setX(newX+newX*(wall_bounce_factor));
-            }else if (newX < 0f){
-                if(isDebugWallBounce)System.out.println("In the X NEG!! "+newX);
-                newX = 1f;
-                this.setX(newX+newX*(wall_bounce_factor));
-                this.setY(newY);
-            }
+                //  dx dy will determine the bounce through an inverision of both x and y
+                //  this is because dx dy ar very close
+//                newY += dy*newY*(wall_bounce_factor);
+//                newX += dx*newX*(wall_bounce_factor);
 
-            else if(newY > SuperRacyFutbol3000.HEIGHT/2f)
-                this.setY(newY+newY*(-wall_bounce_factor));
-            else if (newY < SuperRacyFutbol3000.HEIGHT/2f && newY > 0f){
-                this.setY(newY+newY*(wall_bounce_factor));
-            }
 
-            else if (newY < 0f){
-                newY = 1f;
-                if(isDebugWallBounce)System.out.println("In the Y NEG!! "+newY);
-                this.setY(newY+newY*(wall_bounce_factor));
-                this.setX(newX);
-            }
+                //if(isDebugWallBounce)System.out.println("WALL HERE!!!!");
+                //  reverses both x and y the same
+                //  this should be done in components based on direction of movement
+                //  not just a reversal but a reflection and continuation of motion
+                //this.speed *= 0.8f;
 
-        }else
-            System.out.println("OtherHitType");
+                //  ratio by which the car is moved away from the wall
+                //float wall_bounce_factor = 0.03125f;//.0.03125f;
+
+                //*/
+
+                //  hit occured on right side of field
+                if(newX > rect.getMaxX()){
+                    //  if you moving towards q1 when collision happens
+                    if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.first_q){
+                        if(dx > 0 && dy < 0)
+                            Steer(TurnDirection.Left);
+                    }
+//                  Find the angle of an object and center of ellipse
+                    double y_diff = this.getY() - 360;
+                    double y_diff_by_a = y_diff/362;
+                    double theta = Math.asin(y_diff_by_a);
+                    moving_direction.InvertMovement();
+
+                    newX = this.getX()-(float)(abs(speed*0.6f)*cos(theta));
+                    newY = (float) (this.getY()+dy*(abs(speed*0.6f)*sin(theta)));
+//                  ===================================================
+
+                    this.setY(newY);
+                    this.setX(newX);
+                }
+
+                //  hit occured on LEFT side of field
+                else if(newX < rect.getMinX() && newX > 0f){
+
+                    setTurn_increment(PI/8);
+
+                    //  move towards q1 when Wall Collisions
+                    //  collide with side of car while looking at q1
+                    if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.first_q){
+                        if(facing_direction.getQuadrant_label()!=Quadrant.QuadrantLabel.first_q){
+                            // reversing into a wall
+                            System.out.println("reverse into q2");
+                        }
+                        //  see q1 and dx and dy are pos; turn right
+                        if(dx>0 && dy>0){
+                            System.out.println("see Quadrant 1 steer right");
+                            Steer(TurnDirection.Left);
+                        }
+                        //  see q1 and dx and dy are neg; turn left
+                        else if(dx<0&&dy<0){
+                            System.out.println("see Quadrant 1 steer left");
+                            Steer(TurnDirection.Right);
+                        }
+                    }
+
+                    //  moving towards Quadrant 2 and a Wall collisons occurs
+                    if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.second_q ){
+                        if(facing_direction.getQuadrant_label()!=Quadrant.QuadrantLabel.second_q){
+                            // reversing into q2
+                            System.out.println("reverse into q2");
+                        }
+                        //  see q2 and dy and dx decreasing
+                        if(dy<0 && dx<0){
+                            //  the changin in y is more than x meaning travel from q3; turn right
+                            if(this.getX() < SuperRacyFutbol3000.WIDTH/2){
+                                System.out.println("see Quadrant 2 dx and dy pos; steer right");
+                                Steer(TurnDirection.Right);
+                            }else{
+
+                            }
+
+                        }
+
+                    }
+
+                    //  Quadrant 3 Wall Collisions
+                    if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.third_q){
+                        System.out.println("see Quadrant 3 bouncing away straight on hit");
+                        if(facing_direction.getQuadrant_label()!=Quadrant.QuadrantLabel.third_q){
+                            // reversing into q3
+                            System.out.println("reverse into q3");
+                        }
+                        if(dx<0 && dy>0){
+                            //turn left
+                            Steer(TurnDirection.Left);
+                        }else if( dx <0 && dy <0){
+                            //left
+                            Steer(TurnDirection.Right);
+                        }else if((dx-dy)<0.3f){
+//                            if(isDebugWallBounce)System.out.println("Left Field!");
+                            moving_direction.InvertMovement();
+                        }
+
+                    }
+////                  Find the angle of an object and center of ellipse
+                    double y_diff = this.getY() - 360;
+                    double y_diff_by_a = y_diff/362;
+                    double theta = Math.asin(y_diff_by_a);
+
+                    newX = this.getX()+(float)(abs(speed*0.60f)*cos(theta));
+                    newY = this.getY()-(float)(abs(speed*0.60f)*sin(theta));
+////                  ===================================================
+//
+                    this.setY(newY);
+                    this.setX(newX);
+                    setTurn_increment(PI/175);
+                }else if (rect.getMinX() <= newX && newX<= rect.getMaxX()){
+                    if(this.getY()< SuperRacyFutbol3000.HEIGHT/2){
+                        if(dx < 0)
+                            Steer(TurnDirection.Left);
+                        else
+                            Steer(TurnDirection.Right);
+                    }
+                }
+                break;
+            default:
+                System.out.println("OtherHitType");
+                break;
+       }
+
     }
 }

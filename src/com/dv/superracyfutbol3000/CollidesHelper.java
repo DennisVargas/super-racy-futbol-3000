@@ -35,47 +35,57 @@ public abstract class CollidesHelper {
         radius_y = e.getRadius2();
         radius_x_sq = radius_x*radius_x;
         radius_y_sq = radius_y*radius_y;
-        x_center_diff = (x-center_x)*(x-center_x);
-        y_center_diff = (y-center_y)*(y-center_y);
+        x_center_diff = (v.getX()-center_x)*(v.getX()-center_x);
+        y_center_diff = (v.getY()-center_y)*(v.getY()-center_y);
         float x_in_ellipse = x_center_diff / radius_x_sq;
         float y_in_ellipse = y_center_diff / radius_y_sq;
+        float q = radius_x_sq/radius_y_sq;
 
         //  calculate the distance to the center of the ellipse
-        double d_center_circ = sqrt((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y));
-        double in_ellipse = (x_in_ellipse + y_in_ellipse);
+        float in_ellipse_calc = (x_in_ellipse + y_in_ellipse);
+        float simp_in_ellipse_calc = (x_center_diff)+q*(y_center_diff);
         //System.out.println("Distance to center of ellipse: " + d_center);
-        if(isWallDebug)System.out.println("ellipse Point Test: "+in_ellipse);
-        if (rect.contains(x, y)) {
-            if(isWallDebug)System.out.println("rectangle");
+
+        //  Is v in the rectangle
+        if (rect.contains(v.getX(), v.getY())) {
+            if(isWallDebug)System.out.println("RRRREctangle COLLIDE");
             return false;
         } else {
-
-            if ((in_ellipse > 1f)) {
-//                System.out.println("radiusX:" + radius_x + " <" + d_center);
-
-                if(isWallDebug)System.out.println("Out of Ellipse");
-                if(isWallDebug)System.out.println("xterm: "+x_in_ellipse);
-                if(isWallDebug)System.out.println("yterm: "+y_in_ellipse);
-                return true;
+            //  if v isn't in the rectangle. Is v in ellipse.
+//            if ((in_ellipse_calc < 1.035f)) {
+//                if(isWallDebug)System.out.println("ellipse Point Test: "+in_ellipse_calc);
+//                if(isWallDebug)System.out.println("Simple ellipse Point Test: "
+//                        +simp_in_ellipse_calc + " < radius_x^2"+radius_x_sq);
+//                return false;
+//            }
+            if(sqrt(simp_in_ellipse_calc) < sqrt(radius_x_sq)+7.86f){
+                if(isWallDebug)System.out.println("Simple ellipse Point Test: "
+                        +simp_in_ellipse_calc + " < radius_x^2"+(radius_x_sq+7.86f));
+                return false;
             }
-            return false;
+            //  v isn't in the rectange or the ellipse
+            //  therefore its a wall collision.
+            if(isWallDebug)System.out.println("Out of Ellipse");
+            if(isWallDebug)System.out.println("xterm: "+x_in_ellipse);
+            if(isWallDebug)System.out.println("yterm: "+y_in_ellipse);
+            return true;
         }
-
     }
 
 //  runs through all the collision types
-    public static CollisionType CheckCollisons(float newX, float newY, Ellipse ellipse, Rectangle rect) {
+    public static CollisionType CheckCollisions(Vector v, Ellipse ellipse, Rectangle rect) {
         //  Check collide with wall
         //  Check collide with goalie
         //  Check collide with ball
         //  Check collide with cars
         //  Check collide with goals
-        if( WallCollide(newX, newY, ellipse, rect))
+        if( WallCollide(v, ellipse, rect))
             return CollisionType.Wall;
         else//  more else if to come for other collisions
             return CollisionType.None;
     }
 
+    //  testing main for collideshelper
 //    public static void main(String args[]){
 //        while(true){
 //            if(WallCollide(170,450,127,400,50,500)){
