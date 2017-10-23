@@ -86,6 +86,17 @@ public class Cars extends Entity{
     public double getTurn_angle() {
         return turn_angle;
     }
+    public float getSpeed(){
+        return speed;
+    }
+
+    public float getAcceleration(){
+        return acceleration;
+    }
+
+    public double getTurnIncrement(){
+        return turn_increment;
+    }
 
     public void setTurn_angle(double turn_angle) {
         this.turn_angle = turn_angle;
