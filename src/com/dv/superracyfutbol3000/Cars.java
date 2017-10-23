@@ -45,6 +45,8 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
+    float dx, dy, dy_180;
+
     enum TurnDirection {Left, Right}
 
     //  Cars Constructor
