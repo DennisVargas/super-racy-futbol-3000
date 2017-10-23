@@ -65,10 +65,9 @@ public class Cars extends Entity{
 
     private void SetCarImage() {
         if(controlling_player.isRed)
-            this.addImage(ResourceManager.getImage(cars_red_rsc));
+            this.addImageWithBoundingBox(ResourceManager.getImage(cars_red_rsc));
+            //this.addImage(ResourceManager.getImage(cars_red_rsc));
         else
-            this.addImage(ResourceManager.getImage(cars_blue_rsc));
-
         SetBoundingBox();
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
     }
