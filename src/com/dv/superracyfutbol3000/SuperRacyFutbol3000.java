@@ -50,6 +50,9 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static boolean isDebugCarCreation = false;
     public static boolean isDebugCarExtents = false;
     public static boolean isMouseDebug= false;
+    public static boolean isVelocityDebug;
+    public static boolean isDebugMovingDirection;
+    public static boolean isDebugField;
 
 
     public SuperRacyFutbol3000() {
@@ -116,6 +119,10 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
                     isMouseDebug = true;
                 if(x.contains("cE"))
                     isDebugCarExtents = true;
+                if(x.contains("v"))
+                    isVelocityDebug = true;
+                if(x.contains("f"))
+                    isDebugField = true;
                 else
                     isDebug = true;
             }
