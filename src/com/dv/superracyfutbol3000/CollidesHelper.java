@@ -24,7 +24,7 @@ public abstract class CollidesHelper {
         if(isWallDebug)System.out.println("vector_X: "+v.getX()+" vector_y: "+v.getY());
         float center_x, center_y, radius_x, radius_y,x_center_diff, y_center_diff, radius_x_sq, radius_y_sq;
         //  simpler formulas
-        //  from: ((x-c)^2)/a^2 +((y-d)^2)/b^2 = 1
+        //  from: ((x-c)^2)/b^2 +((y-d)^2)/a^2 = 1
         //  q = a^2/b^2
         //  a>0 and q>0
         //  (x-c_x)^2 + q(y-c_y)^2 = a^2
@@ -39,7 +39,7 @@ public abstract class CollidesHelper {
         y_center_diff = (v.getY()-center_y)*(v.getY()-center_y);
         float x_in_ellipse = x_center_diff / radius_x_sq;
         float y_in_ellipse = y_center_diff / radius_y_sq;
-        float q = radius_x_sq/radius_y_sq;
+        float q = radius_y_sq/radius_x_sq;
 
         //  calculate the distance to the center of the ellipse
         float in_ellipse_calc = (x_in_ellipse + y_in_ellipse);
@@ -51,18 +51,19 @@ public abstract class CollidesHelper {
             if(isWallDebug)System.out.println("RRRREctangle COLLIDE");
             return false;
         } else {
-            //  if v isn't in the rectangle. Is v in ellipse.
-//            if ((in_ellipse_calc < 1.035f)) {
-//                if(isWallDebug)System.out.println("ellipse Point Test: "+in_ellipse_calc);
+//            if(sqrt(simp_in_ellipse_calc) <= sqrt(radius_y_sq)){
 //                if(isWallDebug)System.out.println("Simple ellipse Point Test: "
-//                        +simp_in_ellipse_calc + " < radius_x^2"+radius_x_sq);
+//                        +simp_in_ellipse_calc + " < radius_x^2"+(radius_y_sq));
 //                return false;
 //            }
-            if(sqrt(simp_in_ellipse_calc) < sqrt(radius_x_sq)+7.86f){
+//              if v isn't in the rectangle. Is v in ellipse.
+            if ((in_ellipse_calc <= 1.030f)) {
+                if(isWallDebug)System.out.println("ellipse Point Test: "+in_ellipse_calc);
                 if(isWallDebug)System.out.println("Simple ellipse Point Test: "
-                        +simp_in_ellipse_calc + " < radius_x^2"+(radius_x_sq+7.86f));
+                        +simp_in_ellipse_calc + " < radius_x^2"+radius_x_sq);
                 return false;
             }
+
             //  v isn't in the rectange or the ellipse
             //  therefore its a wall collision.
             if(isWallDebug)System.out.println("Out of Ellipse");
