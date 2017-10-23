@@ -113,8 +113,8 @@ public class Cars extends Entity{
                 }else {
                     //  If not accelerating or decelerating
                     //  losing velocity due to friction
-                    if (abs(vel) > min_vel)
-                        vel *= friction;
+                    if (abs(speed) > min_vel)
+                        speed *= friction;
                     else
                         vel = 0f;
                 }
