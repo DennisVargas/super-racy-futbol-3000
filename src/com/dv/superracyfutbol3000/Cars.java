@@ -116,9 +116,9 @@ public class Cars extends Entity{
                     if (abs(speed) > min_vel)
                         speed *= friction;
                     else
-                        vel = 0f;
+                        speed = 0f;
                 }
-                if(abs(vel)>1.3f){
+                if(abs(speed) > 0){
                     if(i.isKeyDown(Input.KEY_A))
                         Steer(TurnDirection.Left);
                     if(i.isKeyDown(Input.KEY_D))
@@ -135,12 +135,12 @@ public class Cars extends Entity{
                 }else {
                     //  If not accelerating or decelerating
                     //  losing velocity due to friction
-                    if (abs(vel) > min_vel)
-                        vel *= friction;
+                    if (abs(speed) > min_vel)
+                        speed *= friction;
                     else
-                        vel = 0f;
+                        speed = 0f;
                 }
-                if(abs(vel)>1.3f){
+                if(abs(speed)>0f){
                     if(i.isControllerLeft(controller_num))
                         Steer(TurnDirection.Left);
                     if(i.isControllerRight(controller_num))
