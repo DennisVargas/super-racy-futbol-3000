@@ -476,26 +476,47 @@ public class Cars extends Entity{
                         }
 
                     }
-////                  Find the angle of an object and center of ellipse
-                    double y_diff = this.getY() - 360;
-                    double y_diff_by_a = y_diff/362;
-                    double theta = Math.asin(y_diff_by_a);
 
-                    newX = this.getX()+(float)(abs(speed*0.60f)*cos(theta));
-                    newY = this.getY()-(float)(abs(speed*0.60f)*sin(theta));
+                    newX = this.getX()+5f+(float)(speed*0.90f*cos(theta));
+                    newY = this.getY()-(float)(speed*0.90f*sin(theta));
 ////                  ===================================================
 //
                     this.setY(newY);
                     this.setX(newX);
-                    setTurn_increment(PI/175);
-                }else if (rect.getMinX() <= newX && newX<= rect.getMaxX()){
+
+                }
+                //  inside rectange collisions
+                else if ((rect.getMinX()-50) <= newX && newX<= (50+rect.getMaxX())){
                     if(this.getY()< SuperRacyFutbol3000.HEIGHT/2){
-                        if(dx < 0)
+                        if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.second_q){
                             Steer(TurnDirection.Left);
-                        else
+                            newX = this.getX()-5f-(float)(speed*0.70f*cos(theta));
+                        }
+                        else if (moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.first_q){
                             Steer(TurnDirection.Right);
+                            newX = this.getX()+5f+(float)(speed*0.70f*cos(theta));
+                        }
+                        newY = this.getY()+5f+(float)(speed*0.90f*sin(theta));
+////                  ===================================================
+                        this.setY(newY);
+                        this.setX(newX);
+                    }
+                    else if(this.getY()> SuperRacyFutbol3000.HEIGHT/2){
+                        if(moving_direction.getQuadrant_label() == Quadrant.QuadrantLabel.fourth_q){
+                            Steer(TurnDirection.Left);
+                            newX = this.getX()+5f+(float)(speed*0.70f*cos(theta));
+                        }
+                        else if (moving_direction.getQuadrant_label()== Quadrant.QuadrantLabel.third_q){
+                            Steer(TurnDirection.Right);
+                            newX = this.getX()-5f-(float)(speed*0.70f*cos(theta));
+                        }
+                        newY = this.getY()-5f-(float)(speed*0.90f*sin(theta));
+////                  ===================================================
+                        this.setY(newY);
+                        this.setX(newX);
                     }
                 }
+                setTurn_increment(PI/175);
                 break;
             default:
                 System.out.println("OtherHitType");
