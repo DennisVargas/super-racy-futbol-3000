@@ -234,33 +234,31 @@ public class Cars extends Entity{
     //  implments the translation on the next move
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
         //  center next move
-        Vector next_move = new Vector(0f,0f);
-
         //  positive =
         if( isDebugMovingDirection &&
                 controlling_player.control_type != Players.Controller.AI)
-            System.out.println("current angle from zero degrees: "+((180f/Math.PI)*turn_angle));
-        //  a vector for each point of the car rectangle next move
-        Vector next_front_left = new Vector(0,0); Vector next_front_right = new Vector(0,0);
-        Vector next_back_left = new Vector(0,0); Vector next_back_right = new Vector(0,0);
+            System.out.println("current angle from zero degrees: "+((180f/Math.PI)* turn_rads));
+
+
 
     //  calculate newX adding to old x the cos of the angle that has ben turned through
-//      the x component of the velocity vector given the turn_angle at the magnitude of speed
+//      the x component of the velocity vector given the turn_rads at the magnitude of speed
         //  the positive and negative will give weight to the turning direction however when choosing degrees from facing zero
         //  abs should be used in calculations. Since -360 degrees != 360 degrees == 180 degrees
         // Speed and Direction -> velocity
-        float dx = (float)(speed*cos(turn_angle));  // change in x direction
-        float dy = (float)(speed*sin(turn_angle));  // change in y direction
-        float dy_180 = (float)(speed*sin(turn_angle+PI));  // change in y direction
+        float dx = (float)(speed*cos(turn_rads));  // change in x direction
+        float dy = (float)(speed*sin(turn_rads));  // change in y direction
+        float dy_180 = (float)(speed*sin(turn_rads +PI));  // change in y direction
 
         float newX = this.getX()+dx;
     //  calculate new Y component
         float newY = this.getY() + dy_180;  // dy 180 inverts the y coordinate system
 
+        Vector next_move = new Vector(0,0);
         next_move = next_move.setX(newX);
         next_move = next_move.setY(newY);
 
-        facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)*turn_angle));
+        facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)* turn_rads));
         facing_direction.DetermineLabel();
         moving_direction = moving_direction.GetMovingDirection(facing_direction, dx, -1f*dy);
         moving_direction.DetermineLabel();
