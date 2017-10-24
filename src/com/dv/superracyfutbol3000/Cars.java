@@ -159,30 +159,62 @@ public class Cars extends Entity{
     }
 
     private void Steer(TurnDirection dir) {
-        prev_angle = turn_angle;
+        prev_turn_rads = turn_rads;
+        if(reverse ){
+
+            if(dir == TurnDirection.Left){
+                dir = TurnDirection.Right;
+            }else{
+                dir = TurnDirection.Left;
+            }
+        }
+
+
         switch(dir){
             case Left :
-                if (!reverse)
-                    turn_angle += turn_increment;
-                else
-                    turn_angle -= turn_increment;
-                this.rotate(-(180f/ PI)*turn_increment);
+                turn_rads += turn_increment;
+                this.rotate(-deg_turn_increment);
+//                if (!reverse){
+//                    turn_rads += turn_increment;
+//                    this.rotate(-deg_turn_increment);
+//                }
+//                else{
+//                    turn_rads -= turn_increment;
+//                    this.rotate(deg_turn_increment);
+//                }
+//                this.rotate(-(180f/ PI)*turn_increment);
+
                 break;
             case Right:
-                /*if(abs(turn_angle)>=(2f*PI))
-                    turn_angle = 0;
+                /*if(abs(turn_rads)>=(2f*PI))
+                    turn_rads = 0;
                 else*/
-                if (!reverse)
-                    turn_angle -= turn_increment;
-                else
-                    turn_angle += turn_increment;
-                this.rotate((180f/ PI)*turn_increment);
+                turn_rads -= turn_increment;
+                this.rotate(deg_turn_increment);
+/*
+                if (!reverse){
+                    turn_rads -= turn_increment;
+                    this.rotate(deg_turn_increment);
+                }
+                else{
+
+                    turn_rads += turn_increment;
+                    this.rotate(-deg_turn_increment);
+                }
+*/
+//                this.rotate((180f/ PI)*turn_increment);
                 break;
             default:
                 break;
         }
+        if(SuperRacyFutbol3000.isTurnDebug){
+            System.out.println("turn rads:" + turn_rads);
+            System.out.println("turn rad degrees:" + ((180/PI)*turn_rads));
+            System.out.println("Entity Degrees: " + this.getRotation());
+            System.out.println("Entity Adj Deg: "+ (90 - (this.getRotation())));
+        }
         turned = true;
-        turn_angle%=2*PI;
+        turn_rads %=2*PI;
     }
 
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
