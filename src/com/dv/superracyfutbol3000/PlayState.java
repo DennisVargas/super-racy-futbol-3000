@@ -54,13 +54,13 @@ public class PlayState extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
-        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
+        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     }
 
     @Override
@@ -99,9 +99,9 @@ public class PlayState extends BasicGameState {
 
         //  Update the Team Position based on collisions and input
         teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);
-        Cars car =teams.getRed_team().get(0);
+
         //  Update the Ball based on collisions
-        ball.UpdateBall(ellipse,ellipse2,rect,car);
+        ball.UpdateBall(ellipse,ellipse2,rect);
 
     }
     private void RenderFieldDebugOverlay(Graphics graphics) {
