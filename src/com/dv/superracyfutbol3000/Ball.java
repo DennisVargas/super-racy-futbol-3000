@@ -91,12 +91,30 @@ public class Ball extends Entity{
     }
 
     //  Update Ball
-    public void UpdateBall(Ellipse left_walls, Ellipse right_walls, Rectangle center_walls, Cars player_car){
+    public void UpdateBall(Ellipse left_walls, Ellipse right_walls, Rectangle center_walls){
+//        AddCollides();
+        this.translate(translate_next_move);
+        if(speed < 6.8f){
+            if(speed >0.1f)
+                speed*=0.5f;
+            else if (abs(speed) <= 0.1f)
+                speed = 0f;
+        }else
+            speed = 6.8f*0.5f;
 
-        Collision collide = this.collides(player_car);
-        if(collide != null)
-            System.out.println("car hit ball");
-
+        this.ball_sphere.setLocation(this.getX()-ball_sphere.radius ,
+                                        this.getY()-ball_sphere.radius);
+        GenerateNextMove();
+        //  Get next ball location
     }
+
+    public Vector getTranslate_next_move() {
+        return translate_next_move;
+    }
+    public Vector CalculateNextPosition(){
+        this.next_move_location = new Vector(this.getX()+this.translate_next_move.getX(), this.getY()+this.translate_next_move.getY());
+        return this.next_move_location;
+    }
+
 
 }
