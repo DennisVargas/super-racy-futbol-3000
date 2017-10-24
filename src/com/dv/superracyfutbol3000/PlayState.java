@@ -59,13 +59,13 @@ public class PlayState extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
+        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
-        rotation_test = rotation_test.setX(rect2.getX());
-        rotation_test = rotation_test.setY(rect2.getY());
+        Ball.setDebug(true);
     }
 
     @Override
