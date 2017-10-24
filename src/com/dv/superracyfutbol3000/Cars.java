@@ -84,6 +84,7 @@ public class Cars extends Entity{
         this.controlling_player = controlling_player;
 
         SetCarImage();
+        next_move_direction = new Vector(1f,0);
 
 //        this.debugThis = true;
 //        Entity.setDebug(true);
@@ -110,25 +111,6 @@ public class Cars extends Entity{
 //        if(SuperRacyFutbol3000.isDebugCarCreation)System.out.println(this.getNumShapes());
 //    }
 
-    public double getTurn_angle() {
-        return turn_angle;
-    }
-    public float getSpeed(){
-        return speed;
-    }
-
-    public float getAcceleration(){
-        return acceleration;
-    }
-
-    public double getTurnIncrement(){
-        return turn_increment;
-    }
-
-    public void setTurn_angle(double turn_angle) {
-        this.turn_angle = turn_angle;
-    }
-
     void ProcessInput(Input i){
         switch(controlling_player.control_type){
             case Keyboard:
@@ -136,7 +118,6 @@ public class Cars extends Entity{
                     Accelerate();
                 }else if(i.isKeyDown(Input.KEY_DOWN)){
                     Decelerate();
-
                 }else {
                     //  If not accelerating or decelerating
                     //  losing velocity due to friction
