@@ -54,6 +54,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static boolean isDebugMovingDirection;
     public static boolean isDebugField;
     public static boolean isDebugRotationTest;
+    public static boolean isTurnDebug;
+    public static boolean isQuadrantDebug;
 
 
     public SuperRacyFutbol3000() {
@@ -128,6 +130,10 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
                     isDebugRotationTest = true;
                 if(x.contains("Mvd"))
                     isDebugMovingDirection = true;
+                if(x.contains("td"))
+                    isTurnDebug = true;
+                if(x.contains("q"))
+                    isQuadrantDebug = true;
                 else
                     isDebug = true;
             }
