@@ -109,28 +109,34 @@ public class Quadrant {
 
         //  if x is decreasing in x displacement yet facing the increasing direction
         if (forward_facing_direction.getDx()> 0 && x_vel <0){
-            System.out.println("reverse, X decreasing from " + forward_facing_direction.quadrant_label);
+            if(SuperRacyFutbol3000.isQuadrantDebug)
+                System.out.println("reverse, X decreasing from " + forward_facing_direction.quadrant_label);
             moving_direction.setDx(-1f);
         }
         //  if x is increasing in x displacement yet facing the decreasing direction
         else if (forward_facing_direction.getDx()< 0 && x_vel >0){
-            System.out.println("reverse, X increasing from " + forward_facing_direction.quadrant_label);
+            if(SuperRacyFutbol3000.isQuadrantDebug)
+                System.out.println("reverse, X increasing from " + forward_facing_direction.quadrant_label);
             moving_direction.setDx(1f);
             moving_direction.DetermineLabel();
         }
         //  if y is decreasing yet facing the increasing direction
         if(forward_facing_direction.getDy()> 0 && y_vel <0){
-            System.out.println("reverse, Y decreasing from " + forward_facing_direction.quadrant_label);
+            if(SuperRacyFutbol3000.isQuadrantDebug)
+                System.out.println("reverse, Y decreasing from " + forward_facing_direction.quadrant_label);
             moving_direction.setDy(-1f);
         }
         //  y is increasing yet facing decreasing direction
         else if(forward_facing_direction.getDy() < 0 && y_vel >0){
-            System.out.println("reverse, Y increasing " + forward_facing_direction.quadrant_label);
+            if(SuperRacyFutbol3000.isQuadrantDebug)
+                System.out.println("reverse, Y increasing " + forward_facing_direction.quadrant_label);
             moving_direction.setDy(1f);
         }
         if(SuperRacyFutbol3000.isDebugMovingDirection) {
-            System.out.println("Facing Direction: " + moving_direction.getQuadrant_label());
-            System.out.println("Moving Direction: " + forward_facing_direction.getQuadrant_label());
+            if(SuperRacyFutbol3000.isQuadrantDebug) {
+                System.out.println("Facing Direction: " + moving_direction.getQuadrant_label());
+                System.out.println("Moving Direction: " + forward_facing_direction.getQuadrant_label());
+            }
         }
         return moving_direction;
     }

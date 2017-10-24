@@ -7,6 +7,8 @@ import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.PI;
+
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
@@ -82,15 +84,14 @@ public class Teams {
         Cars car = new Cars(x,y,player);
         if(player.isRed){
             car.rotate(90);
-            car.setTurn_angle(0);
+            car.setTurn_rads(0);
             this.red_team.add(car);
         }
         else{
-            car.rotate(270f);
-            car.setTurn_angle(Math.PI);
+            car.rotate(270);
+            car.setTurn_rads(PI);
             this.blue_team.add(car);
         }
-
     }
 
     public void RenderTeams(Graphics g){
@@ -102,27 +103,27 @@ public class Teams {
         }
     }
 
-    public void UpdateTeams(Ellipse ellipse1, Ellipse ellipse2,  Rectangle rect){
+    public void ProcessTeamsNextMove(Ellipse ellipse1, Ellipse ellipse2, Rectangle rect){
 
         for (Cars car: red_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
-                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 RED: " + car.controlling_player.name);
+//                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 RED: " + car.controlling_player.name);
                 car.UpdateCar(ellipse1, rect);
             }
             else{
-                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Red: " + car.controlling_player.name);
+//                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Red: " + car.controlling_player.name);
                 car.UpdateCar(ellipse2, rect);
             }
 
         }
         for (Cars car: blue_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
-                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 Blue: " + car.controlling_player.name+" width/2: "+SuperRacyFutbol3000.WIDTH/2 +" CarX: "+car.getX());
+//                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 Blue: " + car.controlling_player.name+" width/2: "+SuperRacyFutbol3000.WIDTH/2 +" CarX: "+car.getX());
                 car.UpdateCar(ellipse1, rect);
             }
 
             else{
-                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Blue: " + car.controlling_player.name);
+//                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Blue: " + car.controlling_player.name);
                 car.UpdateCar(ellipse2, rect);
             }
 
@@ -142,12 +143,13 @@ public class Teams {
     }
 
 
-    public void ProcessTeams(Input input) {
+    public void UpdateTeamsNextMove(Input input) {
         for (Cars car: red_team){
-            car.ProcessInput(input);
+            car.GenerateNextMove(input);
+
         }
         for (Cars car: blue_team){
-            car.ProcessInput(input);
+            car.GenerateNextMove(input);
         }
     }
 }

@@ -1,17 +1,12 @@
 package com.dv.superracyfutbol3000;
 
-import jig.ConvexPolygon;
-import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-
-import java.util.ArrayList;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -59,13 +54,13 @@ public class PlayState extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
-        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
+        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     }
 
     @Override
@@ -84,8 +79,6 @@ public class PlayState extends BasicGameState {
     }
 
 
-
-
     @Override
     public void update(GameContainer gameContainer,
                        StateBasedGame stateBasedGame, int i) throws SlickException {
@@ -99,12 +92,16 @@ public class PlayState extends BasicGameState {
             System.out.println("MouseY: " + mouseY);
         }
         //  Process the Team Input
-        teams.ProcessTeams(input);
+        teams.UpdateTeamsNextMove(input);
+
+        //  Check for collisions with the next move before processing
+        CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect);
+
         //  Update the Team Position based on collisions and input
-        teams.UpdateTeams(ellipse,ellipse2,rect);
-        Cars car =teams.getRed_team().get(0);
+        teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);
+
         //  Update the Ball based on collisions
-        ball.UpdateBall(ellipse,ellipse2,rect,car);
+        ball.UpdateBall(ellipse,ellipse2,rect);
 
     }
     private void RenderFieldDebugOverlay(Graphics graphics) {
@@ -145,6 +142,14 @@ public class PlayState extends BasicGameState {
             rect2.setX((next_x) + 320f);
             rect2.setY((next_y) + 360f);
         }
+    }
+    private void VectorTest(){
+        //  Testing the vector addition functions
+        System.out.println("high fverscters");
+        Vector v = new Vector (-1f,1f);
+        Vector x = new Vector(1f,0.5f);
+        v =v.add(x);
+        ball.translate(v);
     }
 }
 

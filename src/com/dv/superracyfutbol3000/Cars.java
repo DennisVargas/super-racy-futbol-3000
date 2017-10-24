@@ -1,14 +1,11 @@
 package com.dv.superracyfutbol3000;
 
 import jig.*;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.util.FastTrig;
 
-import java.math.MathContext;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 import static com.dv.superracyfutbol3000.CollidesHelper.*;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
@@ -20,9 +17,18 @@ import static org.newdawn.slick.util.FastTrig.sin;
 public class Cars extends Entity{
     private float wall_bounce_factor = 0.003f;
 
-    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY};
+//  Holds resulting hit vectors that will be added to in the update method
+    ArrayList<CollidesHelper.CollisionReport> collision_reports;
+
+    private Vector next_move_location = new Vector(0,0);
+    private Vector translate_next_move = new Vector(0,0);
+
+
+
     Quadrant facing_direction = new Quadrant();
     Quadrant moving_direction = new Quadrant();
+
+
     Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
@@ -30,10 +36,11 @@ public class Cars extends Entity{
     boolean reverse = false;
     private float mass = 1f;
     private boolean turned = false;
-    private double prev_angle;
-    private double turn_angle = PI/2;
+    private double prev_turn_rads;
+    private double turn_rads = (PI / 180) * this.getRotation();
 
-    private double turn_increment = PI/175; // angular acceleration
+    private double turn_increment = PI / 175; // angular acceleration
+    private double deg_turn_increment = (180 * turn_increment) / PI;
     private float top_speed = 3.5f;
     private float acceleration = 1.075f;
     private float top_boost_speed = 0f;
@@ -46,10 +53,48 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
-    float dx, dy, dy_180;
+    Vector next_move_direction = new Vector(0f, 0f);
+
+    public Vector getNext_move_direction() {
+        return next_move_direction;
+    }
+
+    public double getTurn_degs() {
+        return (180/PI)*turn_rads;
+    }
 
     enum TurnDirection {Left, Right}
 
+    public Vector getNext_move_location() {
+        return next_move_location;
+    }
+
+    public double getTurn_rads() {
+        return turn_rads;
+    }
+    public float getSpeed(){
+        return speed;
+    }
+
+    public float getAcceleration(){
+        return acceleration;
+    }
+
+    public double getTurnIncrement(){
+        return turn_increment;
+    }
+
+    public void setTurn_rads(double turn_rads) {
+        this.turn_rads = turn_rads;
+    }
+
+    public double getTurn_increment() {
+        return turn_increment;
+    }
+
+    public void setTurn_increment(double turn_increment) {
+        this.turn_increment = turn_increment;
+    }
 
     //  Cars Constructor
     public Cars(float x, float y, Players controlling_player) {
@@ -57,6 +102,7 @@ public class Cars extends Entity{
         this.controlling_player = controlling_player;
 
         SetCarImage();
+        next_move_direction = new Vector(1f,0);
 
 //        this.debugThis = true;
 //        Entity.setDebug(true);
@@ -83,25 +129,6 @@ public class Cars extends Entity{
 //        if(SuperRacyFutbol3000.isDebugCarCreation)System.out.println(this.getNumShapes());
 //    }
 
-    public double getTurn_angle() {
-        return turn_angle;
-    }
-    public float getSpeed(){
-        return speed;
-    }
-
-    public float getAcceleration(){
-        return acceleration;
-    }
-
-    public double getTurnIncrement(){
-        return turn_increment;
-    }
-
-    public void setTurn_angle(double turn_angle) {
-        this.turn_angle = turn_angle;
-    }
-
     void ProcessInput(Input i){
         switch(controlling_player.control_type){
             case Keyboard:
@@ -109,7 +136,6 @@ public class Cars extends Entity{
                     Accelerate();
                 }else if(i.isKeyDown(Input.KEY_DOWN)){
                     Decelerate();
-
                 }else {
                     //  If not accelerating or decelerating
                     //  losing velocity due to friction
@@ -151,158 +177,198 @@ public class Cars extends Entity{
     }
 
     private void Steer(TurnDirection dir) {
-        prev_angle = turn_angle;
-        switch(dir){
-            case Left :
-                if (!reverse)
-                    turn_angle += turn_increment;
-                else
-                    turn_angle -= turn_increment;
-                this.rotate(-(180f/ PI)*turn_increment);
-                break;
-            case Right:
-                /*if(abs(turn_angle)>=(2f*PI))
-                    turn_angle = 0;
-                else*/
-                if (!reverse)
-                    turn_angle -= turn_increment;
-                else
-                    turn_angle += turn_increment;
-                this.rotate((180f/ PI)*turn_increment);
-                break;
-            default:
-                break;
-        }
-        turned = true;
-        turn_angle%=2*PI;
-    }
+        prev_turn_rads = turn_rads;
+        if(reverse ){
 
-    public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
-        //  center next move
-        Vector next_move = new Vector(0f,0f);
-
-        //  positive =
-        if( isDebugMovingDirection &&
-                controlling_player.control_type != Players.Controller.AI)
-            System.out.println("current angle from zero degrees: "+((180f/Math.PI)*turn_angle));
-        //  a vector for each point of the car rectangle next move
-        Vector next_front_left = new Vector(0,0); Vector next_front_right = new Vector(0,0);
-        Vector next_back_left = new Vector(0,0); Vector next_back_right = new Vector(0,0);
-
-    //  calculate newX adding to old x the cos of the angle that has ben turned through
-//      the x component of the velocity vector given the turn_angle at the magnitude of speed
-        //  the positive and negative will give weight to the turning direction however when choosing degrees from facing zero
-        //  abs should be used in calculations. Since -360 degrees != 360 degrees == 180 degrees
-        // Speed and Direction -> velocity
-        float dx = (float)(speed*cos(turn_angle));  // change in x direction
-        float dy = (float)(speed*sin(turn_angle));  // change in y direction
-        float dy_180 = (float)(speed*sin(turn_angle+PI));  // change in y direction
-
-        float newX = this.getX()+dx;
-    //  calculate new Y component
-        float newY = this.getY() + dy_180;  // dy 180 inverts the y coordinate system
-
-        next_move = next_move.setX(newX);
-        next_move = next_move.setY(newY);
-
-        facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)*turn_angle));
-        facing_direction.DetermineLabel();
-        moving_direction = moving_direction.GetMovingDirection(facing_direction, dx, -1f*dy);
-        moving_direction.DetermineLabel();
-        if(SuperRacyFutbol3000.isVelocityDebug &&
-                controlling_player.GetControl_type() != Players.Controller.AI){
-            System.out.println("Velocity X: "+dx);
-            System.out.println("Velocity Y: "+-1f*dy);
-        }
-
-
-        //Check if collisions then if that's all good move the car.
-        //  collisions must be checked at each of the four points of the car
-        //  based on which point detects which side of the car collided and
-        //  how to steer the car in towards the circle
-
-        //  create a collision type for catch when a collision occurs
-        CollisionType collision_type = CollisionType.None;
-
-        float minX, maxX, minY, maxY;
-        Shape car_box = this.getGloballyTransformedShapes().getFirst();
-        minX = car_box.getMinX();
-        maxX = car_box.getMaxX();
-        minY = car_box.getMinY();
-        maxY = car_box.getMaxY();
-
-
-        //  check all extents
-        CarExtentNames collide_point_name;
-        Vector[] collisions_check = new Vector[4];
-        collisions_check[0]  = new Vector(minX, minY);
-        collisions_check[1] = new Vector (maxX, maxY);
-        collisions_check[2] = new Vector(maxX, minY);
-        collisions_check[3] = new Vector(minX,maxY);
-
-
-        // if minX clear skip
-        int i;
-        for (i = 0; i < collisions_check.length;i++){
-            //  We already know what side of the field we are on. proper ellipse is passed in.
-            collision_type = CheckCollisions(collisions_check[i],goal_ellipse_bounds, center_rectangle_bounds);
-            if(isWallDebug)System.out.println("collision result" + collision_type);
-
-            if (collision_type != CollisionType.None){
-                if(isWallDebug)System.out.println("index i");
-                collide_point_name = GetCollidePointName(i);
-                break;
+            if(dir == TurnDirection.Left){
+                dir = TurnDirection.Right;
+            }else{
+                dir = TurnDirection.Left;
             }
         }
 
-        if(collision_type == CollisionType.None){
-            /*if(SuperRacyFutbol3000.isVelocityDebug &&
-                    controlling_player.GetControl_type() != Players.Controller.AI){
-                System.out.println("velocity_X: "+(newX-this.getX()));
-                System.out.println("velocity_Y: "+(newY-this.getY()));
-            }*/
-            this.setX(newX);
-            this.setY(newY);
-        }else if(collision_type == CollisionType.Wall){
-            // process hit will determine what the newX and newY
-            // direction and magnitude should be after the collision
-            ProcessHit(collision_type, next_move, center_rectangle_bounds);
-        }
-    }
 
-    private CarExtentNames GetCollidePointName(int index) {
-        switch(index){
-            case 0:
-                return CarExtentNames.minXY;
+        switch(dir){
+            case Left :
+                turn_rads += turn_increment;
+                this.rotate(-deg_turn_increment);
+//                if (!reverse){
+//                    turn_rads += turn_increment;
+//                    this.rotate(-deg_turn_increment);
+//                }
+//                else{
+//                    turn_rads -= turn_increment;
+//                    this.rotate(deg_turn_increment);
+//                }
+//                this.rotate(-(180f/ PI)*turn_increment);
 
-            case 1:
-                return CarExtentNames.maxXY;
+                break;
+            case Right:
+                /*if(abs(turn_rads)>=(2f*PI))
+                    turn_rads = 0;
+                else*/
+                turn_rads -= turn_increment;
+                this.rotate(deg_turn_increment);
+/*
+                if (!reverse){
+                    turn_rads -= turn_increment;
+                    this.rotate(deg_turn_increment);
+                }
+                else{
 
-            case 2:
-                return CarExtentNames.maxMinXY;
-
-            case 3:
-                return CarExtentNames.minMaxXY;
-
+                    turn_rads += turn_increment;
+                    this.rotate(-deg_turn_increment);
+                }
+*/
+//                this.rotate((180f/ PI)*turn_increment);
+                break;
             default:
-                return null;
+                break;
         }
+        if(SuperRacyFutbol3000.isTurnDebug){
+            System.out.println("turn rads:" + turn_rads);
+            System.out.println("turn rad degrees:" + ((180/PI)*turn_rads));
+            System.out.println("Entity Degrees: " + this.getRotation());
+            System.out.println("Entity Adj Deg: "+ (90 - (this.getRotation())));
+        }
+        turned = true;
+        turn_rads %=2*PI;
     }
+
+    public Vector getTranslate_next_move() {
+        return translate_next_move;
+    }
+
+    //  GenerateNextMove should be a function
+    public void GenerateNextMove(Input input){
+        //  input causes turn angle and speed to change
+        //  steering will cause a rotation of the entity but not movement
+        ProcessInput(input);
+
+        //  set the x and y components of the move direction based upon the rotated angle*speed
+        //  direction*scaler
+
+        next_move_direction = new Vector((float) cos(turn_rads),
+                                        (float)(sin(turn_rads+PI)));
+
+        translate_next_move = new Vector ( speed*next_move_direction.getX(), speed*next_move_direction.getY());
+
+        next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
+                                        this.getY()+speed*next_move_direction.getY());
+    }
+
+    //  implements the translation on the next move
+    public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
+        this.translate(translate_next_move);
+
+        //        //  center next move
+//        //  positive =
+//        if( isDebugMovingDirection &&
+//                controlling_player.control_type != Players.Controller.AI)
+//            System.out.println("current angle from zero degrees: "+((180f/Math.PI)* turn_rads));
+//
+//
+//
+//    //  calculate newX adding to old x the cos of the angle that has ben turned through
+////      the x component of the velocity vector given the turn_rads at the magnitude of speed
+//        //  the positive and negative will give weight to the turning direction however when choosing degrees from facing zero
+//        //  abs should be used in calculations. Since -360 degrees != 360 degrees == 180 degrees
+//        // Speed and Direction -> velocity
+//        float dx = (float)(speed*cos(turn_rads));  // change in x direction
+//        float dy = (float)(speed*sin(turn_rads));  // change in y direction
+//        float dy_180 = (float)(speed*sin(turn_rads +PI));  // change in y direction
+//
+//        float newX = this.getX()+dx;
+//    //  calculate new Y component
+//        float newY = this.getY() + dy_180;  // dy 180 inverts the y coordinate system
+//
+//        Vector next_move = new Vector(0,0);
+//        next_move = next_move.setX(newX);
+//        next_move = next_move.setY(newY);
+//
+//        facing_direction = facing_direction.Get_Direction_Vector((float) ((180/PI)* turn_rads));
+//        facing_direction.DetermineLabel();
+//        moving_direction = moving_direction.GetMovingDirection(facing_direction, dx, -1f*dy);
+//        moving_direction.DetermineLabel();
+//        if(SuperRacyFutbol3000.isVelocityDebug &&
+//                controlling_player.GetControl_type() != Players.Controller.AI){
+//            System.out.println("Velocity X: "+dx);
+//            System.out.println("Velocity Y: "+-1f*dy);
+//        }
+//
+//
+//        //Check if collisions then if that's all good move the car.
+//        //  collisions must be checked at each of the four points of the car
+//        //  based on which point detects which side of the car collided and
+//        //  how to steer the car in towards the circle
+//
+//        //  create a collision type for catch when a collision occurs
+//        CollisionType collision_type = CollisionType.None;
+//
+//        float minX, maxX, minY, maxY;
+//        Shape car_box = this.getGloballyTransformedShapes().getFirst();
+//        minX = car_box.getMinX();
+//        maxX = car_box.getMaxX();
+//        minY = car_box.getMinY();
+//        maxY = car_box.getMaxY();
+//
+//
+//        //  check all extents
+//        CarExtentNames collide_point_name;
+//        Vector[] collisions_check = new Vector[4];
+//        collisions_check[0]  = new Vector(minX, minY);
+//        collisions_check[1] = new Vector (maxX, maxY);
+//        collisions_check[2] = new Vector(maxX, minY);
+//        collisions_check[3] = new Vector(minX,maxY);
+//
+//
+//        // if minX clear skip
+//        int i;
+//        for (i = 0; i < collisions_check.length;i++){
+//            //  We already know what side of the field we are on. proper ellipse is passed in.
+//            collision_type = CheckCollisions(collisions_check[i],goal_ellipse_bounds, center_rectangle_bounds);
+//            if(isWallDebug)System.out.println("collision result" + collision_type);
+//
+//            if (collision_type != CollisionType.None){
+//                if(isWallDebug)System.out.println("index i");
+//                collide_point_name = GetCollidePointName(i);
+//                break;
+//            }
+//        }
+//
+//        if(collision_type == CollisionType.None){
+//            /*if(SuperRacyFutbol3000.isVelocityDebug &&
+//                    controlling_player.GetControl_type() != Players.Controller.AI){
+//                System.out.println("velocity_X: "+(newX-this.getX()));
+//                System.out.println("velocity_Y: "+(newY-this.getY()));
+//            }*/
+//            this.setX(newX);
+//            this.setY(newY);
+//        }else if(collision_type == CollisionType.Wall){
+//            // process hit will determine what the newX and newY
+//            // direction and magnitude should be after the collision
+//            ProcessHit(collision_type, next_move, center_rectangle_bounds);
+//        }
+    }
+
 
     private void Accelerate() {
-//        if (reverse){
-//            turn_angle += Math.PI;
-//            reverse = false;
-//        }
+
+        //  Accelerate alters the scaler value of speed by multiplying it by positive
+        //  or negative acceleration depending on the motion of the body when accelerate is pressed.
+        //  if moving in reverse direction should change along the same axis so and negative 1 is multiplied
         if(speed <= top_speed) {
+            if (reverse == true)
+                reverse = false;
             //  if car is moving
-            if (speed > 0) {
+            if (speed > 0 ) {
                 speed *= acceleration;
             }
             //  car moving in reverse
             //  change direction
             else if (speed < -min_vel) {
-                speed *= (1 - (acceleration - 1) * 6);
+                //speed *= (1 - (acceleration - 1) * 6);
+                speed *= -0.95f*acceleration;
             } else {
                 //  car is stopped
                 //  this is first acceleration
@@ -315,30 +381,21 @@ public class Cars extends Entity{
     }
 
     private void Decelerate() {
-//        if (!reverse){
-//            turn_angle = turn_angle-Math.PI;
-//            reverse = true;
-//        }
-        if(speed >= -0.5f*top_speed){
+        //  Like decelerate but seeks to make speed negative instead of the positve that accelerate seeks
+        if (reverse == false)
+            reverse = true;
+        if(speed >= -0.6f*top_speed){
+            //  already in reverse keep
             if (speed < 0) {
                 speed *= acceleration;
             } else if (speed > min_vel) {
-                speed *= 1 - (acceleration - 1)*6;
-                System.out.println("decel: "+(1-(acceleration-1)*2));
+                speed *= -0.95f*acceleration;
             } else {
                 speed = -1f*vel_0;
             }
         }else
             //  half top_speed in reverse
-            speed = -0.5f*top_speed;
-    }
-
-    public double getTurn_increment() {
-        return turn_increment;
-    }
-
-    public void setTurn_increment(double turn_increment) {
-        this.turn_increment = turn_increment;
+            speed = -0.6f*top_speed;
     }
 
     public void ProcessHit(CollisionType collision_type, Vector next_move, Rectangle rect){
@@ -523,4 +580,5 @@ public class Cars extends Entity{
        }
 
     }
+
 }
