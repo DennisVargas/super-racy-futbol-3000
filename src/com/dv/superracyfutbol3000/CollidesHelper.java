@@ -13,6 +13,20 @@ import static java.lang.StrictMath.sqrt;
 public abstract class CollidesHelper {
     enum CollisionType {Wall,WallBall, WallCar, CarCar, CarBall,CarGoalie,CarGoal, BallGoalie, BallGoal, None}
 
+    public class CollisionReport{
+        private Cars car1;
+        private Cars car2;
+        private Ball ball;
+        CollisionType collision_type;
+        //            Goalie goalie;
+//            Goal goal;
+        public CollisionReport() {
+            car1 = null;
+            car2 = null;
+            ball = null;
+            collision_type = CollisionType.None;
+        }
+    }
 
     //  takes the x and y of the car and subtract the center x and center y of an ellipse
     //  this ellipse will be on the far goal end of the field.
