@@ -7,6 +7,8 @@ import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.PI;
+
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
@@ -82,15 +84,14 @@ public class Teams {
         Cars car = new Cars(x,y,player);
         if(player.isRed){
             car.rotate(90);
-            car.setTurn_angle(0);
+            car.setTurn_rads(0);
             this.red_team.add(car);
         }
         else{
-            car.rotate(270f);
-            car.setTurn_angle(Math.PI);
+            car.rotate(270);
+            car.setTurn_rads(PI);
             this.blue_team.add(car);
         }
-
     }
 
     public void RenderTeams(Graphics g){
