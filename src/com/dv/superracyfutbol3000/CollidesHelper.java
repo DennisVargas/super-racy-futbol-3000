@@ -72,7 +72,10 @@ public abstract class CollidesHelper {
             return true;
         }
     }
+    public static void CheckWorldCollisions(Teams teams, Ball ball, Ellipse left_boundary, Ellipse right_boundary,
+                                            Rectangle center_boundary){
 
+    }
 //  runs through all the collision types
     public static CollisionType CheckCollisions(Vector v, Ellipse ellipse, Rectangle rect) {
         //  Check collide with wall
