@@ -50,7 +50,7 @@ public abstract class CollidesHelper {
     }
 
     public static void CheckWorldCollisions(Teams teams, Ball ball, Ellipse left_boundary, Ellipse right_boundary,
-                                            Rectangle center_boundary){
+                                            Rectangle center_boundary) {
         //  for each car check if it is gonna run into another car, ball, or wall....
         // todo: goalies and goal areas will be added later to collision detection
 
@@ -63,44 +63,177 @@ public abstract class CollidesHelper {
         teams_list.add(red_team);
         teams_list.add(blue_team);
 
-        for(ArrayList<Cars> team: teams_list){
-            for(Cars car:team){
+        //  for each team in teams_list
+        for (ArrayList<Cars> team : teams_list) {
+            //  for each car in team
+            for (Cars car : team) {
                 //  Check if  car collides with a wall
                 //  check if the car is on the left or right field boundary.
                 //  this determines the ellipse to pass into the function.
-                if(car.getNext_move_location().getX() < SuperRacyFutbol3000.WIDTH/2){
 
-                    if(WallCollide(car.getNext_move_location(),
-                            left_boundary,center_boundary)){
-                        //  don't keep this behavior but it works for now
-                        car.setX(car.getX()+10f);
-                        if(car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT/2)
-                            car.setY(car.getY()+10f);
-                        else
-                            car.setY(car.getY()-10f);
-                        //car.getTranslate_next_move().setY(28f);
+                //  get the array of extreme points from its globally transformed shape
+                float[] car_points = car.getGloballyTransformedShapes().getFirst().getPoints();
+
+                //  set y iterator to be 1 ahead of x iterator
+                int j = 1;
+                //  iterate through the list two at a time until reaching length-1
+                for (int i = 0; i < car_points.length - 1; i += 2) {
+
+                    //  create a new vector point for the new extent point
+                    Vector new_extent_move = new Vector(car_points[i] + car.getTranslate_next_move().getX(),
+                            car_points[j] + car.getTranslate_next_move().getY());
+                    //  increment the y iterator
+                    j += 2;
+
+                    //  check if new extent move is less than rectangle boundary
+                    if (new_extent_move.getX() <= center_boundary.getMinX()) {
+
+                        //  Send left ellipse to wall collide and evaluate extent
+                        if (WallCollide(new_extent_move,
+                                left_boundary, center_boundary)) {
+                            //  don't keep this behavior but it works for now
+                            //  translate in positive x direction to the right if wall hit
+                            car.setX(car.getX() + 10f);
+
+                            //  if y coordinate is less than screen middle increase y
+                            if (car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                                car.setY(car.getY() + 10f);
+                            else//  decrease y its in the lower half
+                                car.setY(car.getY() - 10f);
+                            //car.getTranslate_next_move().setY(28f);
+                        }
                     }
-                }else{
-                    if(WallCollide(car.getNext_move_location(),
-                            right_boundary,center_boundary)){
-                        //  don't keep this behavior but it works for now
-                        car.setX(car.getX()-10f);
-                        if(car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT/2)
-                            car.setY(car.getY()+10f);
-                        else
-                            car.setY(car.getY()-10f);
-                        //car.getTranslate_next_move().setY(28f);
+                    //  X is on the right side of the field since its larger than rectangle bound max
+                    else if (car.getNext_move_location().getX() > center_boundary.getMaxX()) {
+                        //  evaluate point with ellipse 2 right boundary
+                        if (WallCollide(new_extent_move, right_boundary, center_boundary)) {
+                            //  don't keep this behavior but it works for now
+                            car.setX(car.getX() - 10f);
+                            if (car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                                car.setY(car.getY() + 10f);
+                            else
+                                car.setY(car.getY() - 10f);
+                            //car.getTranslate_next_move().setY(28f);
+                        }
+                    } else if (center_boundary.getMinX() <= new_extent_move.getX() && new_extent_move.getX() <= center_boundary.getMaxX()) {
+//                      point is not in the rectangle it is trying to get out the top or bottom
+                        if (!center_boundary.contains(new_extent_move.getX(), new_extent_move.getY())) {
+                            if (new_extent_move.getY() > SuperRacyFutbol3000.HEIGHT / 2)
+                                car.setY(car.getY() - 10f);
+                            else
+                                car.setY(car.getY() + 10f);
+                        }
                     }
+                }
+                //  check for car collisions with ball.
+                Collision collision = null;
+                collision = ball.collides(car);
+                if(collision!=null){
+                    System.out.println("Stop TOUCHGING ME");
 
+                   // ball.setNext_move_direction(ball.getNext_move_direction().bounce(80)) ;
+                    //ball.setTranslateNextMove(ball.getNext_move_direction().add(car.getTranslate_next_move()),1);
 
+                    //  Gets a direction multiplied by the current magnitude but the car force is not added
+//                    Vector result_bounced_direction = ball.getNext_move_direction().bounce(90-car.getTurn_degs()%180);
+                    //  adds the car direction to the ball direction
+                    Vector result_bounced_direction = ball.getNext_move_direction().add(car.getNext_move_direction());
+                    //  sets ball direction to the resulting direction after the collision
+                    ball.setNext_move_direction(result_bounced_direction);
 
+                    System.out.println("Bounced dir x: "+result_bounced_direction.getX());
+                    System.out.println("Bounced dir y: "+result_bounced_direction.getY());
+                    //  sets ball speed to 1.5 of the cars in hopes it will move out in front and not collide again.
+                    //  todo: may need a top speed
+                    ball.setSpeed(ball.getSpeed()+abs(car.getSpeed()));//car speed carries direction forward and back
 
+                    //  create a translation vector multiplying speed*direction
+                    Vector result_translate = new Vector(ball.getSpeed()*result_bounced_direction.getX(),
+                            ball.getSpeed()*result_bounced_direction.getY());
+                    System.out.println("translate dir x: "+result_translate.getX());
+                    System.out.println("translate dir y: "+result_translate.getY());
 
+                    //  set the ball next_translation to be the result translate.
+                    //  it can then be verified for wall collisions
+                    ball.setTranslateNextMove(result_translate);
+
+                    //  takes all translation vector and generates a potential next move
+                    //  this will be used to test against wall collisions, goals, and goalie conditions
+                    ball.GenerateNextMove();
+
+                    //ball.setTranslateNextMove();
+//                    ball.setPosition(ball.getX()+ball.getNext_move_direction().getX()*ball.getSpeed(),
+//                            ball.getY()+ball.getNext_move_direction().getY()*ball.getSpeed());
+
+                  //  ball.setSpeed(ball.getSpeed()+car.getSpeed());
+                    /*ball.setTranslateNextMove(car.getTranslate_next_move(),
+                            car.getAcceleration()*5);*/
                 }
 
             }
         }
+        // check ball collisions with walls
+
+        //  check if new extent move is less than rectangle boundary
+        if (ball.getNext_move_location().getX() <= center_boundary.getMinX()) {
+
+            //  Send left ellipse to wall collide and evaluate extent
+            if (WallCollide(ball.getNext_move_location(),
+                    left_boundary, center_boundary)) {
+                //  don't keep this behavior but it works for now
+                //  translate in positive x direction to the right if wall hit
+                ball.setX(ball.getX() + 200f);
+                //  if y coordinate is less than screen middle increase y
+                if (ball.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                    ball.setY(ball.getY() + 200f);
+                else//  decrease y its in the lower half
+                    ball.setY(ball.getY() - 200f);
+                //car.getTranslate_next_move().setY(28f);
+            }
+        }
+        //  X is on the right side of the field since its larger than rectangle bound max
+        else if (ball.getNext_move_location().getX() >= center_boundary.getMaxX()) {
+            //  evaluate point with ellipse 2 right boundary
+            if (WallCollide(ball.getNext_move_location(), right_boundary, center_boundary)) {
+                //  don't keep this behavior but it works for now
+            //    ball.setX(ball.getX() - 300f);
+                ball.setNext_move_direction(ball.getNext_move_direction().bounce(90));
+                ball.setSpeed(10);
+                if (ball.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                    ball.setY(ball.getY() + 10f);
+                else
+                    ball.setY(ball.getY() - 10f);
+                //car.getTranslate_next_move().setY(28f);
+            }
+
+        }
+        //  ball in rectangle
+        else if (center_boundary.getMinX() <= ball.getNext_move_location().getX() &&
+                ball.getNext_move_location().getX()<= center_boundary.getMaxX()) {
+//                      point is not in the rectangle it is trying to get out the top or bottom
+            //  Ball Rectangle collision
+            if (!center_boundary.contains(ball.getNext_move_location().getX(), ball.getNext_move_location().getY())) {
+                if (ball.getNext_move_location().getY() >= SuperRacyFutbol3000.HEIGHT / 2f){
+                    // set direction to bottom of screen positive direction
+                    ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX(),1f));
+
+
+
+                }
+                //                    ball.setY(ball.getY() - 10f);
+                else{
+                    // set direction to bottom of screen positive direction
+                    ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX(),1f));
+//                    ball.setY(ball.getY() + 10f);
+                }
+                //  Adjust speed - none for now
+                // recalc ball next move
+                ball.GenerateNextMove();
+            }
+        }
     }
+
+
 
 
 
