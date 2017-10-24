@@ -69,48 +69,66 @@ public class PlayState extends BasicGameState {
     }
 
     @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame,
+                       Graphics graphics) throws SlickException {
         background.draw();
 
         //  debug the bounding areas for containing car and ball movement
         if (SuperRacyFutbol3000.isDebugField) {
-            graphics.setColor(Color.white);
-            graphics.fill(ellipse);
-            graphics.fill(ellipse2);
-            graphics.setColor(Color.cyan);
-            graphics.fill(rect);
-            if(SuperRacyFutbol3000.isDebugRotationTest){
-                graphics.setColor(Color.pink);
-                graphics.fill(rect2);
-            }
+            RenderFieldDebugOverlay(graphics);
+
         }
 
         teams.RenderTeams(graphics);
     }
 
+
+
+
     @Override
-    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+    public void update(GameContainer gameContainer,
+                       StateBasedGame stateBasedGame, int i) throws SlickException {
 
         Input input = gameContainer.getInput();
+
         float mouseX = input.getMouseX();
         float mouseY= input.getMouseY();
-        if(SuperRacyFutbol3000.isMouseDebug)System.out.println("MouseX: " +mouseX+" MouseY: "+mouseY);
+        if(SuperRacyFutbol3000.isMouseDebug) {
+            System.out.println("MouseX: " + mouseX);
+            System.out.println("MouseY: " + mouseY);
+        }
+        //  Process the Team Input
         teams.ProcessTeams(input);
-
+        //  Update the Team Position based on collisions and input
         teams.UpdateTeams(ellipse,ellipse2,rect);
 
+    }
+    private void RenderFieldDebugOverlay(Graphics graphics) {
+        graphics.setColor(Color.white);
+        graphics.fill(ellipse);
+        graphics.fill(ellipse2);
+        graphics.setColor(Color.cyan);
+        graphics.fill(rect);
         if(SuperRacyFutbol3000.isDebugRotationTest){
-            theta+=PI/360;
-            if (theta >= 2*PI)
-                theta%=2*PI;
+            graphics.setColor(Color.pink);
+            graphics.fill(rect2);
+        }
+    }
+
+    private void RotationTest() {
+//      A test on moving a particle in an elliptical orbit.
+        if (SuperRacyFutbol3000.isDebugRotationTest) {
+            theta += PI / 360;
+            if (theta >= 2 * PI)
+                theta %= 2 * PI;
 
 //        rotation_test = rotation_test.setX((float) (rotation_test.getX() + theta*cos(theta)));
 //        rotation_test = rotation_test.setY((float) (rotation_test.getY() - theta*sin(theta)));
             float cur_x, cur_y;
             float next_x, next_y;
 
-            next_x = (float) (ellipse.getRadius1()*cos(theta));
-            next_y = (float) (ellipse.getRadius2()*sin(theta));
+            next_x = (float) (ellipse.getRadius1() * cos(theta));
+            next_y = (float) (ellipse.getRadius2() * sin(theta));
 
         /*if (abs(theta) < PI/2 || abs(theta) > 3*PI/2)*/
 //        if (this.rect2.getX() >= ellipse.getCenterX()){
@@ -120,10 +138,9 @@ public class PlayState extends BasicGameState {
 //            next_y -= rect2.getHeight();
 //        }
 
-            rect2.setX((next_x)+320f);
-            rect2.setY((next_y)+360f);
+            rect2.setX((next_x) + 320f);
+            rect2.setY((next_y) + 360f);
         }
-
-
     }
 }
+
