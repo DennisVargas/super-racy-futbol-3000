@@ -266,7 +266,7 @@ public abstract class CollidesHelper {
 
         //  Is v in the rectangle
         if (rect.contains(v.getX(), v.getY())) {
-            if(isWallDebug)System.out.println("RRRREctangle COLLIDE");
+            if(isWallDebug)System.out.println("RRRREctangle CONtained");
             return false;   // not a collision if v is in the rect
         }
         else {
