@@ -55,7 +55,13 @@ public class Cars extends Entity{
 
     Vector next_move_direction = new Vector(0f, 0f);
 
-    float dx, dy, dy_180;
+    public Vector getNext_move_direction() {
+        return next_move_direction;
+    }
+
+    public double getTurn_degs() {
+        return (180/PI)*turn_rads;
+    }
 
     enum TurnDirection {Left, Right}
 
@@ -229,6 +235,10 @@ public class Cars extends Entity{
         turn_rads %=2*PI;
     }
 
+    public Vector getTranslate_next_move() {
+        return translate_next_move;
+    }
+
     //  GenerateNextMove should be a function
     public void GenerateNextMove(Input input){
         //  input causes turn angle and speed to change
@@ -341,24 +351,6 @@ public class Cars extends Entity{
 //        }
     }
 
-    private CarExtentNames GetCollidePointName(int index) {
-        switch(index){
-            case 0:
-                return CarExtentNames.minXY;
-
-            case 1:
-                return CarExtentNames.maxXY;
-
-            case 2:
-                return CarExtentNames.maxMinXY;
-
-            case 3:
-                return CarExtentNames.minMaxXY;
-
-            default:
-                return null;
-        }
-    }
 
     private void Accelerate() {
 
