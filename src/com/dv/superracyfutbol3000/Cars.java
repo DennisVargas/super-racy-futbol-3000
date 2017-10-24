@@ -217,6 +217,21 @@ public class Cars extends Entity{
         turn_rads %=2*PI;
     }
 
+    //  GenerateNextMove should be a function
+    public void GenerateNextMove(Input input){
+        //  input causes turn angle and speed to change
+        //  steering will cause a rotation of the entity but not movement
+        ProcessInput(input);
+
+        //  set the x and y components of the move direction based upon the rotated angle*speed
+        //  direction*scaler
+        next_move_direction = new Vector((float) cos(turn_rads),
+                                        (float)(sin(turn_rads+PI)));
+        next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
+                                        this.getY()+speed*next_move_direction.getY());
+    }
+
+    //  implments the translation on the next move
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
         //  center next move
         Vector next_move = new Vector(0f,0f);
