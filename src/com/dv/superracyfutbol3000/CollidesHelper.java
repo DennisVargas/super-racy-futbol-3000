@@ -1,17 +1,38 @@
 package com.dv.superracyfutbol3000;
 
+import jig.Collision;
 import jig.Vector;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.util.FastTrig;
 
 import java.util.ArrayList;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.isWallDebug;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 import static java.lang.StrictMath.sqrt;
 
 
 public abstract class CollidesHelper {
     enum CollisionType {Wall,WallBall, WallCar, CarCar, CarBall,CarGoalie,CarGoal, BallGoalie, BallGoal, None}
+    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY}
+
+    private CarExtentNames GetCollidePointName(int index) {
+        switch(index){
+            case 0:
+                return CarExtentNames.minXY;
+            case 1:
+                return CarExtentNames.maxXY;
+            case 2:
+                return CarExtentNames.maxMinXY;
+            case 3:
+                return CarExtentNames.minMaxXY;
+
+            default:
+                return null;
+        }
+    }
 
     public class CollisionReport{
         private Cars car1;
