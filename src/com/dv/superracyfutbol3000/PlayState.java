@@ -80,6 +80,7 @@ public class PlayState extends BasicGameState {
         }
 
         teams.RenderTeams(graphics);
+        ball.RenderBall(graphics);
     }
 
 
@@ -101,6 +102,9 @@ public class PlayState extends BasicGameState {
         teams.ProcessTeams(input);
         //  Update the Team Position based on collisions and input
         teams.UpdateTeams(ellipse,ellipse2,rect);
+        Cars car =teams.getRed_team().get(0);
+        //  Update the Ball based on collisions
+        ball.UpdateBall(ellipse,ellipse2,rect,car);
 
     }
     private void RenderFieldDebugOverlay(Graphics graphics) {
