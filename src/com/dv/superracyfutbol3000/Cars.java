@@ -5,6 +5,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.util.ArrayList;
+
 import static com.dv.superracyfutbol3000.CollidesHelper.*;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.PI;
@@ -14,9 +16,15 @@ import static org.newdawn.slick.util.FastTrig.sin;
 
 public class Cars extends Entity{
     private float wall_bounce_factor = 0.003f;
-    private Vector next_move_location = new Vector(0,0);
 
-    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY};
+//  Holds resulting hit vectors that will be added to in the update method
+    ArrayList<CollidesHelper.CollisionReport> collision_reports;
+
+    private Vector next_move_location = new Vector(0,0);
+    private Vector translate_next_move = new Vector(0,0);
+
+    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY}
+
     Quadrant facing_direction = new Quadrant();
     Quadrant moving_direction = new Quadrant();
 
@@ -393,8 +401,6 @@ public class Cars extends Entity{
             //  half top_speed in reverse
             speed = -0.6f*top_speed;
     }
-
-
 
     public void ProcessHit(CollisionType collision_type, Vector next_move, Rectangle rect){
         //  takes a parameter of collison type and affects the car based on what it ran into.
