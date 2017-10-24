@@ -26,6 +26,7 @@ public class PlayState extends BasicGameState {
     double theta;
     Vector rotation_test = new Vector(0,0);
     Rectangle rect2 = new Rectangle (0,0,23,35);
+    Ball ball;
 
     //  field area by left and right goal ellipse
     //  center = 320x352
