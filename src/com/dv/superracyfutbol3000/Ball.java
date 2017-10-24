@@ -117,4 +117,29 @@ public class Ball extends Entity{
     }
 
 
+    public void BallHit(Vector hit_vector, CollidesHelper.CollisionType collision_type){
+
+
+    }
+
+    //  takes all collision directions and
+    //  sums them to the ball translation vector.
+    private void AddCollides() {
+        for(CollidesHelper.CollisionReport report: this.collision_reports){
+            switch(report.collision_type){
+                case CarBall:
+                    break;
+
+            }
+        }
+    }
+
+    public void setTranslateNextMove(Vector translate_next_move) {
+        this.translate_next_move = this.translate_next_move.setX(translate_next_move.getX());
+        this.translate_next_move = this.translate_next_move.setY(translate_next_move.getY());
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
 }
