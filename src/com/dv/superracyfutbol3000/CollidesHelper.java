@@ -28,6 +28,61 @@ public abstract class CollidesHelper {
         }
     }
 
+    public static void CheckWorldCollisions(Teams teams, Ball ball, Ellipse left_boundary, Ellipse right_boundary,
+                                            Rectangle center_boundary){
+        //  for each car check if it is gonna run into another car, ball, or wall....
+        // todo: goalies and goal areas will be added later to collision detection
+
+        //  Teams should have each team in a list
+        //  not in seperate variables
+        //  todo: change Teams to house red_team blue_team as a list
+        ArrayList<Cars> red_team = teams.getRed_team();
+        ArrayList<Cars> blue_team = teams.getBlue_team();
+        ArrayList<ArrayList> teams_list = new ArrayList<>();
+        teams_list.add(red_team);
+        teams_list.add(blue_team);
+
+        for(ArrayList<Cars> team: teams_list){
+            for(Cars car:team){
+                //  Check if  car collides with a wall
+                //  check if the car is on the left or right field boundary.
+                //  this determines the ellipse to pass into the function.
+                if(car.getNext_move_location().getX() < SuperRacyFutbol3000.WIDTH/2){
+
+                    if(WallCollide(car.getNext_move_location(),
+                            left_boundary,center_boundary)){
+                        //  don't keep this behavior but it works for now
+                        car.setX(car.getX()+10f);
+                        if(car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT/2)
+                            car.setY(car.getY()+10f);
+                        else
+                            car.setY(car.getY()-10f);
+                        //car.getTranslate_next_move().setY(28f);
+                    }
+                }else{
+                    if(WallCollide(car.getNext_move_location(),
+                            right_boundary,center_boundary)){
+                        //  don't keep this behavior but it works for now
+                        car.setX(car.getX()-10f);
+                        if(car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT/2)
+                            car.setY(car.getY()+10f);
+                        else
+                            car.setY(car.getY()-10f);
+                        //car.getTranslate_next_move().setY(28f);
+                    }
+
+
+
+
+
+                }
+
+            }
+        }
+    }
+
+
+
     //  takes the x and y of the car and subtract the center x and center y of an ellipse
     //  this ellipse will be on the far goal end of the field.
     //  when the car crosses this threshold return true
