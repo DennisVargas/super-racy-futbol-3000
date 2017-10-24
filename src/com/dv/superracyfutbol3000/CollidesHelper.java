@@ -4,12 +4,14 @@ import jig.Vector;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.util.ArrayList;
+
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.isWallDebug;
 import static java.lang.StrictMath.sqrt;
 
 
 public abstract class CollidesHelper {
-    enum CollisionType {Wall, Goalie, Car, Ball, Goal, None}
+    enum CollisionType {Wall,WallBall, WallCar, CarCar, CarBall,CarGoalie,CarGoal, BallGoalie, BallGoal, None}
 
 
     //  takes the x and y of the car and subtract the center x and center y of an ellipse
