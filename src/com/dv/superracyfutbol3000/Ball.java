@@ -54,6 +54,7 @@ public class Ball extends Entity{
         //setBallImage();// or maybe just draw a shape for now and forever
         ball_sphere = new Circle(x,y,this.radius);
         this.addShape(new ConvexPolygon(this.radius));
+        this.GenerateNextMove();
     }
 
     public Ball() {
@@ -70,6 +71,23 @@ public class Ball extends Entity{
     //  Process Ball Hit
     public void ProcessBallHit(){
 
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void GenerateNextMove(){
+        translate_next_move = translate_next_move.setX(speed * (next_move_direction.getX()));
+        translate_next_move = translate_next_move.setY(speed * (next_move_direction.getY()));/*
+        if (speed != 0) {
+            translate_next_move = translate_next_move.setX(speed * (next_move_direction.getX()) + translate_next_move.getX());
+            translate_next_move = translate_next_move.setY(speed * (next_move_direction.getY()) + translate_next_move.getY());
+        }else{
+            translate_next_move = translate_next_move.setX(0);
+            translate_next_move = translate_next_move.setY(0);
+        }*/
+        CalculateNextPosition();
     }
 
     //  Update Ball
