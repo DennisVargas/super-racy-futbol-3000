@@ -143,12 +143,13 @@ public class Teams {
     }
 
 
-    public void ProcessTeams(Input input) {
+    public void UpdateTeamsNextMove(Input input) {
         for (Cars car: red_team){
-            car.ProcessInput(input);
+            car.GenerateNextMove(input);
+
         }
         for (Cars car: blue_team){
-            car.ProcessInput(input);
+            car.GenerateNextMove(input);
         }
     }
 }
