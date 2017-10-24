@@ -37,10 +37,10 @@ public class Cars extends Entity{
     private float mass = 1f;
     private boolean turned = false;
     private double prev_turn_rads;
-    private double turn_rads = (PI/180)*this.getRotation();
+    private double turn_rads = (PI / 180) * this.getRotation();
 
-    private double turn_increment = PI/175; // angular acceleration
-    private double deg_turn_increment = (180*turn_increment)/PI;
+    private double turn_increment = PI / 175; // angular acceleration
+    private double deg_turn_increment = (180 * turn_increment) / PI;
     private float top_speed = 3.5f;
     private float acceleration = 1.075f;
     private float top_boost_speed = 0f;
@@ -53,11 +53,15 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
-    Vector next_move_direction = new Vector(0f,0f);
+    Vector next_move_direction = new Vector(0f, 0f);
 
     float dx, dy, dy_180;
 
     enum TurnDirection {Left, Right}
+
+    public Vector getNext_move_location() {
+        return next_move_location;
+    }
 
     public double getTurn_rads() {
         return turn_rads;
