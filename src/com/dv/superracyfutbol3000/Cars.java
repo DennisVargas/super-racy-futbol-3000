@@ -345,19 +345,22 @@ public class Cars extends Entity{
     }
 
     private void Accelerate() {
-//        if (reverse){
-//            turn_angle += Math.PI;
-//            reverse = false;
-//        }
+
+        //  Accelerate alters the scaler value of speed by multiplying it by positive
+        //  or negative acceleration depending on the motion of the body when accelerate is pressed.
+        //  if moving in reverse direction should change along the same axis so and negative 1 is multiplied
         if(speed <= top_speed) {
+            if (reverse == true)
+                reverse = false;
             //  if car is moving
-            if (speed > 0) {
+            if (speed > 0 ) {
                 speed *= acceleration;
             }
             //  car moving in reverse
             //  change direction
             else if (speed < -min_vel) {
-                speed *= (1 - (acceleration - 1) * 6);
+                //speed *= (1 - (acceleration - 1) * 6);
+                speed *= -0.95f*acceleration;
             } else {
                 //  car is stopped
                 //  this is first acceleration
@@ -370,31 +373,24 @@ public class Cars extends Entity{
     }
 
     private void Decelerate() {
-//        if (!reverse){
-//            turn_angle = turn_angle-Math.PI;
-//            reverse = true;
-//        }
-        if(speed >= -0.5f*top_speed){
+        //  Like decelerate but seeks to make speed negative instead of the positve that accelerate seeks
+        if (reverse == false)
+            reverse = true;
+        if(speed >= -0.6f*top_speed){
+            //  already in reverse keep
             if (speed < 0) {
                 speed *= acceleration;
             } else if (speed > min_vel) {
-                speed *= 1 - (acceleration - 1)*6;
-                System.out.println("decel: "+(1-(acceleration-1)*2));
+                speed *= -0.95f*acceleration;
             } else {
                 speed = -1f*vel_0;
             }
         }else
             //  half top_speed in reverse
-            speed = -0.5f*top_speed;
+            speed = -0.6f*top_speed;
     }
 
-    public double getTurn_increment() {
-        return turn_increment;
-    }
 
-    public void setTurn_increment(double turn_increment) {
-        this.turn_increment = turn_increment;
-    }
 
     public void ProcessHit(CollisionType collision_type, Vector next_move, Rectangle rect){
         //  takes a parameter of collison type and affects the car based on what it ran into.
@@ -578,4 +574,5 @@ public class Cars extends Entity{
        }
 
     }
+
 }
