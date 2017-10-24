@@ -23,7 +23,7 @@ public class Cars extends Entity{
     private Vector next_move_location = new Vector(0,0);
     private Vector translate_next_move = new Vector(0,0);
 
-    enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY}
+
 
     Quadrant facing_direction = new Quadrant();
     Quadrant moving_direction = new Quadrant();
