@@ -1,14 +1,9 @@
 package com.dv.superracyfutbol3000;
 
 import jig.*;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.util.FastTrig;
-
-import java.math.MathContext;
-import java.util.Scanner;
 
 import static com.dv.superracyfutbol3000.CollidesHelper.*;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
@@ -19,10 +14,13 @@ import static org.newdawn.slick.util.FastTrig.sin;
 
 public class Cars extends Entity{
     private float wall_bounce_factor = 0.003f;
+    private Vector next_move_location = new Vector(0,0);
 
     enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY};
     Quadrant facing_direction = new Quadrant();
     Quadrant moving_direction = new Quadrant();
+
+
     Players controlling_player;
     private float health_level = 0f;
     private float boost_level = 0f;
@@ -30,10 +28,11 @@ public class Cars extends Entity{
     boolean reverse = false;
     private float mass = 1f;
     private boolean turned = false;
-    private double prev_angle;
-    private double turn_angle = PI/2;
+    private double prev_turn_rads;
+    private double turn_rads = (PI/180)*this.getRotation();
 
     private double turn_increment = PI/175; // angular acceleration
+    private double deg_turn_increment = (180*turn_increment)/PI;
     private float top_speed = 3.5f;
     private float acceleration = 1.075f;
     private float top_boost_speed = 0f;
@@ -46,10 +45,38 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
+    Vector next_move_direction = new Vector(0f,0f);
+
     float dx, dy, dy_180;
 
     enum TurnDirection {Left, Right}
 
+    public double getTurn_rads() {
+        return turn_rads;
+    }
+    public float getSpeed(){
+        return speed;
+    }
+
+    public float getAcceleration(){
+        return acceleration;
+    }
+
+    public double getTurnIncrement(){
+        return turn_increment;
+    }
+
+    public void setTurn_rads(double turn_rads) {
+        this.turn_rads = turn_rads;
+    }
+
+    public double getTurn_increment() {
+        return turn_increment;
+    }
+
+    public void setTurn_increment(double turn_increment) {
+        this.turn_increment = turn_increment;
+    }
 
     //  Cars Constructor
     public Cars(float x, float y, Players controlling_player) {
