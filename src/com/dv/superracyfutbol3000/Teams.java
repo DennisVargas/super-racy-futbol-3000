@@ -103,7 +103,7 @@ public class Teams {
         }
     }
 
-    public void UpdateTeams(Ellipse ellipse1, Ellipse ellipse2,  Rectangle rect){
+    public void ProcessTeamsNextMove(Ellipse ellipse1, Ellipse ellipse2, Rectangle rect){
 
         for (Cars car: red_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
