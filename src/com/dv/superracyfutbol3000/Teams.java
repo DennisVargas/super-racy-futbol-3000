@@ -1,5 +1,6 @@
 package com.dv.superracyfutbol3000;
 
+import jig.Vector;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
@@ -12,6 +13,10 @@ import static java.lang.Math.PI;
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
+
+    //  goalies are controlled seperate from car driven players
+    Goalie red_goalie = new Goalie(74,360,true);
+    Goalie blue_goalie = new Goalie(1210,360,false);
 
     int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayersPerTeam();
     int total_players = 2*players_per_team;
@@ -26,6 +31,8 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
+
+
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
         int i = 0;
@@ -94,14 +101,6 @@ public class Teams {
         }
     }
 
-    public void RenderTeams(Graphics g){
-        for (Cars car:blue_team){
-            car.render(g);
-        }
-        for(Cars car:red_team){
-            car.render(g);
-        }
-    }
 
     public void ProcessTeamsNextMove(Ellipse ellipse1, Ellipse ellipse2, Rectangle rect){
 
