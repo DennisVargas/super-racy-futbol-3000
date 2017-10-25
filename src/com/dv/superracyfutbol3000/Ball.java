@@ -136,28 +136,11 @@ public class Ball extends Entity{
     public Vector getTranslate_next_move() {
         return translate_next_move;
     }
+
     public Vector CalculateNextPosition(){
         this.next_move_location = new Vector(this.getX()+this.translate_next_move.getX(),
                 this.getY()+this.translate_next_move.getY());
         return this.next_move_location;
-    }
-
-
-    public void BallHit(Vector hit_vector, CollidesHelper.CollisionType collision_type){
-
-
-    }
-
-    //  takes all collision directions and
-    //  sums them to the ball translation vector.
-    private void AddCollides() {
-        for(CollidesHelper.CollisionReport report: this.collision_reports){
-            switch(report.collision_type){
-                case CarBall:
-                    break;
-
-            }
-        }
     }
 
     public void setTranslateNextMove(Vector translate_next_move) {
@@ -171,5 +154,9 @@ public class Ball extends Entity{
 
     public Circle getBall_Sphere() {
         return ball_sphere;
+    }
+
+    public void ResetBallStart() {
+        this.setPosition(this.ball_start);
     }
 }
