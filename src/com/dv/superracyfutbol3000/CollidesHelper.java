@@ -19,6 +19,15 @@ import static java.lang.StrictMath.sqrt;
 public abstract class CollidesHelper {
     enum CollisionType {Wall,WallBall, WallCar, CarCar, CarBall,CarGoalie,CarGoal, BallGoalie, BallGoal, None}
     enum CarExtentNames {minXY, maxXY, maxMinXY, minMaxXY}
+    private int previous_check_time = 0;
+
+    public int getPrevious_check_time() {
+        return previous_check_time;
+    }
+
+    public void setPrevious_check_time(int previous_check_time) {
+        this.previous_check_time = previous_check_time;
+    }
 
     private CarExtentNames GetCollidePointName(int index) {
         switch(index){
