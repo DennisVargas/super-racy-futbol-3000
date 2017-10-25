@@ -80,14 +80,17 @@ public class PlayState extends BasicGameState {
 
         }
 
-        teams.RenderTeams(graphics);
+        RenderTeams(graphics);
         ball.RenderBall(graphics);
+//        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
     }
 
 
     @Override
     public void update(GameContainer gameContainer,
                        StateBasedGame stateBasedGame, int i) throws SlickException {
+
+        time+= i;
 
         Input input = gameContainer.getInput();
 
@@ -101,15 +104,42 @@ public class PlayState extends BasicGameState {
         teams.UpdateTeamsNextMove(input);
 
         //  Check for collisions with the next move before processing
-        CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect);
+        //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
+        CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect,time);
 
         //  Update the Team Position based on collisions and input
         teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);
 
+        //  passing the balls current position and its heading
+        // the goalie can more or less guess where the ball will be next
+        if(teams.GoalieTrackingBallStuck(ball, time))
+            System.out.println("ball Stuck OH NO");
         //  Update the Ball based on collisions
         ball.UpdateBall(ellipse,ellipse2,rect);
 
     }
+
+    public void RenderTeams(Graphics g){
+        for (Cars car:teams.getRed_team()){
+            car.render(g);
+        }
+        for(Cars car:teams.getBlue_team()){
+            car.render(g);
+        }
+        RenderGoalies(g, teams.getRedGoalie(), teams.getBlueGoale());
+    }
+
+    private void RenderGoalies(Graphics g, Goalie red_goalie, Goalie blue_goalie) {
+        g.setColor(org.newdawn.slick.Color.pink);
+        g.fill(red_goalie.getGoalie_rect());
+        g.setColor(org.newdawn.slick.Color.cyan);
+        g.fill(blue_goalie.getGoalie_rect());
+        red_goalie.render(g);
+        blue_goalie.render(g);
+    }
+
+
+
     private void RenderFieldDebugOverlay(Graphics graphics) {
         graphics.setColor(Color.white);
         graphics.fill(ellipse);
