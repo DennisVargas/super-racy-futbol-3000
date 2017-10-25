@@ -61,7 +61,7 @@ public abstract class CollidesHelper {
     }
 
     public static void CheckWorldCollisions(Teams teams, Ball ball, Ellipse left_boundary, Ellipse right_boundary,
-                                            Rectangle center_boundary) {
+                                            Rectangle center_boundary,int time) {
         //  for each car check if it is gonna run into another car, ball, or wall....
         // todo: goalies and goal areas will be added later to collision detection
 
@@ -142,6 +142,7 @@ public abstract class CollidesHelper {
                 //  check for car collisions with ball.
                 Collision collision = null;
                 collision = ball.collides(car);
+
                 if(collision!=null){
                     System.out.println("Stop TOUCHING ME");
 
