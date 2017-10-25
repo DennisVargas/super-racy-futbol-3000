@@ -15,14 +15,23 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Ball extends Entity{
-    private final float radius = 16f;
+    private final float radius = 20f;
     private float mass = 0.5f;
-    private float top_speed = 6f;
+    private float top_speed = 5f;
     private Circle ball_sphere;
+    private float friction = 0.9895f;
     //  Holds resulting hit vectors that will be added to in the update method
     ArrayList<CollidesHelper.CollisionReport> collision_reports = new ArrayList<>();
 
+    public Vector getBall_start() {
+        return ball_start;
+    }
 
+    public void setBall_start(Vector ball_start) {
+        this.ball_start = ball_start;
+    }
+
+    Vector ball_start = new Vector(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     public float getTopSpeed() {
         return top_speed;
     };
