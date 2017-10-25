@@ -102,7 +102,7 @@ public class Cars extends Entity{
         this.controlling_player = controlling_player;
 
         SetCarImage();
-        next_move_direction = new Vector(1f,0);
+        next_move_direction = new Vector(1f,0f);
 
 //        this.debugThis = true;
 //        Entity.setDebug(true);
@@ -249,8 +249,9 @@ public class Cars extends Entity{
         //  direction*scaler
 
         next_move_direction = new Vector((float) cos(turn_rads),
-                                        (float)(sin(turn_rads+PI)));
-
+                                        (float)(sin(turn_rads-PI)));
+        if(controlling_player.control_type != Players.Controller.AI && SuperRacyFutbol3000.isTurnDebug)
+            System.out.println("car_next_move_direction: "+next_move_direction.getX()+", "+next_move_direction.getY());
         translate_next_move = new Vector ( speed*next_move_direction.getX(), speed*next_move_direction.getY());
 
         next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
@@ -357,19 +358,26 @@ public class Cars extends Entity{
         //  Accelerate alters the scaler value of speed by multiplying it by positive
         //  or negative acceleration depending on the motion of the body when accelerate is pressed.
         //  if moving in reverse direction should change along the same axis so and negative 1 is multiplied
+        if (reverse){
+            reverse = false;
+            turn_rads += PI;
+//            next_move_direction = next_move_direction.setX((float) (next_move_direction.getX()*-1f));
+//            next_move_direction =  next_move_direction.setY((float) (next_move_direction.getY()*-1f));
+        }
+
+
         if(speed <= top_speed) {
-            if (reverse == true)
-                reverse = false;
             //  if car is moving
             if (speed > 0 ) {
                 speed *= acceleration;
             }
             //  car moving in reverse
             //  change direction
-            else if (speed < -min_vel) {
-                //speed *= (1 - (acceleration - 1) * 6);
-                speed *= -0.95f*acceleration;
-            } else {
+//            else if (speed < -min_vel) {
+//                //speed *= (1 - (acceleration - 1) * 6);
+//                speed *= 0.95f*acceleration;
+//            }
+            else {
                 //  car is stopped
                 //  this is first acceleration
                 //  start slow normal accel == 1.25
@@ -382,20 +390,28 @@ public class Cars extends Entity{
 
     private void Decelerate() {
         //  Like decelerate but seeks to make speed negative instead of the positve that accelerate seeks
-        if (reverse == false)
+        if (!reverse){
             reverse = true;
-        if(speed >= -0.6f*top_speed){
+            turn_rads += PI;
+//            next_move_direction = next_move_direction.setX((float) (next_move_direction.getX()*-1f));
+//            next_move_direction = next_move_direction.setY((float) (next_move_direction.getY()*-1f));
+        }
+
+        if(speed <= 0.6f*top_speed){
             //  already in reverse keep
-            if (speed < 0) {
+            if (speed > 0) {
                 speed *= acceleration;
-            } else if (speed > min_vel) {
-                speed *= -0.95f*acceleration;
-            } else {
-                speed = -1f*vel_0;
+            }
+//            else if (speed > min_vel) {
+//                speed *= -0.95f*acceleration;
+//            }
+            else {
+//                speed = -1f*vel_0;
+                speed = vel_0;
             }
         }else
             //  half top_speed in reverse
-            speed = -0.6f*top_speed;
+            speed = 0.6f*top_speed;
     }
 
     public void ProcessHit(CollisionType collision_type, Vector next_move, Rectangle rect){
