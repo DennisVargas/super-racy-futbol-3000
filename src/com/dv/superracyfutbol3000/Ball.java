@@ -84,6 +84,19 @@ public class Ball extends Entity{
     }
 
     public void GenerateNextMove(){
+        if(speed <= top_speed){
+            if(speed >0.001f)
+                speed*=0.85f;
+            else if (abs(speed) <= 0.001f)
+                speed = 0f;
+        }else
+            speed = top_speed;
+
+        System.out.println("ball next_move_direction:  "+next_move_direction.getX()+", "+next_move_direction.getY());
+        if (speed == 0 ){
+            next_move_direction = next_move_direction.setX(0f);
+            next_move_direction = next_move_direction.setY(0f);
+        }
         translate_next_move = translate_next_move.setX(speed * (next_move_direction.getX()));
         translate_next_move = translate_next_move.setY(speed * (next_move_direction.getY()));/*
         if (speed != 0) {
@@ -100,13 +113,7 @@ public class Ball extends Entity{
     public void UpdateBall(Ellipse left_walls, Ellipse right_walls, Rectangle center_walls){
 //        AddCollides();
         this.translate(translate_next_move);
-        if(speed < 6.8f){
-            if(speed >0.1f)
-                speed*=0.5f;
-            else if (abs(speed) <= 0.1f)
-                speed = 0f;
-        }else
-            speed = 6.8f*0.5f;
+
 
         this.ball_sphere.setLocation(this.getX()-ball_sphere.radius ,
                                         this.getY()-ball_sphere.radius);
@@ -118,7 +125,8 @@ public class Ball extends Entity{
         return translate_next_move;
     }
     public Vector CalculateNextPosition(){
-        this.next_move_location = new Vector(this.getX()+this.translate_next_move.getX(), this.getY()+this.translate_next_move.getY());
+        this.next_move_location = new Vector(this.getX()+this.translate_next_move.getX(),
+                this.getY()+this.translate_next_move.getY());
         return this.next_move_location;
     }
 
@@ -147,5 +155,9 @@ public class Ball extends Entity{
 
     public float getSpeed() {
         return speed;
+    }
+
+    public Circle getBall_Sphere() {
+        return ball_sphere;
     }
 }
