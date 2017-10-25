@@ -151,4 +151,28 @@ public class Teams {
             car.GenerateNextMove(input);
         }
     }
+
+    //  tracks the ball and updates goalie
+    //  goalies also track the timeout for the ball and  reset the ball to origin
+    public boolean GoalieTrackingBallStuck(Ball ball, int time) {
+        red_goalie.TrackBall(ball.getPosition(), ball.getNext_move_direction());
+        if(red_goalie.IsBallStuck(ball.getPosition(),time)){
+            // reset the ball
+            ball.ResetBallStart();
+            return false;
+        }else if(blue_goalie.IsBallStuck(ball.getPosition(),time)){
+            //  reset the ball
+            return false;
+        }
+        return true;
+    }
+
+
+    public Goalie getRedGoalie() {
+        return red_goalie;
+    }
+
+    public Goalie getBlueGoale() {
+        return blue_goalie;
+    }
 }
