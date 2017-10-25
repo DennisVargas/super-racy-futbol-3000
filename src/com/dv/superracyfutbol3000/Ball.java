@@ -44,17 +44,17 @@ public class Ball extends Entity{
         this.next_move_direction = next_move_direction;
     }
 
-    private Vector next_move_direction = new Vector(0f, 0f);
 
     public Vector getNext_move_location() {
         return next_move_location;
     }
 
+    private Vector next_move_direction = new Vector(0f, 0f);
     private Vector next_move_location = new Vector(0f,0f);
     private Vector translate_next_move = new Vector(0f,0f);
 
     private float wall_bounce_factor = 0.003f;
-    private float speed_0 = 0.8f;
+    private float speed_0 = 1f;
     private float speed = speed_0;
 
 
