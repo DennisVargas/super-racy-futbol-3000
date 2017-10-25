@@ -73,7 +73,10 @@ public class Ball extends Entity{
     }
 
     public Ball() {
-
+        super();
+        this.setPosition(new Vector(this.ball_start.getX(),this.ball_start.getY()));
+        ball_sphere = new Circle(getX(), getY(), this.radius);
+        this.addShape(new ConvexPolygon(this.radius));
     }
 
     //  Render Ball
