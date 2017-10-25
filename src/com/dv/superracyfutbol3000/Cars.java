@@ -102,7 +102,7 @@ public class Cars extends Entity{
         this.controlling_player = controlling_player;
 
         SetCarImage();
-        next_move_direction = new Vector(1f,0);
+        next_move_direction = new Vector(1f,0f);
 
 //        this.debugThis = true;
 //        Entity.setDebug(true);
@@ -249,8 +249,9 @@ public class Cars extends Entity{
         //  direction*scaler
 
         next_move_direction = new Vector((float) cos(turn_rads),
-                                        (float)(sin(turn_rads+PI)));
-
+                                        (float)(sin(turn_rads-PI)));
+        if(controlling_player.control_type != Players.Controller.AI && SuperRacyFutbol3000.isTurnDebug)
+            System.out.println("car_next_move_direction: "+next_move_direction.getX()+", "+next_move_direction.getY());
         translate_next_move = new Vector ( speed*next_move_direction.getX(), speed*next_move_direction.getY());
 
         next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
