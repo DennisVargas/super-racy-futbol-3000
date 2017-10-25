@@ -45,7 +45,7 @@ public class Ball extends Entity{
     private Vector translate_next_move = new Vector(0f,0f);
 
     private float wall_bounce_factor = 0.003f;
-    private float speed_0 = 0.2f;
+    private float speed_0 = 0.8f;
     private float speed = speed_0;
 
 
