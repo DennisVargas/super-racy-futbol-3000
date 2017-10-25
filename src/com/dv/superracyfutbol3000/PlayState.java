@@ -22,6 +22,7 @@ public class PlayState extends BasicGameState {
     Vector rotation_test = new Vector(0,0);
     Rectangle rect2 = new Rectangle (0,0,23,35);
     Ball ball;
+    Goalie goalies;
 
     //  field area by left and right goal ellipse
     //  center = 320x352
@@ -40,6 +41,8 @@ public class PlayState extends BasicGameState {
 
  // Create Teams
     Teams teams;
+    private int time;
+
     public PlayState(int stateID) {
         super();
         this.stateID = stateID;
@@ -54,13 +57,16 @@ public class PlayState extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
+        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
+
+
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
-        this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
+
     }
 
     @Override

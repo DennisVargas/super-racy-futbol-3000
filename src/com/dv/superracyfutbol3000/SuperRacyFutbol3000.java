@@ -100,6 +100,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     }
 
     public static void main(String[] args) throws SlickException{
+
         if (CheckDebug(args))
             isDebug= true;
         AppGameContainer app = new AppGameContainer(new SuperRacyFutbol3000());
