@@ -17,9 +17,15 @@ import static java.lang.Math.abs;
 public class Ball extends Entity{
     private final float radius = 16f;
     private float mass = 0.5f;
+    private float top_speed = 6f;
     private Circle ball_sphere;
     //  Holds resulting hit vectors that will be added to in the update method
     ArrayList<CollidesHelper.CollisionReport> collision_reports = new ArrayList<>();
+
+
+    public float getTopSpeed() {
+        return top_speed;
+    };
 
     public Vector getNext_move_direction() {
         return next_move_direction;
