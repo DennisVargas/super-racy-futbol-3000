@@ -98,7 +98,7 @@ public class Ball extends Entity{
     public void GenerateNextMove(){
         if(speed <= top_speed){
             if(speed >0.001f)
-                speed*=0.85f;
+                speed*=0.93f;
             else if (abs(speed) <= 0.001f)
                 speed = 0f;
         }else
