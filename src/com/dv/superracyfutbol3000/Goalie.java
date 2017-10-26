@@ -217,5 +217,10 @@ public class Goalie extends Entity{
 
     }
 
+    private Vector CalculateNextGoaliePosition() {
+        this.next_position = new Vector(this.getX()+this.next_translation.getX(),this.getY()
+                +this.next_translation.getY());
+        return this.next_position;
+    }
 }
 
