@@ -143,9 +143,7 @@ public class Goalie extends Entity{
 
     }
 
-    void RenderGoalie(Graphics g){
 
-    }
 
     public Vector TrackBallSetDirection(Vector ball_position, Vector ball_next_move_direction) {
         //  Take the difference of ballY - 360 %2

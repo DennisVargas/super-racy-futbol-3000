@@ -57,6 +57,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static boolean isTurnDebug;
     public static boolean isQuadrantDebug;
     public static boolean isGoalieDebug;
+    public static boolean isScoreDebug;
 
     public SuperRacyFutbol3000() {
         super(NAME);

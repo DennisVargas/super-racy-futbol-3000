@@ -42,6 +42,10 @@ public class PlayState extends BasicGameState {
  // Create Teams
     Teams teams;
     private int time;
+    private Goals red_goal;
+    private Goals blue_goal;
+    int red_score, blue_score;
+
 
     public PlayState(int stateID) {
         super();
@@ -58,6 +62,8 @@ public class PlayState extends BasicGameState {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
+        this.red_goal = new Goals(true);
+        this.blue_goal = new Goals(false);
 
 
     }
@@ -66,7 +72,7 @@ public class PlayState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
-
+        red_score = blue_score = 0;
     }
 
     @Override
@@ -89,6 +95,7 @@ public class PlayState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer,
                        StateBasedGame stateBasedGame, int i) throws SlickException {
+
 
         time+= i;
 
@@ -119,6 +126,21 @@ public class PlayState extends BasicGameState {
         //  Update the Ball based on collisions
         ball.UpdateBall(ellipse,ellipse2,rect);
 
+        // test if goal
+        //  and
+        //  update score
+        red_score += red_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
+        blue_score += blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
+
+
+        if(red_score > SuperRacyFutbol3000.play_settings.getScoreLimit()
+                || blue_score > SuperRacyFutbol3000.play_settings.getScoreLimit()){
+            if(red_score> blue_score)
+                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Red Team Wins");
+            else
+                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Blue Team Wins");
+        }
+            //  declare winner if true
     }
 
     public void RenderTeams(Graphics g){

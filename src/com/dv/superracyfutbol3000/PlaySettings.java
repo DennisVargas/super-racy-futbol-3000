@@ -8,6 +8,8 @@ public class PlaySettings {
     private int players_per_team;
     private int human_players;
     private Teams teams;
+    private int score_limit=1;
+    private int time_limit = 30;
 
     public PlaySettings(ArrayList<Players> players, int players_per_team, int human_players) {
         this.players = players;
@@ -49,5 +51,18 @@ public class PlaySettings {
     }
     public Teams GetTeams(){
         return teams;
+    }
+
+    public void SetScoreLimit(int score_limit) {
+        this.score_limit = score_limit;
+    }
+
+    public void SetTimeLimit(int time_limit) {
+        //  time limit in seconds
+        this.time_limit = time_limit;
+    }
+
+    public int getScoreLimit() {
+        return score_limit;
     }
 }
