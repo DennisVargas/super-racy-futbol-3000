@@ -1,7 +1,5 @@
 package com.dv.superracyfutbol3000;
 
-import jig.Vector;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
@@ -150,21 +148,28 @@ public class Teams {
         for (Cars car: blue_team){
             car.GenerateNextMove(input);
         }
+        red_goalie.UpdateGoaliePosition();
+        blue_goalie.UpdateGoaliePosition();
     }
 
     //  tracks the ball and updates goalie
     //  goalies also track the timeout for the ball and  reset the ball to origin
     public boolean GoalieTrackingBallStuck(Ball ball, int time) {
-        red_goalie.TrackBall(ball.getPosition(), ball.getNext_move_direction());
+        red_goalie.TrackBallSetDirection(ball.getPosition(), ball.getNext_move_direction());
+        blue_goalie.TrackBallSetDirection(ball.getPosition(), ball.getNext_move_direction());
+        red_goalie.GenerateNextTranslation();
+        blue_goalie.GenerateNextTranslation();
+
         if(red_goalie.IsBallStuck(ball.getPosition(),time)){
             // reset the ball
             ball.ResetBallStart();
-            return false;
+            return true;
         }else if(blue_goalie.IsBallStuck(ball.getPosition(),time)){
             //  reset the ball
-            return false;
+            ball.ResetBallStart();
+            return true;
         }
-        return true;
+        return false;
     }
 
 
