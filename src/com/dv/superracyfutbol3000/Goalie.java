@@ -167,21 +167,36 @@ public class Goalie extends Entity{
         }
     }
 
+    //  Time should be passed in seconds.
     public boolean IsBallStuck(Vector cur_ball_position, int time){
         Vector ball_diff = this.last_ball_position.subtract(cur_ball_position);
-        if (ball_diff.getX() <= 0.001f){
-            if(ball_diff.getY()<=0.001f){
-                if (getNo_move_start_time()== 0f)
-                    no_move_start_time = time;
-                if((time - getNo_move_start_time())/1000f >= 10f)
-                    return true;
-                else
-                    return false;
+        if (abs(ball_diff.getX()) <= 0.0001f && abs(ball_diff.getY())<=0.0001f){
+            if (getIs_stuck_start_time()<0){
+                setIs_stuck_start_time(time);
+                setLast_ball_position(cur_ball_position);
+                return false;
             }
+            //  ball hasn't moved in "time_out" seconds
+            System.out.println("IS Stuck Timer: "+(time - getIs_stuck_start_time()));
+            if((time - getIs_stuck_start_time()) >= is_stuck_time_out) {
+                //  reset is_stuck timer to current time and return true
+                setIs_stuck_start_time(-1);
+                return true;
+            }else
+                this.last_ball_position = cur_ball_position;
+                return false;
         }else{
+            //  ball has moved reset the timer
+            if (getIs_stuck_start_time()>0)
+                setIs_stuck_start_time(-1);
+            this.last_ball_position = cur_ball_position;
             return false;
         }
-        return false;
     }
+
+    public void setIs_stuck_time_out(int is_stuck_time_out) {
+        this.is_stuck_time_out = is_stuck_time_out;
+    }
+
 }
 
