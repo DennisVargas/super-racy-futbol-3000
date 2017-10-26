@@ -44,6 +44,8 @@ public class PlayState extends BasicGameState {
     private int time;
     private Goals red_goal;
     private Goals blue_goal;
+    int red_score, blue_score;
+
 
     public PlayState(int stateID) {
         super();
@@ -63,13 +65,14 @@ public class PlayState extends BasicGameState {
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
 
+
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
-
+        red_score = blue_score = 0;
     }
 
     @Override
@@ -92,6 +95,7 @@ public class PlayState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer,
                        StateBasedGame stateBasedGame, int i) throws SlickException {
+
 
         time+= i;
 
@@ -121,10 +125,22 @@ public class PlayState extends BasicGameState {
             System.out.println("ball Stuck OH NO");
         //  Update the Ball based on collisions
         ball.UpdateBall(ellipse,ellipse2,rect);
+
         // test if goal
-        goals.i(ball.getPosition());
+        //  and
         //  update score
-        //  declare winner if true
+        red_score += red_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
+        blue_score += blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
+
+
+        if(red_score > SuperRacyFutbol3000.play_settings.getScoreLimit()
+                || blue_score > SuperRacyFutbol3000.play_settings.getScoreLimit()){
+            if(red_score> blue_score)
+                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Red Team Wins");
+            else
+                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Blue Team Wins");
+        }
+            //  declare winner if true
     }
 
     public void RenderTeams(Graphics g){
