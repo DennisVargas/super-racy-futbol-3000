@@ -1,12 +1,16 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Entity;
+import jig.Vector;
+import org.newdawn.slick.geom.Rectangle;
 
-import java.awt.*;
 
 public class Goals extends Entity{
-    private final boolean isRed;
+    private static final Vector RED_GOAL_CENTER = new Vector(32,352);
+    private static final Vector BLUE_GOAL_CENTER = new Vector(1248,352);
+    private static final Vector GOAL_WIDTH_HEIGHT = new Vector(64,320);
 
+    private final boolean isRed;
     //  red goal box low right = 64,512
     //               low left = 0,512
     //               upper right64,192
@@ -16,14 +20,38 @@ public class Goals extends Entity{
                     //  up left =  1216,192
     //                  up right =  1280,192
 
-    Rectangle goalRectangle;
+    private Rectangle goalRectangle;
+
 
     public Goals(boolean isRed){
         this.isRed = isRed;
     }
 
-
     public boolean isRed() {
         return isRed;
+    }
+
+    public Vector getRedGoalCENTER() {
+        return RED_GOAL_CENTER;
+    }
+
+    public Rectangle getRectangle() {
+        return goalRectangle;
+    }
+
+    public Vector getGOAL_WIDTH_HEIGHT(){
+        return GOAL_WIDTH_HEIGHT;
+    }
+    public void setGoalRectangle() {
+        if(isRed)
+            this.goalRectangle = new Rectangle(getRedGoalCENTER().getX(), getRedGoalCENTER().getY(),
+                    getGOAL_WIDTH_HEIGHT().getX(),getGOAL_WIDTH_HEIGHT().getY());
+        else
+            this.goalRectangle = new Rectangle(getBlueGoalCENTER().getX(), getBlueGoalCENTER().getY(),
+                    getGOAL_WIDTH_HEIGHT().getX(),getGOAL_WIDTH_HEIGHT().getY());
+    }
+
+    public Vector getBlueGoalCENTER() {
+        return BLUE_GOAL_CENTER;
     }
 }
