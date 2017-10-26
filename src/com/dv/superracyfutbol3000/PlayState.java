@@ -42,6 +42,8 @@ public class PlayState extends BasicGameState {
  // Create Teams
     Teams teams;
     private int time;
+    private Goals red_goal;
+    private Goals blue_goal;
 
     public PlayState(int stateID) {
         super();
@@ -58,7 +60,8 @@ public class PlayState extends BasicGameState {
         super.enter(container, game);
         this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
-
+        this.red_goal = new Goals(true);
+        this.blue_goal = new Goals(false);
 
     }
 
@@ -118,7 +121,10 @@ public class PlayState extends BasicGameState {
             System.out.println("ball Stuck OH NO");
         //  Update the Ball based on collisions
         ball.UpdateBall(ellipse,ellipse2,rect);
-
+        // test if goal
+        goals.i(ball.getPosition());
+        //  update score
+        //  declare winner if true
     }
 
     public void RenderTeams(Graphics g){
