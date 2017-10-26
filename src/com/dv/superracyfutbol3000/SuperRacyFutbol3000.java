@@ -67,6 +67,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new PlayState(PLAYSTATE));
+
+
         this.addState(new MainMenuState(MAINMENUSTATE));
 
         this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
