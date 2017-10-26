@@ -2,6 +2,7 @@ package com.dv.superracyfutbol3000;
 import jig.ConvexPolygon;
 import jig.Entity;
 import jig.Vector;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -31,6 +32,7 @@ public class Goalie extends Entity{
     Rectangle goalie_rect;
 
     private int is_stuck_time_out = 4;
+
 
     public void setIs_stuck_start_time(int is_stuck_start_time) {
         this.is_stuck_start_time = is_stuck_start_time;
@@ -145,26 +147,30 @@ public class Goalie extends Entity{
 
     }
 
-    public void TrackBallSetDirection(Vector ball_position, Vector ball_next_move_direction) {
+    public Vector TrackBallSetDirection(Vector ball_position, Vector ball_next_move_direction) {
+        //  Take the difference of ballY - 360 %2
+
         //  current ball position
         float cur_ball_y =ball_position.getY();
         //  current heading
         float cur_ball_y_dir = ball_next_move_direction.getY();
-
-        if(cur_ball_y < 360f ){
+        float cur_goalie_y = this.getPosition().getY();
+        if(cur_ball_y  < cur_goalie_y+1 && cur_ball_y> cur_goalie_y-1)
+            this.setNext_direction(new Vector(0,0));
+        else if(cur_ball_y < 360f ){
             //  set goalie neg y dir
             this.setNext_direction(new Vector(0,-1f));
-        }else if( cur_ball_y>360f){
+        }else if( cur_ball_y > 360f){
             //  set goalie pos y dir
             this.setNext_direction(new Vector(0,1f));
         }else if( cur_ball_y == 360f){
-            float cur_goalie_y = this.getPosition().getY();
             //  if goalie y less than 360
             if((cur_goalie_y >cur_ball_y))
                 this.setNext_direction(new Vector(0,-1));
             else if((cur_goalie_y - cur_ball_y)<0)
                 this.setNext_direction(new Vector(0,1));
         }
+        return this.next_direction;
     }
 
     //  Time should be passed in seconds.
@@ -208,6 +214,7 @@ public class Goalie extends Entity{
         //  Check that next move stays within bounds
         if(this.next_position.getY() < GOLIE_MAXY
                 && this.next_position.getY() > GOLIE_MINY){
+            if(SuperRacyFutbol3000.isGoalieDebug)System.out.println(this.next_translation+", "+this.next_translation);
             //  translate goalie entity
             this.translate(this.next_translation);
 
