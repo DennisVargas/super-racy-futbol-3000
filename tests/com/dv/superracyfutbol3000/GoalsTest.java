@@ -1,20 +1,25 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Entity;
+import jig.Vector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class GoalsTest {
-
+    Goals red_goal;
+    Goals blue_goal;
     @BeforeAll
     public static void init() {
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
     }
     @BeforeEach
     void setUp() {
-
+        red_goal = new Goals(true);
+        blue_goal = new Goals(false);
+        red_goal.setGoalRectangle();
+        blue_goal.setGoalRectangle();
     }
 
     @Test
