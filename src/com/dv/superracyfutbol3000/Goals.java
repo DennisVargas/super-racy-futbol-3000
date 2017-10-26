@@ -25,6 +25,7 @@ public class Goals extends Entity{
 
     public Goals(boolean isRed){
         this.isRed = isRed;
+        this.setGoalRectangle();
     }
 
     public boolean isRed() {
