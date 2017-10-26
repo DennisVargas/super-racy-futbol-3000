@@ -112,7 +112,9 @@ public class PlayState extends BasicGameState {
 
         //  passing the balls current position and its heading
         // the goalie can more or less guess where the ball will be next
-        if(teams.GoalieTrackingBallStuck(ball, time))
+        //  convert time from milliseconds to seconds; divide 1000 into time
+
+        if(teams.GoalieTrackingBallStuck(ball, time/1000))
             System.out.println("ball Stuck OH NO");
         //  Update the Ball based on collisions
         ball.UpdateBall(ellipse,ellipse2,rect);
