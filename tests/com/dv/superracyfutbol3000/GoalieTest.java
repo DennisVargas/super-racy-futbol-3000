@@ -113,7 +113,7 @@ class GoalieTest{
 
     }
     @Test
-    void testGenerateNextGoalieTranslationChanges(){
+    void testGenerateNextGoalieTranslationSameDirection(){
         Vector trans_before, trans_after;
         goalie.setNext_direction(new Vector(0f,1f));
         trans_before = goalie.getNext_translation();
@@ -126,6 +126,30 @@ class GoalieTest{
         // will succeed when the resulting vector Y
         // component differs from the original after translation
         Assertions.assertNotEquals(trans_before.getY(),trans_after.getY(),
+                "\nGoalie Failed Generating Translation in Y\n");
+
+    }
+
+    @Test
+    void testGenerateNextGoalieTranslationChangeDirection1to0(){
+        Vector trans_before, trans_after;
+        //  set direction to positive y
+        goalie.setNext_direction(new Vector(0f,1));
+        //  generate a next translation for update
+        goalie.GenerateNextTranslation();
+        trans_before = goalie.getNext_translation();
+
+        //  change the direction to zero
+        goalie.setNext_direction(new Vector(0,0));
+
+        // Generate Next Translation of direction 0
+        goalie.GenerateNextTranslation();
+        //
+        trans_after = goalie.getNext_translation();
+
+        // will succeed when the resulting vector Y
+        // component equals the original after translation
+        Assertions.assertEquals(0,trans_after.getY(),
                 "\nGoalie Failed Generating Translation in Y\n");
 
     }
@@ -225,5 +249,35 @@ class GoalieTest{
                     " Goalie moved past the Y-Max limit");
         }
 
+    }
+
+    @Test
+    void testUpdateGoaliePositionZeroTrans() {
+        goalie.setNext_direction(new Vector(0,1));
+        goalie.GenerateNextTranslation();
+        goalie.UpdateGoaliePosition();
+        goalie.setNext_direction(new Vector(0,0));
+        goalie.GenerateNextTranslation();
+        float prev_Y = goalie.getY();
+        goalie.UpdateGoaliePosition();
+        float after_y = goalie.getY();
+        assertEquals(prev_Y, after_y);
+    }
+
+    @Test
+    void testTrackBallSameY() {
+        //  test if when the ball y and the goalie y are the same the direction moved is zero
+        //  goalie shoudl then stay in place
+        //  this could also solve the pregame jitters of the goalies
+        //  no they actually jitter in place at the moment 10/25/17
+
+        //  couldn't goalie just take on the balls y direction?
+        //  this is super fast though but everyone is paused.
+        goalie.setPosition(goalie.getX(),400);
+        Vector result =
+                goalie.TrackBallSetDirection(new Vector (120f,400), new Vector(-1,0));
+
+        //  when the goalieY == ballY the direction of movement should evaluate zero
+        assertEquals(0, result.getY());
     }
 }
