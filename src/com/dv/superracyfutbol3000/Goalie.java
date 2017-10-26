@@ -198,5 +198,11 @@ public class Goalie extends Entity{
         this.is_stuck_time_out = is_stuck_time_out;
     }
 
+    public Vector GenerateNextTranslation() {
+        this.next_translation = new Vector(0,speed*next_direction.getY());
+        CalculateNextGoaliePosition();
+        return this.next_translation;
+    }
+
 }
 
