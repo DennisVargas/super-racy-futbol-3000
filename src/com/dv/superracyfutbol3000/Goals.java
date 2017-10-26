@@ -5,6 +5,7 @@ import jig.Entity;
 import java.awt.*;
 
 public class Goals extends Entity{
+    private final boolean isRed;
 
     //  red goal box low right = 64,512
     //               low left = 0,512
@@ -17,9 +18,12 @@ public class Goals extends Entity{
 
     Rectangle goalRectangle;
 
-    public Goals(){
+    public Goals(boolean isRed){
+        this.isRed = isRed;
     }
 
 
-
+    public boolean isRed() {
+        return isRed;
+    }
 }
