@@ -1,13 +1,10 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Entity;
-import jig.Vector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GoalsTest {
 
