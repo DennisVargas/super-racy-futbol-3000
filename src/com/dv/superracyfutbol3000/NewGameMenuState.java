@@ -200,6 +200,8 @@ public class NewGameMenuState extends MenuBase {
                 SuperRacyFutbol3000.play_settings.players = human_players;
                 SuperRacyFutbol3000.play_settings.SetHumanPlayers(human_players.size());
                 SuperRacyFutbol3000.play_settings.SetTeams();
+                SuperRacyFutbol3000.play_settings.SetScoreLimit(1);
+                SuperRacyFutbol3000.play_settings.SetTimeLimit(0);
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
             }
         }else
