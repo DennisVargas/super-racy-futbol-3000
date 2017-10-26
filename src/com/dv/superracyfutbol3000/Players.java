@@ -2,8 +2,14 @@ package com.dv.superracyfutbol3000;
 
 public class Players {
 
-    enum PlayerType {Human, CPU}
-    enum Controller {Keyboard, Gamepad, AI}
+    public Players(Controller ai) {
+        this.name = name;
+        this.isRed = isRed;
+        this.control_type = ai;
+    }
+
+    public enum PlayerType {Human, CPU}
+    public enum Controller {Keyboard, Gamepad, AI}
 
     String name = "Player ";
     boolean isRed = false;

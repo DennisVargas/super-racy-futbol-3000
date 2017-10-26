@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import jig.*;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
@@ -63,6 +64,14 @@ public class Cars extends Entity{
         return (180/PI)*turn_rads;
     }
 
+    public void setNextDirection(Vector next_direction) {
+        this.next_move_direction = next_direction;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     enum TurnDirection {Left, Right}
 
     public Vector getNext_move_location() {
@@ -108,7 +117,9 @@ public class Cars extends Entity{
 //        Entity.setDebug(true);
     }
 
-
+//public void SetCarImageFromPath(String path){
+//    Image img = new Image();
+//}
     private void SetCarImage() {
         if(controlling_player.isRed)
             this.addImageWithBoundingBox(ResourceManager.getImage(cars_red_rsc));

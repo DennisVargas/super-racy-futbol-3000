@@ -1,5 +1,6 @@
 package com.dv.superracyfutbol3000;
 
+import jig.Collision;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
@@ -8,6 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import static com.dv.superracyfutbol3000.Players.Controller.AI;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.StrictMath.abs;
@@ -96,7 +98,7 @@ public class PlayState extends BasicGameState {
     public void update(GameContainer gameContainer,
                        StateBasedGame stateBasedGame, int i) throws SlickException {
 
-
+//        CarCarCollidesTester();
         time+= i;
 
         Input input = gameContainer.getInput();
@@ -141,6 +143,15 @@ public class PlayState extends BasicGameState {
                 if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Blue Team Wins");
         }
             //  declare winner if true
+    }
+
+    public void CarCarCollidesTester(){
+        //  junit can't test slick stuff to well
+        Cars carA = new Cars(26,40, new Players(AI));
+        Cars carB = new Cars(0,0,new Players(AI));
+        Collision collision = carA.collides(carB);
+        if(collision!=null)
+            System.out.println("collision here");
     }
 
     public void RenderTeams(Graphics g){
