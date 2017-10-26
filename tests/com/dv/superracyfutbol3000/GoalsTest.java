@@ -96,4 +96,11 @@ class GoalsTest {
         Assertions.assertEquals(0, blue_goal.IsGoal(ball_pos, radius));
     }
 
+    @Test
+    void testIsGoalScoreOnRedXEdgePlusOneGoal() {
+        Vector ball_pos = new Vector(-blue_goal.getRectangle().getWidth()/2+1+blue_goal.getRectangle().getCenterX(),
+                blue_goal.getRectangle().getHeight()/2+blue_goal.getRectangle().getCenterY());
+        float radius = 20f;
+        Assertions.assertEquals(1, blue_goal.IsGoal(ball_pos, radius));
+    }
 }
