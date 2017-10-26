@@ -10,7 +10,7 @@ public class Goals extends Entity{
     private static final Vector BLUE_GOAL_CENTER = new Vector(1248,352);
     private static final Vector GOAL_WIDTH_HEIGHT = new Vector(64,320);
 
-    private final boolean isRed;
+    private boolean isRed;
     //  red goal box low right = 64,512
     //               low left = 0,512
     //               upper right64,192
@@ -44,14 +44,20 @@ public class Goals extends Entity{
     }
     public void setGoalRectangle() {
         if(isRed)
-            this.goalRectangle = new Rectangle(getRedGoalCENTER().getX(), getRedGoalCENTER().getY(),
-                    getGOAL_WIDTH_HEIGHT().getX(),getGOAL_WIDTH_HEIGHT().getY());
+            this.goalRectangle = new Rectangle(getRedGoalCENTER().getX()-getGOAL_WIDTH_HEIGHT().getX()/2f,
+                    getRedGoalCENTER().getY()-getGOAL_WIDTH_HEIGHT().getY()/2f, getGOAL_WIDTH_HEIGHT().getX(),getGOAL_WIDTH_HEIGHT().getY());
         else
-            this.goalRectangle = new Rectangle(getBlueGoalCENTER().getX(), getBlueGoalCENTER().getY(),
+            this.goalRectangle = new Rectangle((getBlueGoalCENTER().getX()-getGOAL_WIDTH_HEIGHT().getX()/2f),
+                    getBlueGoalCENTER().getY()-getGOAL_WIDTH_HEIGHT().getY()/2f,
                     getGOAL_WIDTH_HEIGHT().getX(),getGOAL_WIDTH_HEIGHT().getY());
     }
 
     public Vector getBlueGoalCENTER() {
         return BLUE_GOAL_CENTER;
     }
+
+    public void setIsRed(boolean isRed) {
+        this.isRed = isRed;
+    }
+
 }
