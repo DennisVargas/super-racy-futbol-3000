@@ -5,11 +5,40 @@ import jig.Vector;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
+import static java.lang.Math.abs;
+
 
 public class Goalie extends Entity{
 
-    private float speed = 0.5f;
+    private float speed = 1.5f;
 
+    //  Goalies range of Y : min = 192; max = 512
+    private static int GOLIE_MINY=192;
+    private static int GOLIE_MAXY=512;
+
+    private Vector next_direction = new Vector(0,1);
+    private Vector next_translation = new Vector(0,0);
+
+    private Vector next_position = new Vector(0,0);
+
+    //  Used to cheat and get good...also to track the
+    // amount of time the ball is in the same place
+    // after a time the goalie closest will reset it with a shot on other teams goal.
+
+    private Vector last_ball_position = new Vector(0,0);
+    private int is_stuck_start_time = -1;
+
+    Rectangle goalie_rect;
+
+    private int is_stuck_time_out = 4;
+
+    public void setIs_stuck_start_time(int is_stuck_start_time) {
+        this.is_stuck_start_time = is_stuck_start_time;
+    }
+
+    public int getIs_stuck_time_out() {
+        return is_stuck_time_out;
+    }
     public static int getGolieMiny() {
         return GOLIE_MINY;
     }
@@ -26,12 +55,6 @@ public class Goalie extends Entity{
         GOLIE_MAXY = golieMaxy;
     }
 
-    //  Goalies range of Y : min = 192; max = 512
-    private static int GOLIE_MINY=192;
-    private static int GOLIE_MAXY=512;
-
-    private Vector next_direction = new Vector(0,1);
-    private Vector next_translation = new Vector(0,0);
 
     public float getSpeed() {
         return speed;
@@ -41,13 +64,10 @@ public class Goalie extends Entity{
         this.speed = speed;
     }
 
-    public float getNo_move_start_time() {
-        return no_move_start_time;
+    public float getIs_stuck_start_time() {
+        return is_stuck_start_time;
     }
 
-    public void setNo_move_start_time(float no_move_start_time) {
-        this.no_move_start_time = no_move_start_time;
-    }
 
     public Rectangle getGoalie_rect() {
         return goalie_rect;
@@ -90,16 +110,6 @@ public class Goalie extends Entity{
         this.last_ball_position = last_ball_position;
     }
 
-    private Vector next_position = new Vector(0,0);
-
-    //  Used to cheat and get good...also to track the
-    // amount of time the ball is in the same place
-    // after a time the goalie closest will reset it with a shot on other teams goal.
-    private Vector last_ball_position = new Vector(0,0);
-    private Vector predict_ball_position = new Vector(0,0);
-    private float no_move_start_time = 0f;
-
-//    private float
     public boolean isRed() {
         return isRed;
     }
@@ -111,10 +121,7 @@ public class Goalie extends Entity{
     private boolean isRed;
 
 
-//    Rectangle red_rect = new Rectangle(64,360, 20,50);
-//    Rectangle blue_rect; = new Rectangle(1000,360,20,50);
 
-    Rectangle goalie_rect;
     public Goalie(Vector position) {
         super(position);
     }
@@ -126,7 +133,7 @@ public class Goalie extends Entity{
         this.addShape(new ConvexPolygon(20f,50f));
         this.isRed = isRed;
         goalie_rect = new Rectangle(x-10, y-25, 20,50);
-        this.debugThis = true;
+//        this.debugThis = true;
     }
 
     public Goalie(boolean isRed) {
