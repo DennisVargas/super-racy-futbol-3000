@@ -104,7 +104,8 @@ public class Ball extends Entity{
         }else
             speed = top_speed;
 
-        System.out.println("ball next_move_direction:  "+next_move_direction.getX()+", "+next_move_direction.getY());
+        if(SuperRacyFutbol3000.isDebugMovingDirection)
+            System.out.println("ball next_move_direction:  "+next_move_direction.getX()+", "+next_move_direction.getY());
         if (speed == 0 ){
             next_move_direction = next_move_direction.setX(0f);
             next_move_direction = next_move_direction.setY(0f);
