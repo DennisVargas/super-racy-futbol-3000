@@ -29,6 +29,25 @@ public abstract class CollidesHelper {
         this.previous_check_time = previous_check_time;
     }
 
+    public static Vector CarCarCollides(Cars carA, Cars carB){
+        Vector resultA = carA.getNext_move_direction();
+        Collision collide;
+        collide = carA.collides(carB);
+        //  If carB hits CarA then add its direction to the direction of car B
+        //  this should probably be dot product but whatever
+        //  That would be the velocities to get the speed.
+        //  i should take the unit vector of the translation and get the dot prodcut if i want the speed?
+        //  figure it out later...just do this.
+        if (collide != null){
+            resultA = carA.getNext_move_direction().add(carB.next_move_direction);
+            carA.setSpeed(carA.getSpeed()-carB.getSpeed()*0.125f);
+            carA.setNextDirection(resultA);
+            return resultA;
+        }
+        else
+            return resultA;
+    }
+
     private CarExtentNames GetCollidePointName(int index) {
         switch(index){
             case 0:
@@ -141,6 +160,7 @@ public abstract class CollidesHelper {
                 //  BEGIN car ball collisions
                 //  check for car collisions with ball.
                 Collision collision = null;
+
                 collision = ball.collides(car);
 
                 if(collision!=null){
@@ -185,6 +205,19 @@ public abstract class CollidesHelper {
                             car.getAcceleration()*5);*/
                 }// end car ball collisions
 
+                //  =========================
+                //  BEGIN CAR CAR COLLISIONS
+                //  ============================
+                for(ArrayList<Cars> teamB: teams_list){
+                    for(Cars carB: teamB){
+                        if(car != carB){
+                            System.out.println("not same car: carA: "+ car.controlling_player.GetPlayerName()
+                                    +" carB: "+carB.controlling_player.GetPlayerName());
+                            car.setNextDirection(CarCarCollides(car, carB));
+                        }
+                    }
+
+                }
             }// end car per team
         }// end team list
 
