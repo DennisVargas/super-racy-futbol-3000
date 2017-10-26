@@ -17,8 +17,6 @@ class GoalieTest{
     long start_time, diff_time;
     int time_out, diff_seconds;
 
-
-
     @BeforeAll
     public static void init(){
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
@@ -28,13 +26,10 @@ class GoalieTest{
     void setUp() {
         //  set timeout to 5 seconds
         time_out = 5;
-
-
 ////         red goalie in center of field
         goalie = new Goalie(300, 360, true);
         ball = new Ball();
     }
-
 
     @Test
     void testTrackBallYMid() {
