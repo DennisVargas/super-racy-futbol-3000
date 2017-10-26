@@ -60,4 +60,18 @@ public class Goals extends Entity{
         this.isRed = isRed;
     }
 
+    //  Returns 1 when a point on the circumfence of the ball is on the goal...
+    //  only the cardinal directions are calculated.
+    public int IsGoal(Vector ball_pos, float radius) {
+        if(this.goalRectangle.contains(ball_pos.getX(),ball_pos.getY()))
+            return 1;
+        if(this.goalRectangle.contains(ball_pos.getX()-radius,ball_pos.getY()))
+            return 1;
+        if(this.goalRectangle.contains(ball_pos.getX(),ball_pos.getY()+radius))
+            return 1;
+        if(this.goalRectangle.contains(ball_pos.getX(),ball_pos.getY()-radius))
+            return 1;
+        else
+            return 0;
+    }
 }
