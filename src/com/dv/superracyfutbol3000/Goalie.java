@@ -145,19 +145,25 @@ public class Goalie extends Entity{
 
     }
 
-
-    public void TrackBall(Vector ball_position, Vector ball_next_move_direction) {
+    public void TrackBallSetDirection(Vector ball_position, Vector ball_next_move_direction) {
         //  current ball position
         float cur_ball_y =ball_position.getY();
         //  current heading
         float cur_ball_y_dir = ball_next_move_direction.getY();
 
-        if(cur_ball_y -192f <= 0f ){
+        if(cur_ball_y < 360f ){
             //  set goalie neg y dir
             this.setNext_direction(new Vector(0,-1f));
-        }else if( 512-cur_ball_y<=0f){
+        }else if( cur_ball_y>360f){
             //  set goalie pos y dir
             this.setNext_direction(new Vector(0,1f));
+        }else if( cur_ball_y == 360f){
+            float cur_goalie_y = this.getPosition().getY();
+            //  if goalie y less than 360
+            if((cur_goalie_y >cur_ball_y))
+                this.setNext_direction(new Vector(0,-1));
+            else if((cur_goalie_y - cur_ball_y)<0)
+                this.setNext_direction(new Vector(0,1));
         }
     }
 
