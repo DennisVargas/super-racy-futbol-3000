@@ -42,19 +42,33 @@ class GoalsTest {
         boolean isRed = true;
         Goals goal = new Goals(isRed);
         goal.setGoalRectangle();
-        Assertions.assertEquals(goal.getRedGoalCENTER().getX(), goal.getRectangle().getX());
-        Assertions.assertEquals(goal.getRedGoalCENTER().getY(), goal.getRectangle().getY());
+        Assertions.assertEquals(goal.getRedGoalCENTER().getX(), goal.getRectangle().getCenterX());
+        Assertions.assertEquals(goal.getRedGoalCENTER().getY(), goal.getRectangle().getCenterY());
     }
 
     @Test
     void CreateBlueGoalAtBlue() {
-        boolean isRed = false;
-        Goals goal = new Goals(isRed);
-        goal.setGoalRectangle();
-        Assertions.assertEquals(goal.getBlueGoalCENTER().getX(), goal.getRectangle().getX());
-        Assertions.assertEquals(goal.getBlueGoalCENTER().getY(), goal.getRectangle().getY());
+        //blue_goal = new Goals(false);
+        blue_goal.setGoalRectangle();
+        Assertions.assertEquals( blue_goal.getBlueGoalCENTER().getX(),  blue_goal.getRectangle().getCenterX());
+        Assertions.assertEquals( blue_goal.getBlueGoalCENTER().getY(),  blue_goal.getRectangle().getCenterY());
     }
 
-    
+    @Test
+    void testIsGoalScoreOnRedCenter(){
+        //  create a red goal
+        Vector ball_pos = new Vector(32,352);
+        float radius = 20f;
+        //  Returns a score of 1 if the position is a goal within that goal
+        Assertions.assertEquals(1, red_goal.IsGoal(ball_pos, radius));
+    }
 
+    @Test
+    void testIsGoalScoreOnBlueCenter(){
+        //  create a blue goal
+        Vector ball_pos = new Vector(1248,352);
+        float radius = 20f;
+        //  Returns a score of 1 if the position is a goal within that goal
+        Assertions.assertEquals(1,blue_goal.IsGoal(ball_pos, radius));
+    }
 }
