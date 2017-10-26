@@ -1,6 +1,5 @@
 package com.dv.superracyfutbol3000;
 
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
@@ -12,6 +11,10 @@ import static java.lang.Math.PI;
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
+
+    //  goalies are controlled seperate from car driven players
+    Goalie red_goalie = new Goalie(74,360,true);
+    Goalie blue_goalie = new Goalie(1210,360,false);
 
     int players_per_team = SuperRacyFutbol3000.play_settings.GetPlayersPerTeam();
     int total_players = 2*players_per_team;
@@ -26,6 +29,8 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
+
+
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
         int i = 0;
@@ -94,14 +99,6 @@ public class Teams {
         }
     }
 
-    public void RenderTeams(Graphics g){
-        for (Cars car:blue_team){
-            car.render(g);
-        }
-        for(Cars car:red_team){
-            car.render(g);
-        }
-    }
 
     public void ProcessTeamsNextMove(Ellipse ellipse1, Ellipse ellipse2, Rectangle rect){
 
@@ -151,5 +148,36 @@ public class Teams {
         for (Cars car: blue_team){
             car.GenerateNextMove(input);
         }
+        red_goalie.UpdateGoaliePosition();
+        blue_goalie.UpdateGoaliePosition();
+    }
+
+    //  tracks the ball and updates goalie
+    //  goalies also track the timeout for the ball and  reset the ball to origin
+    public boolean GoalieTrackingBallStuck(Ball ball, int time) {
+        red_goalie.TrackBallSetDirection(ball.getPosition(), ball.getNext_move_direction());
+        blue_goalie.TrackBallSetDirection(ball.getPosition(), ball.getNext_move_direction());
+        red_goalie.GenerateNextTranslation();
+        blue_goalie.GenerateNextTranslation();
+
+        if(red_goalie.IsBallStuck(ball.getPosition(),time)){
+            // reset the ball
+            ball.ResetBallStart();
+            return true;
+        }else if(blue_goalie.IsBallStuck(ball.getPosition(),time)){
+            //  reset the ball
+            ball.ResetBallStart();
+            return true;
+        }
+        return false;
+    }
+
+
+    public Goalie getRedGoalie() {
+        return red_goalie;
+    }
+
+    public Goalie getBlueGoale() {
+        return blue_goalie;
     }
 }

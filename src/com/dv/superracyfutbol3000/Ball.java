@@ -15,14 +15,23 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Ball extends Entity{
-    private final float radius = 16f;
+    private final float radius = 20f;
     private float mass = 0.5f;
-    private float top_speed = 6f;
+    private float top_speed = 5f;
     private Circle ball_sphere;
+    private float friction = 0.9895f;
     //  Holds resulting hit vectors that will be added to in the update method
     ArrayList<CollidesHelper.CollisionReport> collision_reports = new ArrayList<>();
 
+    public Vector getBall_start() {
+        return ball_start;
+    }
 
+    public void setBall_start(Vector ball_start) {
+        this.ball_start = ball_start;
+    }
+
+    Vector ball_start = new Vector(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
     public float getTopSpeed() {
         return top_speed;
     };
@@ -35,17 +44,17 @@ public class Ball extends Entity{
         this.next_move_direction = next_move_direction;
     }
 
-    private Vector next_move_direction = new Vector(0f, 0f);
 
     public Vector getNext_move_location() {
         return next_move_location;
     }
 
+    private Vector next_move_direction = new Vector(0f, 0f);
     private Vector next_move_location = new Vector(0f,0f);
     private Vector translate_next_move = new Vector(0f,0f);
 
     private float wall_bounce_factor = 0.003f;
-    private float speed_0 = 0.8f;
+    private float speed_0 = 1f;
     private float speed = speed_0;
 
 
@@ -64,7 +73,10 @@ public class Ball extends Entity{
     }
 
     public Ball() {
-
+        super();
+        this.setPosition(new Vector(this.ball_start.getX(),this.ball_start.getY()));
+        ball_sphere = new Circle(getX(), getY(), this.radius);
+        this.addShape(new ConvexPolygon(this.radius));
     }
 
     //  Render Ball
@@ -86,13 +98,14 @@ public class Ball extends Entity{
     public void GenerateNextMove(){
         if(speed <= top_speed){
             if(speed >0.001f)
-                speed*=0.85f;
+                speed*=0.93f;
             else if (abs(speed) <= 0.001f)
                 speed = 0f;
         }else
             speed = top_speed;
 
-        System.out.println("ball next_move_direction:  "+next_move_direction.getX()+", "+next_move_direction.getY());
+        if(SuperRacyFutbol3000.isDebugMovingDirection)
+            System.out.println("ball next_move_direction:  "+next_move_direction.getX()+", "+next_move_direction.getY());
         if (speed == 0 ){
             next_move_direction = next_move_direction.setX(0f);
             next_move_direction = next_move_direction.setY(0f);
@@ -124,28 +137,11 @@ public class Ball extends Entity{
     public Vector getTranslate_next_move() {
         return translate_next_move;
     }
+
     public Vector CalculateNextPosition(){
         this.next_move_location = new Vector(this.getX()+this.translate_next_move.getX(),
                 this.getY()+this.translate_next_move.getY());
         return this.next_move_location;
-    }
-
-
-    public void BallHit(Vector hit_vector, CollidesHelper.CollisionType collision_type){
-
-
-    }
-
-    //  takes all collision directions and
-    //  sums them to the ball translation vector.
-    private void AddCollides() {
-        for(CollidesHelper.CollisionReport report: this.collision_reports){
-            switch(report.collision_type){
-                case CarBall:
-                    break;
-
-            }
-        }
     }
 
     public void setTranslateNextMove(Vector translate_next_move) {
@@ -159,5 +155,9 @@ public class Ball extends Entity{
 
     public Circle getBall_Sphere() {
         return ball_sphere;
+    }
+
+    public void ResetBallStart() {
+        this.setPosition(this.ball_start);
     }
 }
