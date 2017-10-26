@@ -36,11 +36,20 @@ class GoalsTest {
     void CreateRedGoalAtRed() {
         boolean isRed = true;
         Goals goal = new Goals(isRed);
-        Assertions.assertTrue(goal.isRed());
+        goal.setGoalRectangle();
+        Assertions.assertEquals(goal.getRedGoalCENTER().getX(), goal.getRectangle().getX());
+        Assertions.assertEquals(goal.getRedGoalCENTER().getY(), goal.getRectangle().getY());
     }
 
     @Test
     void CreateBlueGoalAtBlue() {
-
+        boolean isRed = false;
+        Goals goal = new Goals(isRed);
+        goal.setGoalRectangle();
+        Assertions.assertEquals(goal.getBlueGoalCENTER().getX(), goal.getRectangle().getX());
+        Assertions.assertEquals(goal.getBlueGoalCENTER().getY(), goal.getRectangle().getY());
     }
+
+    
+
 }
