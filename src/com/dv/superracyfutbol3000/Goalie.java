@@ -204,5 +204,18 @@ public class Goalie extends Entity{
         return this.next_translation;
     }
 
+    public void UpdateGoaliePosition() {
+        //  Check that next move stays within bounds
+        if(this.next_position.getY() < GOLIE_MAXY
+                && this.next_position.getY() > GOLIE_MINY){
+            //  translate goalie entity
+            this.translate(this.next_translation);
+
+            //  update the draw location of rectangle
+            goalie_rect.setLocation(goalie_rect.getX(),goalie_rect.getY()+this.next_translation.getY());
+        }
+
+    }
+
 }
 
