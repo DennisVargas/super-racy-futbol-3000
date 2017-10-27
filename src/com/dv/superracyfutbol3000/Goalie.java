@@ -11,7 +11,7 @@ import static java.lang.Math.abs;
 
 public class Goalie extends Entity{
 
-    private float speed = 1.5f;
+    private float speed = 0.5f;
 
     //  Goalies range of Y : min = 192; max = 512
     private static int GOLIE_MINY=192;

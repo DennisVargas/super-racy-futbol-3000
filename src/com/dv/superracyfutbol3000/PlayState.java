@@ -13,7 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import static com.dv.superracyfutbol3000.Players.Controller.AI;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
-import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sin;
 public class PlayState extends BasicGameState {
     int stateID;
@@ -26,11 +25,10 @@ public class PlayState extends BasicGameState {
     Rectangle rect2 = new Rectangle (0,0,23,35);
     Ball ball;
     Goalie goalies;
-    Entity winner_banner;
     Entity start_game_banner;
     Entity countdown_start_timer;
-    Entity blue_goal_scored;
-    Entity red_goal_scored;
+    Entity blue_goal_scored_banner;
+    Entity red_goal_scored_banner;
 
     boolean is_red_goal_scored =false, is_blue_goal_scored=false,pause_play = false, is_red_winner = false,
                 is_blue_winner = false;
@@ -63,6 +61,9 @@ public class PlayState extends BasicGameState {
     private Entity goal_scored_banner;
     private int countdown_start_time;
     private boolean pause_for_splash = false;
+    private int goal_timeout = 2;
+    private Entity red_winner_banner;
+    private Entity blue_winner_banner;
 
     public PlayState(int stateID) {
         super();
@@ -81,21 +82,26 @@ public class PlayState extends BasicGameState {
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
-        this.winner_banner = new Entity();
-        this.goal_scored_banner = new Entity();
+        this.red_goal_scored_banner = new Entity(640,360);
+        this.blue_goal_scored_banner = new Entity(640,360);
+        this.red_winner_banner = new Entity(640,360);
+        this.blue_winner_banner = new Entity(640,360);
+        score_board.setBlueScore(0);
+        score_board.setRedScore(0);
         score_board.InitScoreBoardImages();
+        countdown_start_time = -1;
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
-        Ball.setDebug(true);
+       // Ball.setDebug(true);
         score_keeper = new ScoreKeeper();
         score_keeper.setBlueScore(0);
         score_keeper.setRedScore(0);
         score_board = new ScoreBoard();
         score_board.InitDigitEntities();
-
+        score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
     }
 
     @Override
@@ -111,9 +117,22 @@ public class PlayState extends BasicGameState {
         RenderTeams(graphics);
 
         ball.RenderBall(graphics);
-//        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
+        graphics.drawString("Controls: Up = accelerate;\n Dwn = reverse; \n A = left; \n D = right", 640, 710);
         //  Render the score board
         RenderScoreBoard(graphics);
+        if(pause_for_splash){
+            if(is_red_goal_scored && !is_red_winner){
+//                graphics.drawString("Blue Goal Scored!!! ", 640, 360);
+                blue_goal_scored_banner.render(graphics);
+            }else if(is_blue_goal_scored && !is_blue_winner){
+//                graphics.drawString("Red Goal Scored!!! ", 640, 360);
+                red_goal_scored_banner.render(graphics);
+            }else if(is_blue_winner){
+                blue_winner_banner.render(graphics);
+            }else if (is_red_winner){
+                red_winner_banner.render(graphics);
+            }
+        }
     }
 
     private void RenderScoreBoard(Graphics g) {
@@ -133,9 +152,12 @@ public class PlayState extends BasicGameState {
 
 //        CarCarCollidesTester();
         time+= i;
+
         if(!pause_for_splash){
             Input input = gameContainer.getInput();
 
+            if(input.isKeyDown(Input.KEY_ESCAPE))
+                stateBasedGame.enterState(SuperRacyFutbol3000.NEWGAMEMENUSTATE);
             float mouseX = input.getMouseX();
             float mouseY= input.getMouseY();
             if(SuperRacyFutbol3000.isMouseDebug) {
@@ -144,6 +166,7 @@ public class PlayState extends BasicGameState {
             }
             //  Process the Team Input
             teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds());
+
 
             //  Check for collisions with the next move before processing
             //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
@@ -164,14 +187,15 @@ public class PlayState extends BasicGameState {
             // test if goal
             //  and
             //  update score
-            DoScoreKeeping();
+            DoScoreKeeping(stateBasedGame);
 
             //  declare winner if true
-        }
+        }else
+            PauseForSplash(stateBasedGame);
 
     }
 
-    private void DoScoreKeeping() {
+    private void DoScoreKeeping(StateBasedGame sbg) {
         if(!is_red_winner && !is_blue_winner){
 
             int new_score =0;
@@ -181,12 +205,14 @@ public class PlayState extends BasicGameState {
                 ball.ResetBallStart();
                 score_keeper.IncrementBlueScore(new_score);
                 teams.ResetCarStart();
-                PauseForSplash();
+                is_red_goal_scored = true;
+                PauseForSplash(sbg);
             }else if((new_score = blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
                 ball.ResetBallStart();
                 score_keeper.IncrementRedScore(new_score);
                 teams.ResetCarStart();
-                PauseForSplash();
+                is_blue_goal_scored = true;
+                PauseForSplash(sbg);
             }
 
 //          update the scoreboard for render.
@@ -194,16 +220,14 @@ public class PlayState extends BasicGameState {
             score_board.setRedScore(score_keeper.getRedScore());
 
             isWinner = score_keeper.IsBlueWinner();
-            if(is_blue_winner = score_keeper.IsBlueWinner()
-                    && score_keeper.getBlueScore() > SuperRacyFutbol3000.play_settings.getScoreLimit()){
-                DeclareBlueWinner();
-                System.out.println("BlueWins");
+            if(is_blue_winner = score_keeper.IsBlueWinner()){
+                PauseForSplash(sbg);
+
             }
 
-            if (is_red_winner = score_keeper.IsRedWinner()
-                    && score_keeper.getBlueScore() > SuperRacyFutbol3000.play_settings.getScoreLimit()) {
-                DeclareRedWinner();
-                System.out.println("RedWins");
+            if (is_red_winner = score_keeper.IsRedWinner()) {
+                PauseForSplash(sbg);
+
             }
         }else{
 
@@ -211,20 +235,42 @@ public class PlayState extends BasicGameState {
         }
     }
 
-    private void PauseForSplash() {
+    private void PauseForSplash(StateBasedGame sbg) {
         //  draw red goal on screen if is red goal
         //  draw blue goal on screen if is blue goal
         //   draw red winner on scree if is red winner
         //  draw blue winner on screen if is winner
         //  do count down after goals
-        if(is_red_goal_scored){
+        if(is_red_goal_scored && countdown_start_time < 0){
             countdown_start_time = GetPlayTimeSeconds();
             pause_for_splash = true;
-            red_goal_scored.addImage(ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
-        }else if(is_blue_goal_scored){
-
+            blue_goal_scored_banner.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.splash_blue_goal_rsc));
+        }else if(is_blue_goal_scored && countdown_start_time <0){
+            countdown_start_time = GetPlayTimeSeconds();
+            pause_for_splash = true;
+            red_goal_scored_banner.addImageWithBoundingBox(
+                    ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
+        }else if (is_red_winner && countdown_start_time <0){
+            countdown_start_time = GetPlayTimeSeconds();
+            pause_for_splash = true;
+            red_winner_banner.addImageWithBoundingBox(
+                    ResourceManager.getImage(SuperRacyFutbol3000.red_winner_rsc));
+        }else if (is_blue_winner && countdown_start_time <0){
+            countdown_start_time = GetPlayTimeSeconds();
+            pause_for_splash = true;
+            blue_winner_banner.addImageWithBoundingBox(
+                    ResourceManager.getImage(SuperRacyFutbol3000.blue_winner_rsc));
         }
-
+        else{
+            if(( GetPlayTimeSeconds() -countdown_start_time )>=goal_timeout){
+                pause_for_splash = false;
+                is_red_goal_scored = false;
+                is_blue_goal_scored = false;
+                countdown_start_time = -1;
+                if(is_red_winner || is_blue_winner)
+                    sbg.enterState(SuperRacyFutbol3000.MAINMENUSTATE);
+            }
+        }
     }
 
     //  return seconds play time

@@ -9,7 +9,6 @@ import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 
-import static com.dv.superracyfutbol3000.CollidesHelper.CollisionType;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -40,7 +39,7 @@ public class Cars extends Entity{
 
     private double turn_increment = PI / 90; // angular acceleration
     private double deg_turn_increment = (180 * turn_increment) / PI;
-    private float top_speed = 3.5f;
+    private float top_speed = 4f;
     private float acceleration = 1.075f;
     private float top_boost_speed = 0f;
     private float max_boost_vel = 0f;
@@ -250,7 +249,6 @@ public class Cars extends Entity{
         this.scale(0.67f);  // the image is a little big for the field so scale this down to gain space
       //  SetBoundingBox();
     }
-
 
     void ProcessInput(Input i){
         switch(controlling_player.control_type){

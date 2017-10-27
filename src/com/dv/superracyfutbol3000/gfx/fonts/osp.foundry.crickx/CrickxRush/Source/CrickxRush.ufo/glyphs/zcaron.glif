@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<glyph name="zcaron" format="1">
-  <advance width="625"/>
-  <unicode hex="017e"/>
-  <outline>
-    <component base="Z"/>
-    <component base="caron" xOffset="110" yOffset="203"/>
-  </outline>
-</glyph>
