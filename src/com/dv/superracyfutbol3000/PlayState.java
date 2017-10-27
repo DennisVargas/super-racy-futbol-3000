@@ -29,6 +29,11 @@ public class PlayState extends BasicGameState {
     Entity winner_banner;
     Entity start_game_banner;
     Entity countdown_start_timer;
+    Entity blue_goal_scored;
+    Entity red_goal_scored;
+
+    boolean is_red_goal_scored =false, is_blue_goal_scored=false,pause_play = false, is_red_winner = false,
+                is_blue_winner = false;
 
 
     boolean isWinner = false;
@@ -55,6 +60,8 @@ public class PlayState extends BasicGameState {
 
     private ScoreKeeper score_keeper;
     private ScoreBoard score_board;
+    private Entity goal_scored_banner;
+    private int countdown_start_time;
 
     public PlayState(int stateID) {
         super();
@@ -74,6 +81,7 @@ public class PlayState extends BasicGameState {
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
         this.winner_banner = new Entity();
+        this.goal_scored_banner = new Entity();
     }
 
     @Override
