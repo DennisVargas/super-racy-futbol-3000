@@ -121,6 +121,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
         ResourceManager.loadImage(num_8_rsc);
         ResourceManager.loadImage(num_9_rsc);
         ResourceManager.loadImage(num_0_rsc);
+        ResourceManager.loadImage(splash_red_goal_rsc);
+        ResourceManager.loadImage(splash_blue_goal_rsc);
     }
 
     public static void main(String[] args) throws SlickException{
