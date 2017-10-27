@@ -335,7 +335,7 @@ public class ScoreBoard{
 
     public void setCurrent_image_path(String current_image_path) {
         this.current_image_path = current_image_path;
-        System.out.println(current_image_path);
+
     }
 
     public void InitScoreBoardImages(){
