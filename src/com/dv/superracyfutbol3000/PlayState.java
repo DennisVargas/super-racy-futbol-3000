@@ -63,6 +63,7 @@ public class PlayState extends BasicGameState {
     private Entity goal_scored_banner;
     private int countdown_start_time;
     private boolean pause_for_splash = false;
+    private int goal_timeout = 2;
 
     public PlayState(int stateID) {
         super();
@@ -82,8 +83,10 @@ public class PlayState extends BasicGameState {
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
         this.winner_banner = new Entity();
-        this.goal_scored_banner = new Entity();
+        this.red_goal_scored = new Entity(640,360);
+        this.blue_goal_scored = new Entity(640,360);
         score_board.InitScoreBoardImages();
+        countdown_start_time = -1;
     }
 
     @Override
@@ -114,6 +117,16 @@ public class PlayState extends BasicGameState {
 //        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
         //  Render the score board
         RenderScoreBoard(graphics);
+        if(pause_for_splash){
+            if(is_red_goal_scored){
+                graphics.drawString("Blue Goal Scored!!! ", 640, 360);
+                blue_goal_scored.render(graphics);
+            }else if(is_blue_goal_scored){
+                graphics.drawString("Red Goal Scored!!! ", 640, 360);
+                red_goal_scored.render(graphics);
+            }
+        }
+
     }
 
     private void RenderScoreBoard(Graphics g) {
@@ -167,7 +180,8 @@ public class PlayState extends BasicGameState {
             DoScoreKeeping();
 
             //  declare winner if true
-        }
+        }else
+            PauseForSplash();
 
     }
 
@@ -181,11 +195,13 @@ public class PlayState extends BasicGameState {
                 ball.ResetBallStart();
                 score_keeper.IncrementBlueScore(new_score);
                 teams.ResetCarStart();
+                is_red_goal_scored = true;
                 PauseForSplash();
             }else if((new_score = blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
                 ball.ResetBallStart();
                 score_keeper.IncrementRedScore(new_score);
                 teams.ResetCarStart();
+                is_blue_goal_scored = true;
                 PauseForSplash();
             }
 
@@ -217,12 +233,21 @@ public class PlayState extends BasicGameState {
         //   draw red winner on scree if is red winner
         //  draw blue winner on screen if is winner
         //  do count down after goals
-        if(is_red_goal_scored){
+        if(is_red_goal_scored && countdown_start_time < 0){
             countdown_start_time = GetPlayTimeSeconds();
             pause_for_splash = true;
-            red_goal_scored.addImage(ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
-        }else if(is_blue_goal_scored){
-
+            blue_goal_scored.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.splash_blue_goal_rsc));
+        }else if(is_blue_goal_scored && countdown_start_time <0){
+            countdown_start_time = GetPlayTimeSeconds();
+            pause_for_splash = true;
+            red_goal_scored.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
+        }else{
+            if(( GetPlayTimeSeconds() -countdown_start_time )>=goal_timeout){
+                pause_for_splash = false;
+                is_red_goal_scored = false;
+                is_blue_goal_scored = false;
+                countdown_start_time = -1;
+            }
         }
 
     }
