@@ -25,7 +25,7 @@ public class PlayState extends BasicGameState {
     Rectangle rect2 = new Rectangle (0,0,23,35);
     Ball ball;
     Goalie goalies;
-
+    boolean isWinner = false;
     //  field area by left and right goal ellipse
     //  center = 320x352
     //  Xradius = 320px
@@ -47,6 +47,7 @@ public class PlayState extends BasicGameState {
     private Goals red_goal;
     private Goals blue_goal;
     int red_score, blue_score;
+    private ScoreKeeper score_keeper;
 
 
     public PlayState(int stateID) {
@@ -74,7 +75,9 @@ public class PlayState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
         Ball.setDebug(true);
-        red_score = blue_score = 0;
+        score_keeper = new ScoreKeeper();
+        score_keeper.setBlueScore(0);
+        score_keeper.setRedScore(0);
     }
 
     @Override
@@ -85,12 +88,12 @@ public class PlayState extends BasicGameState {
         //  debug the bounding areas for containing car and ball movement
         if (SuperRacyFutbol3000.isDebugField) {
             RenderFieldDebugOverlay(graphics);
-
         }
 
         RenderTeams(graphics);
         ball.RenderBall(graphics);
 //        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
+        //  Render the score board
     }
 
 
@@ -131,6 +134,7 @@ public class PlayState extends BasicGameState {
         // test if goal
         //  and
         //  update score
+        DoScoreKeeping();
         red_score += red_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
         blue_score += blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
 
@@ -144,6 +148,31 @@ public class PlayState extends BasicGameState {
         }
             //  declare winner if true
     }
+
+    private void DoScoreKeeping() {
+        if(!isWinner){
+            //   does score keeping stuff
+            score_keeper.IncrementBlueScore(red_goal.IsGoal(ball.getPosition(),
+                    ball.getCoarseGrainedRadius()));
+            score_keeper.IncrementRedScore(blue_goal.IsGoal(ball.getPosition(),
+                    ball.getCoarseGrainedRadius()));
+            isWinner = score_keeper.IsBlueWinner();
+            if(isWinner){
+                System.out.println("BlueWins");
+            }
+            isWinner = score_keeper.IsRedWinner();
+            if (isWinner) {
+                System.out.println("RedWins");
+            }
+        }else{
+            System.out.println("winner declared");
+        }
+    }
+
+    public void RenderScore(){
+        
+    }
+
 
     public void CarCarCollidesTester(){
         //  junit can't test slick stuff to well
