@@ -1,14 +1,15 @@
 package com.dv.superracyfutbol3000;
 
-import jig.*;
-import org.newdawn.slick.Image;
+import jig.Entity;
+import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 
-import static com.dv.superracyfutbol3000.CollidesHelper.*;
+import static com.dv.superracyfutbol3000.CollidesHelper.CollisionType;
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -24,11 +25,8 @@ public class Cars extends Entity{
     private Vector next_move_location = new Vector(0,0);
     private Vector translate_next_move = new Vector(0,0);
 
-
-
     Quadrant facing_direction = new Quadrant();
     Quadrant moving_direction = new Quadrant();
-
 
     Players controlling_player;
     private float health_level = 0f;
@@ -76,6 +74,10 @@ public class Cars extends Entity{
     public void ResetToStart() {
         this.setPosition(this.start_location);
         this.setNextDirection(new Vector(0,0));
+    }
+
+    public void setNextTranslation(Vector resultA) {
+        this.translate_next_move = resultA;
     }
 
     enum TurnDirection {Left, Right}
@@ -265,14 +267,13 @@ public class Cars extends Entity{
         //  input causes turn angle and speed to change
         //  steering will cause a rotation of the entity but not movement
         ProcessInput(input);
-
         //  set the x and y components of the move direction based upon the rotated angle*speed
         //  direction*scaler
 
         next_move_direction = new Vector((float) cos(turn_rads),
                                         (float)(sin(turn_rads-PI)));
         if(controlling_player.control_type != Players.Controller.AI && SuperRacyFutbol3000.isTurnDebug)
-            System.out.println("car_next_move_direction: "+next_move_direction.getX()+", "+next_move_direction.getY());
+            if(isDebugMovingDirection)System.out.println("Cars class: car_next_move_direction: "+next_move_direction.getX()+", "+next_move_direction.getY());
         translate_next_move = new Vector ( speed*next_move_direction.getX(), speed*next_move_direction.getY());
 
         next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
