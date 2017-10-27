@@ -152,17 +152,7 @@ public class PlayState extends BasicGameState {
         //  and
         //  update score
         DoScoreKeeping();
-        red_score += red_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
-        blue_score += blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius());
 
-
-        if(red_score > SuperRacyFutbol3000.play_settings.getScoreLimit()
-                || blue_score > SuperRacyFutbol3000.play_settings.getScoreLimit()){
-            if(red_score> blue_score)
-                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Red Team Wins");
-            else
-                if(SuperRacyFutbol3000.isScoreDebug)System.out.println("Blue Team Wins");
-        }
             //  declare winner if true
     }
 
@@ -174,22 +164,25 @@ public class PlayState extends BasicGameState {
             score_keeper.IncrementRedScore(blue_goal.IsGoal(ball.getPosition(),
                     ball.getCoarseGrainedRadius()));
             isWinner = score_keeper.IsBlueWinner();
+
             if(isWinner){
+                DeclareBlueWinner();
                 System.out.println("BlueWins");
             }
             isWinner = score_keeper.IsRedWinner();
             if (isWinner) {
+                DeclareRedWinner();
                 System.out.println("RedWins");
             }
         }else{
+
             System.out.println("winner declared");
         }
     }
 
-    public void RenderScore(){
-        
-    }
+    private void DeclareRedWinner() {
 
+    }
 
     public void CarCarCollidesTester(){
         //  junit can't test slick stuff to well
@@ -262,7 +255,7 @@ public class PlayState extends BasicGameState {
     }
     private void VectorTest(){
         //  Testing the vector addition functions
-        System.out.println("high fverscters");
+       // System.out.println("high fverscters");
         Vector v = new Vector (-1f,1f);
         Vector x = new Vector(1f,0.5f);
         v =v.add(x);
