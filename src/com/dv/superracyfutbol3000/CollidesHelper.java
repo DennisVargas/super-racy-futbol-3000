@@ -24,6 +24,7 @@ public abstract class CollidesHelper {
     }
 
     public static Vector CarCarCollides(Cars carA, Cars carB){
+        float car_hit= 0.9f;
         Vector resultA = carA.getTranslate_next_move();
         Vector resultB;
         Collision collide;
@@ -55,6 +56,9 @@ public abstract class CollidesHelper {
             carA.setNextTranslation(resultA);
             carB.setNextTranslation(resultB);
             BounceCars(carA,carB);
+
+            carA.ReduceHealth(car_hit);
+            carB.ReduceHealth(car_hit);
             return resultA;
         }
         else
@@ -107,21 +111,6 @@ public abstract class CollidesHelper {
             }
         }
     }
-    private CarExtentNames GetCollidePointName(int index) {
-        switch(index){
-            case 0:
-                return CarExtentNames.minXY;
-            case 1:
-                return CarExtentNames.maxXY;
-            case 2:
-                return CarExtentNames.maxMinXY;
-            case 3:
-                return CarExtentNames.minMaxXY;
-
-            default:
-                return null;
-        }
-    }
 
     public class CollisionReport{
         private Cars car1;
@@ -151,7 +140,7 @@ public abstract class CollidesHelper {
         ArrayList<ArrayList> teams_list = new ArrayList<>();
         teams_list.add(red_team);
         teams_list.add(blue_team);
-
+        float wall_hit = 0.98f;
         //  for each team in teams_list
         for (ArrayList<Cars> team : teams_list) {
             //  for each car in team
@@ -184,6 +173,8 @@ public abstract class CollidesHelper {
                             //  translate in positive x direction to the right if wall hit
                             car.setX(car.getX() + 10f);
 
+                            car.ReduceHealth(wall_hit);
+
                             //  if y coordinate is less than screen middle increase y
                             if (car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
                                 car.setY(car.getY() + 10f);
@@ -197,20 +188,22 @@ public abstract class CollidesHelper {
                         //  evaluate point with ellipse 2 right boundary
                         if (WallCollide(new_extent_move, right_boundary, center_boundary)) {
                             //  don't keep this behavior but it works for now
-                            car.setX(car.getX() - 10f);
+                            car.setX(car.getX() - 13f);
+                            car.ReduceHealth(wall_hit);
                             if (car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
-                                car.setY(car.getY() + 10f);
+                                car.setY(car.getY() + 13f);
                             else
-                                car.setY(car.getY() - 10f);
+                                car.setY(car.getY() - 13f);
                             //car.getTranslate_next_move().setY(28f);
                         }
                     } else if (center_boundary.getMinX() <= new_extent_move.getX() && new_extent_move.getX() <= center_boundary.getMaxX()) {
 //                      point is not in the rectangle it is trying to get out the top or bottom
                         if (!center_boundary.contains(new_extent_move.getX(), new_extent_move.getY())) {
+                            car.ReduceHealth(wall_hit);
                             if (new_extent_move.getY() > SuperRacyFutbol3000.HEIGHT / 2)
-                                car.setY(car.getY() - 10f);
+                                car.setY(car.getY() - 13f);
                             else
-                                car.setY(car.getY() + 10f);
+                                car.setY(car.getY() + 13f);
                         }
                     }
                 }// end test car extreme for wall contact

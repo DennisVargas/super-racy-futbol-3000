@@ -357,7 +357,6 @@ public class Cars extends Entity{
         this.translate(translate_next_move);
     }
 
-
     private void Accelerate() {
 
         //  Accelerate alters the scaler value of speed by multiplying it by positive
