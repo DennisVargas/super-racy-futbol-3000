@@ -53,116 +53,60 @@ public abstract class CollidesHelper {
            // carA.setSpeed(carA.getSpeed()-carB.getSpeed()*0.125f);
 
             carA.setNextTranslation(resultA);
-
-            float carAXMoveDir, carBXMoveDir,carAYMoveDir,carBYMoveDir;
-            float bounce_displace = 44;
-            carAXMoveDir = carA.getNext_move_direction().getX();
-            carAYMoveDir = carA.getNext_move_direction().getY();
-
-            carBXMoveDir = carB.getNext_move_direction().getX();
-            carBYMoveDir = carB.getNext_move_direction().getY();
-            /// neg X
-            if(carAXMoveDir<0){
-                // neg y dir
-                if(carAYMoveDir <0){
-                    carA.setPosition(new Vector(carA.getX()+bounce_displace,
-                            carA.getY()+bounce_displace));
-                }
-                //  pos y dir
-                if(carAYMoveDir >0){
-                    carA.setPosition(new Vector(carA.getX()+bounce_displace,
-                            carA.getY()-bounce_displace));
-                }
-                //  zero y dir
-                if(carAYMoveDir == 0){
-                    carA.setPosition(new Vector(carA.getX()+bounce_displace,
-                            carA.getY()-bounce_displace));
-                }
-
-            }
-            //  pos X dir
-            else if(carAXMoveDir>0){
-                if(carAYMoveDir <0){
-                    carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                            carA.getY()+bounce_displace));
-                }
-                if(carAYMoveDir >0){
-                    carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                            carA.getY()-bounce_displace));
-                }
-                if(carAYMoveDir == 0){
-                    if(carA.getPosition().getY() > SuperRacyFutbol3000.HEIGHT/2)
-                        carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                                carA.getY()-bounce_displace));
-                    else
-                        carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                                carA.getY()+bounce_displace));
-                }
-            }else if (carAXMoveDir == 0){
-                if(carAYMoveDir <0){
-                    carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                            carA.getY()+bounce_displace));
-                }
-                if(carAYMoveDir >0){
-                    carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                            carA.getY()-bounce_displace));
-                }
-                if(carAYMoveDir == 0){
-                    //  car on the right side of field
-                    if(carA.getPosition().getX() > SuperRacyFutbol3000.WIDTH/2){
-                        //  car on bottom half of field
-                        if(carA.getPosition().getY() > SuperRacyFutbol3000.HEIGHT/2)
-                            carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                                    carA.getY()-bounce_displace));
-                        // car on top half of field
-                        else
-                            carA.setPosition(new Vector(carA.getX()-bounce_displace,
-                                    carA.getY()+bounce_displace));
-                    }
-                }
-            }
-
-
-            //  car b bounce
-            /// neg X neg Y dir
-            if(carBXMoveDir < 0 && carBYMoveDir <0)
-                carB.setPosition(new Vector(carB.getX()+bounce_displace,
-                        carB.getY()+bounce_displace));
-                //  pos x neg y
-            else if(carBXMoveDir > 0 && carBYMoveDir <0)
-                carB.setPosition(new Vector(carB.getX()-bounce_displace,
-                        carB.getY()+bounce_displace));
-                //  pos x pos y
-            else if(carBXMoveDir > 0 && carBYMoveDir > 0)
-                carB.setPosition(new Vector(carB.getX()-bounce_displace,
-                        carB.getY()-bounce_displace));
-                //  neg X pos Y
-            else if(carBXMoveDir < 0 && carBYMoveDir >0)
-                carB.setPosition(new Vector(carB.getX()+bounce_displace,
-                        carB.getY()-bounce_displace));
-            else if (carBXMoveDir == 0 && carBYMoveDir== 0){
-                if(carAXMoveDir < 0 && carAYMoveDir <0)
-                    carB.setPosition(new Vector(carB.getX() + bounce_displace,
-                            carB.getY()+bounce_displace));
-                else if(carAXMoveDir > 0 && carAYMoveDir <0)
-                    carB.setPosition(new Vector(carB.getX() - bounce_displace,
-                            carB.getY()+bounce_displace));
-            }
-
-
             carB.setNextTranslation(resultB);
-
-//
-//            carB.setPosition(new Vector(carB.getX()+40*carA.getNext_move_direction().getX()*-1f,
-//                    carB.getY()+40*carA.getNext_move_direction().getY()*-1f));
-
-
+            BounceCars(carA,carB);
             return resultA;
         }
         else
             return resultA;
     }
 
+    private static void BounceCars(Cars carA, Cars carB){
+        int bounce_displace = 5;
+        if(carA.getPosition().getX() > carB.getPosition().getX()) {
+            //  to the right and below carB
+            if (carA.getPosition().getY() > carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() + bounce_displace));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() - bounce_displace));
+            }
+            //  to the right and above carB
+            else if (carA.getPosition().getY() < carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() - bounce_displace));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() + bounce_displace));
+            }
+            else if (carA.getPosition().getY() == carB.getPosition().getY()){
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() ));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() ));
+            }
+        }else if (carA.getPosition().getX() < carB.getPosition().getX()) {
+            //  to the left and below carB
+            if (carA.getPosition().getY() > carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() + bounce_displace));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() - bounce_displace));
+            }
+            //  to the left and above carB
+            else if (carA.getPosition().getY() < carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() - bounce_displace));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() + bounce_displace));
+            }
+            else if (carA.getPosition().getY() == carB.getPosition().getY()){
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() ));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() ));
+            }
+        }
+    }
     private CarExtentNames GetCollidePointName(int index) {
         switch(index){
             case 0:
