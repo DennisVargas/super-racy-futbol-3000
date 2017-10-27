@@ -180,6 +180,10 @@ public class PlayState extends BasicGameState {
         }
     }
 
+    private void DeclareBlueWinner() {
+        
+    }
+
     private void DeclareRedWinner() {
 
     }
