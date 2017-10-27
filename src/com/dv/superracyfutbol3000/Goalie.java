@@ -152,28 +152,40 @@ public class Goalie extends Entity{
         //  current heading
         float cur_ball_y_dir = ball_next_move_direction.getY();
         float cur_goalie_y = this.getPosition().getY();
-        if(cur_ball_y  < cur_goalie_y+1 && cur_ball_y> cur_goalie_y-1)
-            this.setNext_direction(new Vector(0,0));
-        else if(cur_ball_y < 360f ){
-            //  set goalie neg y dir
+
+        if(ball_position.getY() < this.getY()){
             this.setNext_direction(new Vector(0,-1f));
-        }else if( cur_ball_y > 360f){
-            //  set goalie pos y dir
+        } else if (ball_position.getY()>this.getY()){
             this.setNext_direction(new Vector(0,1f));
-        }else if( cur_ball_y == 360f){
-            //  if goalie y less than 360
-            if((cur_goalie_y >cur_ball_y))
-                this.setNext_direction(new Vector(0,-1));
-            else if((cur_goalie_y - cur_ball_y)<0)
-                this.setNext_direction(new Vector(0,1));
+        } else if (ball_position.getY() <= this.getY()+this.getGoalie_rect().getHeight()/2
+                && ball_position.getY() >= this.getY()-this.getGoalie_rect().getHeight()/2){
+            this.setNext_direction(new Vector(0,0));
         }
+
+
+//        if(cur_ball_y  < cur_goalie_y+1 && cur_ball_y> cur_goalie_y-1)
+//            this.setNext_direction(new Vector(0,0));
+//        else if(cur_ball_y < 360f ){
+//            //  set goalie neg y dir
+//            this.setNext_direction(new Vector(0,-1f));
+//        }else if( cur_ball_y > 360f){
+//            //  set goalie pos y dir
+//            this.setNext_direction(new Vector(0,1f));
+//        }else if( cur_ball_y == 360f){
+//            //  if goalie y less than 360
+//            if((cur_goalie_y >cur_ball_y))
+//                this.setNext_direction(new Vector(0,-1));
+//            else if((cur_goalie_y - cur_ball_y)<0)
+//                this.setNext_direction(new Vector(0,1));
+//        }
         return this.next_direction;
     }
 
     //  Time should be passed in seconds.
     public boolean IsBallStuck(Vector cur_ball_position, int time){
         Vector ball_diff = this.last_ball_position.subtract(cur_ball_position);
-        if (abs(ball_diff.getX()) <= 0.0001f && abs(ball_diff.getY())<=0.0001f){
+
+        if (abs(ball_diff.getX()) <= 0.00001f && abs(ball_diff.getY())<=0.00001f){
             if (getIs_stuck_start_time()<0){
                 setIs_stuck_start_time(time);
                 setLast_ball_position(cur_ball_position);
@@ -190,7 +202,7 @@ public class Goalie extends Entity{
                 return false;
         }else{
             //  ball has moved reset the timer
-            if (getIs_stuck_start_time()>0)
+            if (getIs_stuck_start_time()>=0)
                 setIs_stuck_start_time(-1);
             this.last_ball_position = cur_ball_position;
             return false;
