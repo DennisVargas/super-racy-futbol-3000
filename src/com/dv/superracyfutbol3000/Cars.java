@@ -45,6 +45,11 @@ public class Cars extends Entity{
     private float top_boost_speed = 0f;
     private float max_boost_vel = 0f;
 
+
+
+    private double original_jig_rot;
+    private double original_turn_rads;
+
     private float min_vel = 0.25f;
     private float speed = 0.0f;
     private float vel_0 = 0.7f;
@@ -52,9 +57,13 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
+
+    Rectangle car_health_bar;
     Vector next_move_direction = new Vector(0f, 0f);
     private Vector start_location;
     private boolean isDead=false;
+    private int second_of_death=-1;
+    private int death_timeout = 2;
 
     public Vector getNext_move_direction() {
         return next_move_direction;
