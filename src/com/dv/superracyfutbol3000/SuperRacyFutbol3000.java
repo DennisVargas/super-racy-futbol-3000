@@ -47,6 +47,16 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String play_field_rsc = "com/dv/superracyfutbol3000/gfx/play_state/field.png";
     public static final String cars_blue_rsc = "com/dv/superracyfutbol3000/gfx/cars/blue_car.png";
     public static final String cars_red_rsc = "com/dv/superracyfutbol3000/gfx/cars/red_car.png";
+    public static final String num_1_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/1.png";
+    public static final String num_2_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/2.png";
+    public static final String num_3_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/3.png";
+    public static final String num_4_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/4.png";
+    public static final String num_5_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/5.png";
+    public static final String num_6_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/6.png";
+    public static final String num_7_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/7.png";
+    public static final String num_8_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/8.png";
+    public static final String num_9_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/9.png";
+    public static final String num_0_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/0.png";
     public static boolean isDebugCarCreation = false;
     public static boolean isDebugCarExtents = false;
     public static boolean isMouseDebug= false;
