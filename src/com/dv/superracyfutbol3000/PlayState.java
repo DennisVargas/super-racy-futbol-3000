@@ -73,7 +73,6 @@ public class PlayState extends BasicGameState {
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
 
-
     }
 
     @Override
@@ -83,6 +82,8 @@ public class PlayState extends BasicGameState {
         score_keeper = new ScoreKeeper();
         score_keeper.setBlueScore(0);
         score_keeper.setRedScore(0);
+        score_board = new ScoreBoard();
+        score_board.InitDigitEntities();
     }
 
     @Override
