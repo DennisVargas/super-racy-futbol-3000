@@ -73,13 +73,33 @@ public class Cars extends Entity{
         return (180/PI)*turn_rads;
     }
 
-    public void ReduceHealth(){}
+    public void ReduceHealth(float impact){
+        health_level*=impact;
+    }
+    public double getOriginal_jig_rot() {
+        return original_jig_rot;
+    }
 
+    public void setOriginal_jig_rot(float original_jig_rot) {
+        this.original_jig_rot = original_jig_rot;
+    }
+
+    public double getOriginal_turn_rads() {
+        return original_turn_rads;
+    }
+
+    public void setOriginal_turn_rads(float original_turn_rads) {
+        this.original_turn_rads = original_turn_rads;
+    }
     public boolean UpdateDeathStatus(){
         return false;
     }
 
     public boolean isDead(){
+        if(health_level <= 0.01f)
+            this.isDead = true;
+        else
+            this.isDead = false;
         return this.isDead;
     }
 
