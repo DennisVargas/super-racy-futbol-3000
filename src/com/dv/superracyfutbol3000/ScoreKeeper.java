@@ -43,7 +43,7 @@ public class ScoreKeeper {
     }
 
     public boolean IsRedWinner() {
-        if(this.red_score> this.blue_score)
+        if(this.red_score > this.blue_score)
             return true;
         else
             return false;

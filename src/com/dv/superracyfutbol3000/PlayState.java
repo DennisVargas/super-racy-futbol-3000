@@ -62,6 +62,7 @@ public class PlayState extends BasicGameState {
     private ScoreBoard score_board;
     private Entity goal_scored_banner;
     private int countdown_start_time;
+    private boolean pause_for_splash = false;
 
     public PlayState(int stateID) {
         super();
@@ -82,6 +83,7 @@ public class PlayState extends BasicGameState {
         this.blue_goal = new Goals(false);
         this.winner_banner = new Entity();
         this.goal_scored_banner = new Entity();
+        score_board.InitScoreBoardImages();
     }
 
     @Override
@@ -93,6 +95,7 @@ public class PlayState extends BasicGameState {
         score_keeper.setRedScore(0);
         score_board = new ScoreBoard();
         score_board.InitDigitEntities();
+
     }
 
     @Override
@@ -129,44 +132,46 @@ public class PlayState extends BasicGameState {
 
 //        CarCarCollidesTester();
         time+= i;
+        if(!pause_for_splash){
+            Input input = gameContainer.getInput();
 
-        Input input = gameContainer.getInput();
+            float mouseX = input.getMouseX();
+            float mouseY= input.getMouseY();
+            if(SuperRacyFutbol3000.isMouseDebug) {
+                System.out.println("MouseX: " + mouseX);
+                System.out.println("MouseY: " + mouseY);
+            }
+            //  Process the Team Input
+            teams.UpdateTeamsNextMove(input);
 
-        float mouseX = input.getMouseX();
-        float mouseY= input.getMouseY();
-        if(SuperRacyFutbol3000.isMouseDebug) {
-            System.out.println("MouseX: " + mouseX);
-            System.out.println("MouseY: " + mouseY);
-        }
-        //  Process the Team Input
-        teams.UpdateTeamsNextMove(input);
+            //  Check for collisions with the next move before processing
+            //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
+            CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect,time);
 
-        //  Check for collisions with the next move before processing
-        //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
-        CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect,time);
+            //  Update the Team Position based on collisions and input
+            teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);
 
-        //  Update the Team Position based on collisions and input
-        teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);
+            //  passing the balls current position and its heading
+            // the goalie can more or less guess where the ball will be next
+            //  convert time from milliseconds to seconds; divide 1000 into time
 
-        //  passing the balls current position and its heading
-        // the goalie can more or less guess where the ball will be next
-        //  convert time from milliseconds to seconds; divide 1000 into time
+            if(teams.GoalieTrackingBallStuck(ball, time/1000))
+                System.out.println("ball Stuck OH NO");
+            //  Update the Ball based on collisions
+            ball.UpdateBall(ellipse,ellipse2,rect);
 
-        if(teams.GoalieTrackingBallStuck(ball, time/1000))
-            System.out.println("ball Stuck OH NO");
-        //  Update the Ball based on collisions
-        ball.UpdateBall(ellipse,ellipse2,rect);
-
-        // test if goal
-        //  and
-        //  update score
-        DoScoreKeeping();
+            // test if goal
+            //  and
+            //  update score
+            DoScoreKeeping();
 
             //  declare winner if true
+        }
+
     }
 
     private void DoScoreKeeping() {
-        if(!isWinner){
+        if(!is_red_winner && !is_blue_winner){
 
             int new_score =0;
             //   does score keeping stuff
@@ -174,10 +179,13 @@ public class PlayState extends BasicGameState {
                 //  reset the ball to start
                 ball.ResetBallStart();
                 score_keeper.IncrementBlueScore(new_score);
+                teams.ResetCarStart();
                 PauseForSplash();
             }else if((new_score = blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
                 ball.ResetBallStart();
                 score_keeper.IncrementRedScore(new_score);
+                teams.ResetCarStart();
+                PauseForSplash();
             }
 
 //          update the scoreboard for render.
@@ -185,12 +193,14 @@ public class PlayState extends BasicGameState {
             score_board.setRedScore(score_keeper.getRedScore());
 
             isWinner = score_keeper.IsBlueWinner();
-            if(is_blue_winner = score_keeper.IsBlueWinner()){
+            if(is_blue_winner = score_keeper.IsBlueWinner()
+                    && score_keeper.getBlueScore() > SuperRacyFutbol3000.play_settings.getScoreLimit()){
                 DeclareBlueWinner();
                 System.out.println("BlueWins");
             }
 
-            if (is_red_winner = score_keeper.IsRedWinner()) {
+            if (is_red_winner = score_keeper.IsRedWinner()
+                    && score_keeper.getBlueScore() > SuperRacyFutbol3000.play_settings.getScoreLimit()) {
                 DeclareRedWinner();
                 System.out.println("RedWins");
             }
@@ -207,9 +217,18 @@ public class PlayState extends BasicGameState {
         //  draw blue winner on screen if is winner
         //  do count down after goals
         if(is_red_goal_scored){
+            countdown_start_time = GetPlayTimeSeconds();
+            pause_for_splash = true;
             red_goal_scored.addImage(ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
+        }else if(is_blue_goal_scored){
+
         }
 
+    }
+
+    //  return seconds play time
+    private int GetPlayTimeSeconds() {
+        return time/1000;
     }
 
     //  returns time left
