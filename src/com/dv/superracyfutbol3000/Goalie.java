@@ -31,7 +31,7 @@ public class Goalie extends Entity{
 
     Rectangle goalie_rect;
 
-    private int is_stuck_time_out = 4;
+    private int is_stuck_time_out = 8;
 
 
     public void setIs_stuck_start_time(int is_stuck_start_time) {
@@ -56,7 +56,6 @@ public class Goalie extends Entity{
     public static void setGolieMaxy(int golieMaxy) {
         GOLIE_MAXY = golieMaxy;
     }
-
 
     public float getSpeed() {
         return speed;
@@ -181,7 +180,7 @@ public class Goalie extends Entity{
                 return false;
             }
             //  ball hasn't moved in "time_out" seconds
-            System.out.println("IS Stuck Timer: "+(time - getIs_stuck_start_time()));
+            //System.out.println("IS Stuck Timer: "+(time - getIs_stuck_start_time()));
             if((time - getIs_stuck_start_time()) >= is_stuck_time_out) {
                 //  reset is_stuck timer to current time and return true
                 setIs_stuck_start_time(-1);

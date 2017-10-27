@@ -45,6 +45,11 @@ public class Cars extends Entity{
     private float top_boost_speed = 0f;
     private float max_boost_vel = 0f;
 
+
+
+    private double original_jig_rot;
+    private double original_turn_rads;
+
     private float min_vel = 0.25f;
     private float speed = 0.0f;
     private float vel_0 = 0.7f;
@@ -52,8 +57,13 @@ public class Cars extends Entity{
     private int player_number = -1; //  controlling player number
     private boolean isRed = false;
 
+
+    Rectangle car_health_bar;
     Vector next_move_direction = new Vector(0f, 0f);
     private Vector start_location;
+    private boolean isDead=false;
+    private int second_of_death=-1;
+    private int death_timeout = 2;
 
     public Vector getNext_move_direction() {
         return next_move_direction;
@@ -61,6 +71,36 @@ public class Cars extends Entity{
 
     public double getTurn_degs() {
         return (180/PI)*turn_rads;
+    }
+
+    public void ReduceHealth(float impact){
+        health_level*=impact;
+    }
+    public double getOriginal_jig_rot() {
+        return original_jig_rot;
+    }
+
+    public void setOriginal_jig_rot(float original_jig_rot) {
+        this.original_jig_rot = original_jig_rot;
+    }
+
+    public double getOriginal_turn_rads() {
+        return original_turn_rads;
+    }
+
+    public void setOriginal_turn_rads(float original_turn_rads) {
+        this.original_turn_rads = original_turn_rads;
+    }
+    public boolean UpdateDeathStatus(){
+        return false;
+    }
+
+    public boolean isDead(){
+        if(health_level <= 0.01f)
+            this.isDead = true;
+        else
+            this.isDead = false;
+        return this.isDead;
     }
 
     public void setNextDirection(Vector next_direction) {
@@ -74,10 +114,29 @@ public class Cars extends Entity{
     public void ResetToStart() {
         this.setPosition(this.start_location);
         this.setNextDirection(new Vector(0,0));
+//      can't get this correct
+//     this.ResetToOriginalRotations();
     }
 
     public void setNextTranslation(Vector resultA) {
         this.translate_next_move = resultA;
+    }
+
+    public Rectangle getHealthBar() {
+        return car_health_bar;
+    }
+
+    public void setTimeOfDeath(int time) {
+        if(second_of_death <0)
+            this.second_of_death = time;
+    }
+
+    public void IsTimeToRevive(int time){
+        if((time - this.second_of_death)>= death_timeout){
+            ReviveCar();
+            this.isDead = false;
+            ResetToStart();
+        }
     }
 
     enum TurnDirection {Left, Right}
@@ -120,9 +179,58 @@ public class Cars extends Entity{
         setStartPosition();
         SetCarImage();
         next_move_direction = new Vector(1f,0f);
-
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
 //        this.debugThis = true;
 //        Entity.setDebug(true);
+    }
+
+    private void SetOriginalRotations() {
+        this.original_jig_rot = (float) this.getRotation();
+        this.original_turn_rads = (float) this.turn_rads;
+    }
+
+    private void ResetToOriginalRotations(){
+
+        if(this.original_turn_rads < this.turn_rads)
+            this.turn_rads += this.original_turn_rads;
+        else
+            this.turn_rads -= this.original_turn_rads;
+
+        if (this.original_jig_rot < this.getRotation())
+            this.rotate(this.getRotation()+this.original_jig_rot);
+        else
+            this.rotate(this.original_jig_rot-this.getRotation());
+    }
+
+
+    public void InitHealthBarRect() {
+        float car_width,car_height;
+
+        car_width = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        car_height = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+        car_health_bar = new Rectangle(this.getX()-car_width/2,
+                this.getY()+car_height/2,
+                car_width,
+                car_height*0.2f);
+    }
+
+    public void UpdateHealthBarLocation(){
+        float car_width,car_height;
+        car_width = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        car_height = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+            car_health_bar.setLocation(this.getX()-car_width/2,
+                    this.getY() + car_height/2);
+            car_health_bar.setWidth(car_width*health_level);
+    }
+
+    private void setHealthLevel(float car_health) {
+        this.health_level = car_health;
+    }
+
+    public void ReviveCar(){
+        this.health_level = 1f;
     }
 
     private void setStartPosition() {
@@ -248,7 +356,6 @@ public class Cars extends Entity{
     public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
         this.translate(translate_next_move);
     }
-
 
     private void Accelerate() {
 
