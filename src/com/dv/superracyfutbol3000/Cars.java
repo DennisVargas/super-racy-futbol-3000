@@ -55,6 +55,7 @@ public class Cars extends Entity{
     private boolean isRed = false;
 
     Vector next_move_direction = new Vector(0f, 0f);
+    private Vector start_location;
 
     public Vector getNext_move_direction() {
         return next_move_direction;
@@ -70,6 +71,11 @@ public class Cars extends Entity{
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public void ResetToStart() {
+        this.setPosition(this.start_location);
+        this.setNextDirection(new Vector(0,0));
     }
 
     enum TurnDirection {Left, Right}
@@ -109,7 +115,7 @@ public class Cars extends Entity{
     public Cars(float x, float y, Players controlling_player) {
         super(x, y);
         this.controlling_player = controlling_player;
-
+        setStartPosition();
         SetCarImage();
         next_move_direction = new Vector(1f,0f);
 
@@ -117,7 +123,11 @@ public class Cars extends Entity{
 //        Entity.setDebug(true);
     }
 
-//public void SetCarImageFromPath(String path){
+    private void setStartPosition() {
+        this.start_location = this.getPosition();
+    }
+
+    //public void SetCarImageFromPath(String path){
 //    Image img = new Image();
 //}
     private void SetCarImage() {

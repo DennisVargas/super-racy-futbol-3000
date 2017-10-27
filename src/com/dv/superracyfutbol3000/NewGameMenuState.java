@@ -24,6 +24,7 @@ public class NewGameMenuState extends MenuBase {
     Vector ppt_pos = new Vector(930*s,195*s );
 
 
+
     int players_per_team = 1;
     ArrayList<String> players_per_team_img_path = new ArrayList<String>();
     Image players_per_team_img = null;
@@ -200,7 +201,7 @@ public class NewGameMenuState extends MenuBase {
                 SuperRacyFutbol3000.play_settings.players = human_players;
                 SuperRacyFutbol3000.play_settings.SetHumanPlayers(human_players.size());
                 SuperRacyFutbol3000.play_settings.SetTeams();
-                SuperRacyFutbol3000.play_settings.SetScoreLimit(1);
+                SuperRacyFutbol3000.play_settings.SetScoreLimit(10);
                 SuperRacyFutbol3000.play_settings.SetTimeLimit(0);
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
             }

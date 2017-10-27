@@ -180,4 +180,13 @@ public class Teams {
     public Goalie getBlueGoale() {
         return blue_goalie;
     }
+
+    public void ResetCarStart() {
+        for(Cars carR: red_team){
+            carR.ResetToStart();
+        }
+        for(Cars carB: blue_team){
+            carB.ResetToStart();
+        }
+    }
 }
