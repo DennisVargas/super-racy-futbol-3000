@@ -109,6 +109,7 @@ public class PlayState extends BasicGameState {
         }
 
         RenderTeams(graphics);
+
         ball.RenderBall(graphics);
 //        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
         //  Render the score board
@@ -142,7 +143,7 @@ public class PlayState extends BasicGameState {
                 System.out.println("MouseY: " + mouseY);
             }
             //  Process the Team Input
-            teams.UpdateTeamsNextMove(input);
+            teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds());
 
             //  Check for collisions with the next move before processing
             //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
@@ -155,7 +156,7 @@ public class PlayState extends BasicGameState {
             // the goalie can more or less guess where the ball will be next
             //  convert time from milliseconds to seconds; divide 1000 into time
 
-            if(teams.GoalieTrackingBallStuck(ball, time/1000))
+            if(teams.GoalieTrackingBallStuck(ball, GetPlayTimeSeconds()))
                 System.out.println("ball Stuck OH NO");
             //  Update the Ball based on collisions
             ball.UpdateBall(ellipse,ellipse2,rect);
@@ -258,10 +259,19 @@ public class PlayState extends BasicGameState {
 
     public void RenderTeams(Graphics g){
         for (Cars car:teams.getRed_team()){
-            car.render(g);
+            if(!car.isDead()){
+                car.render(g);
+                g.setColor(Color.red);
+                g.fill(car.getHealthBar());
+            }
+
         }
         for(Cars car:teams.getBlue_team()){
-            car.render(g);
+            if(!car.isDead()){
+                car.render(g);
+                g.setColor(Color.red);
+                g.fill(car.getHealthBar());
+            }
         }
         RenderGoalies(g, teams.getRedGoalie(), teams.getBlueGoale());
     }
