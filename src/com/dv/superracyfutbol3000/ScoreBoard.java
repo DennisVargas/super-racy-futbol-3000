@@ -22,7 +22,7 @@ public class ScoreBoard{
     private int blue_score;
     private int blue_most_sig_value;
     private int blue_least_sig_value;
-    private String current_image_path= SuperRacyFutbol3000.num_0_rsc;
+    private String current_image_path = SuperRacyFutbol3000.num_0_rsc;
 
     public String getCurrent_image_path() {
         return current_image_path;
@@ -68,8 +68,6 @@ public class ScoreBoard{
 
 
     public int setRedScoreLeastSigImage() {
-        if(red_least_sig.getNumImages()<1)
-            this.red_least_sig.addImage(ResourceManager.getImage(current_image_path));
         switch(this.red_least_sig_value){
             case 0:
                 this.red_least_sig.removeImage(ResourceManager.getImage(current_image_path));
@@ -127,6 +125,8 @@ public class ScoreBoard{
     }
     //  returns the value of the most sig that was chosen
     public int setRedScoreMostSigImage(){
+        if(red_most_sig.getNumImages()<1)
+            this.red_most_sig.addImage(ResourceManager.getImage(current_image_path));
         switch(red_most_sig_value){
             case 0:
                 this.red_most_sig.removeImage(ResourceManager.getImage(current_image_path));
@@ -184,6 +184,8 @@ public class ScoreBoard{
 
     }
     public int setBlueScoreMostSigImage() {
+        if(blue_most_sig.getNumImages()<1)
+            this.blue_most_sig.addImage(ResourceManager.getImage(current_image_path));
         switch(this.blue_most_sig_value){
             case 0:
                 this.blue_most_sig.removeImage(ResourceManager.getImage(current_image_path));
@@ -253,11 +255,13 @@ public class ScoreBoard{
                 this.blue_least_sig.addImage(ResourceManager.getImage(current_image_path));
                 return 1;
             case 2:
+                System.out.println(current_image_path);
                 this.blue_least_sig.removeImage(ResourceManager.getImage(current_image_path));
                 setCurrent_image_path(SuperRacyFutbol3000.num_2_rsc);
                 this.blue_least_sig.addImage(ResourceManager.getImage(current_image_path));
                 return 2;
             case 3:
+                System.out.println(current_image_path);
                 this.blue_least_sig.removeImage(ResourceManager.getImage(current_image_path));
                 setCurrent_image_path(SuperRacyFutbol3000.num_3_rsc);
                 this.blue_least_sig.addImage(ResourceManager.getImage(current_image_path));
@@ -313,9 +317,9 @@ public class ScoreBoard{
     }
 
 
-
     public void setCurrent_image_path(String current_image_path) {
         this.current_image_path = current_image_path;
+        System.out.println(current_image_path);
     }
 
 }
