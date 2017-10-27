@@ -57,6 +57,12 @@ public class NewGameMenuState extends MenuBase {
     }
 
     @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        human_players = new ArrayList<>();
+    }
+
+    @Override
     public int getID() {
         return this.stateID;
     }
@@ -197,11 +203,11 @@ public class NewGameMenuState extends MenuBase {
                 //  default 1 player on keyboard controls for bookmark
                 //  players should activate depending on which control is being used first
                 //  players should also be able to choose which controller they want to use
-                human_players.add(new Players());
+                human_players.add(new Players("player 1", this.isRedTeam, Players.Controller.Keyboard));
                 SuperRacyFutbol3000.play_settings.players = human_players;
                 SuperRacyFutbol3000.play_settings.SetHumanPlayers(human_players.size());
                 SuperRacyFutbol3000.play_settings.SetTeams();
-                SuperRacyFutbol3000.play_settings.SetScoreLimit(10);
+                SuperRacyFutbol3000.play_settings.SetScoreLimit(3);
                 SuperRacyFutbol3000.play_settings.SetTimeLimit(0);
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);
             }

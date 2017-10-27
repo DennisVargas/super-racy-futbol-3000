@@ -57,6 +57,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String num_8_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/8.png";
     public static final String num_9_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/9.png";
     public static final String num_0_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/0.png";
+    public static final String blue_winner_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/Blue_Winner.png";
+    public static final String red_winner_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/Red_Winner.png";
     public static boolean isDebugCarCreation = false;
     public static boolean isDebugCarExtents = false;
     public static boolean isMouseDebug= false;
@@ -76,12 +78,9 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+        this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new PlayState(PLAYSTATE));
-
-
-        this.addState(new MainMenuState(MAINMENUSTATE));
-
         this.addState(new OptionsMenuState(OPTIONSMENUSTATE));
 
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
@@ -123,15 +122,15 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
         ResourceManager.loadImage(num_0_rsc);
         ResourceManager.loadImage(splash_red_goal_rsc);
         ResourceManager.loadImage(splash_blue_goal_rsc);
+        ResourceManager.loadImage(red_winner_rsc);
+        ResourceManager.loadImage(blue_winner_rsc);
     }
 
     public static void main(String[] args) throws SlickException{
-
-        if (CheckDebug(args))
-            isDebug= true;
         AppGameContainer app = new AppGameContainer(new SuperRacyFutbol3000());
         app.setDisplayMode((int)(WIDTH*SCALE), (int)(HEIGHT*SCALE),false);
         app.setVSync(true);
+        app.setShowFPS(false);
         app.start();
     }
 
