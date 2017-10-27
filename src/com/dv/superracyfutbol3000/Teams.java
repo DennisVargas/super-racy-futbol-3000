@@ -11,6 +11,7 @@ import static java.lang.Math.PI;
 public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
+    private ArrayList<Cars> dead_players = new ArrayList<>();
 
     //  goalies are controlled seperate from car driven players
     Goalie red_goalie = new Goalie(74,360,true);
@@ -20,6 +21,7 @@ public class Teams {
     int total_players = 2*players_per_team;
     int human_players;
     int cpu_players = total_players -human_players;
+
 
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
         this.red_team = red_team;
@@ -140,13 +142,24 @@ public class Teams {
     }
 
 
-    public void UpdateTeamsNextMove(Input input) {
+    public void UpdateTeamsNextMove(Input input, int time) {
         for (Cars car: red_team){
-            car.GenerateNextMove(input);
-
+            if(!car.isDead()){
+                car.GenerateNextMove(input);
+                car.UpdateHealthBarLocation();
+            }else{
+                car.setTimeOfDeath(time);
+                car.IsTimeToRevive(time);
+            }
         }
         for (Cars car: blue_team){
-            car.GenerateNextMove(input);
+            if(!car.isDead()){
+                car.GenerateNextMove(input);
+                car.UpdateHealthBarLocation();
+            }else{
+                car.setTimeOfDeath(time);
+                car.IsTimeToRevive(time);
+            }
         }
         red_goalie.UpdateGoaliePosition();
         blue_goalie.UpdateGoaliePosition();
