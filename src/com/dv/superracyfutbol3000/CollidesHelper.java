@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Collision;
+import jig.Shape;
 import jig.Vector;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
@@ -127,6 +128,38 @@ public abstract class CollidesHelper {
         }
     }
 
+    public static void CarGoalieCollide(Goalie goalie, Cars car){
+        float goalie_x = goalie.getX();
+        float goalie_y = goalie.getY();
+        float goalie_height = goalie.goalie_rect.getHeight();
+        Shape car_box = car.getGloballyTransformedShapes().getFirst();
+
+        if(goalie_x < SuperRacyFutbol3000.WIDTH/2){
+            if(car_box.getMinX()  <= goalie_x){
+                //  check the top height
+                if(car_box.getMaxY() >= goalie_y - goalie_height/2f
+                        && car_box.getMinY() <= goalie_y + goalie_height/2f){
+                    car.setPosition(car.getX()+5f, car.getY());
+//                    car.setNext_move_direction(new Vector(ball.getNext_move_direction().getX()*-1f,
+//                            ball.getNext_move_direction().getY()));
+                }
+            }
+        }
+        if(goalie_x >= SuperRacyFutbol3000.WIDTH/2){
+            if(car_box.getMaxX() >= goalie_x){
+                //  check the top height
+                if(car_box.getMaxY() >= goalie_y - goalie_height/2f
+                        && car_box.getMinY() <= goalie_y + goalie_height/2f){
+                    car.setPosition(car.getX()-5f, car.getY());
+                }
+            }
+        }
+
+    }
+
+
+
+
     public static void GoalieBallCollide(Goalie goalie, Ball ball){
         float goalie_x = goalie.getX();
         float goalie_y = goalie.getY();
@@ -143,7 +176,7 @@ public abstract class CollidesHelper {
                 }
             }
         }
-        if(goalie_x > SuperRacyFutbol3000.WIDTH/2){
+        if(goalie_x >= SuperRacyFutbol3000.WIDTH/2){
             if(ball.getNext_move_location().getX()+ball.getCoarseGrainedRadius() >= goalie_x){
                 //  check the top height
                 if(ball.getNext_move_location().getY() >= goalie_y - goalie_height/2f
@@ -323,6 +356,10 @@ public abstract class CollidesHelper {
                         }
                     }
                 }
+                //  Begin Car Goalie Collisions
+                CarGoalieCollide(teams.red_goalie,car);
+                CarGoalieCollide(teams.blue_goalie,car);
+
             }// end car per team
         }// end team list
 
