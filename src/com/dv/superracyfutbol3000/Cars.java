@@ -54,6 +54,7 @@ public class Cars extends Entity{
 
     Vector next_move_direction = new Vector(0f, 0f);
     private Vector start_location;
+    private boolean isDead=false;
 
     public Vector getNext_move_direction() {
         return next_move_direction;
@@ -61,6 +62,16 @@ public class Cars extends Entity{
 
     public double getTurn_degs() {
         return (180/PI)*turn_rads;
+    }
+
+    public void ReduceHealth(){}
+
+    public boolean UpdateDeathStatus(){
+        return false;
+    }
+
+    public boolean isDead(){
+        return this.isDead;
     }
 
     public void setNextDirection(Vector next_direction) {
