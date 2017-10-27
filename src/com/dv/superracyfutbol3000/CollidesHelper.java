@@ -4,16 +4,10 @@ import jig.Collision;
 import jig.Vector;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.util.FastTrig;
 
 import java.util.ArrayList;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.isWallDebug;
-import static java.lang.Math.PI;
-import static java.lang.Math.abs;
-import static java.lang.Math.acos;
-import static java.lang.StrictMath.asin;
-import static java.lang.StrictMath.sqrt;
 
 
 public abstract class CollidesHelper {
@@ -30,7 +24,8 @@ public abstract class CollidesHelper {
     }
 
     public static Vector CarCarCollides(Cars carA, Cars carB){
-        Vector resultA = carA.getNext_move_direction();
+        Vector resultA = carA.getTranslate_next_move();
+        Vector resultB;
         Collision collide;
         collide = carA.collides(carB);
         //  If carB hits CarA then add its direction to the direction of car B
@@ -39,15 +34,79 @@ public abstract class CollidesHelper {
         //  i should take the unit vector of the translation and get the dot prodcut if i want the speed?
         //  figure it out later...just do this.
         if (collide != null){
-            resultA = carA.getNext_move_direction().add(carB.next_move_direction);
-            carA.setSpeed(carA.getSpeed()-carB.getSpeed()*0.125f);
-            carA.setNextDirection(resultA);
+            resultB = carB.getTranslate_next_move();
+            //  increase car B magnitude of repulsion
+            float speed_reduction =0.5f;
+//            Vector carA_collision_translation = new Vector(carA.getTranslate_next_move().getX(),
+//                    carB.getTranslate_next_move().getY());
+//            Vector carB_collision_translation = new Vector(carB.getTranslate_next_move().getX()*speed_reduction,
+//                carB.getTranslate_next_move().getY()*speed_reduction);
+
+            //  get both resulting translation vectors for A and B
+            resultA = carA.getTranslate_next_move().add(carB.getTranslate_next_move());
+            resultB = carB.getTranslate_next_move().add(carA.getTranslate_next_move());
+//            resultA = carA_collision_translation.add(carB_collision_translation);
+            //  if carb is standing still reflect car A none the less
+//            if (abs(carB_collision_translation.getY()) == 0||abs(carB_collision_translation.getX()) == 0 )
+//                resultA = new Vector (resultA.getX()*-1f, resultA.getY()*-1f);
+
+           // carA.setSpeed(carA.getSpeed()-carB.getSpeed()*0.125f);
+
+            carA.setNextTranslation(resultA);
+            carB.setNextTranslation(resultB);
+            BounceCars(carA,carB);
             return resultA;
         }
         else
             return resultA;
     }
 
+    private static void BounceCars(Cars carA, Cars carB){
+        int bounce_displace = 5;
+        if(carA.getPosition().getX() > carB.getPosition().getX()) {
+            //  to the right and below carB
+            if (carA.getPosition().getY() > carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() + bounce_displace));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() - bounce_displace));
+            }
+            //  to the right and above carB
+            else if (carA.getPosition().getY() < carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() - bounce_displace));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() + bounce_displace));
+            }
+            else if (carA.getPosition().getY() == carB.getPosition().getY()){
+                carA.setPosition(new Vector(carA.getX() + bounce_displace,
+                        carA.getY() ));
+                carB.setPosition(new Vector(carB.getX() - bounce_displace,
+                        carB.getY() ));
+            }
+        }else if (carA.getPosition().getX() < carB.getPosition().getX()) {
+            //  to the left and below carB
+            if (carA.getPosition().getY() > carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() + bounce_displace));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() - bounce_displace));
+            }
+            //  to the left and above carB
+            else if (carA.getPosition().getY() < carB.getPosition().getY()) {
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() - bounce_displace));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() + bounce_displace));
+            }
+            else if (carA.getPosition().getY() == carB.getPosition().getY()){
+                carA.setPosition(new Vector(carA.getX() - bounce_displace,
+                        carA.getY() ));
+                carB.setPosition(new Vector(carB.getX() + bounce_displace,
+                        carB.getY() ));
+            }
+        }
+    }
     private CarExtentNames GetCollidePointName(int index) {
         switch(index){
             case 0:
