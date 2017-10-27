@@ -26,6 +26,7 @@ public class PlayState extends BasicGameState {
     Rectangle rect2 = new Rectangle (0,0,23,35);
     Ball ball;
     Goalie goalies;
+    Entity winner_banner;
     Entity start_game_banner;
     Entity countdown_start_timer;
 
@@ -72,7 +73,7 @@ public class PlayState extends BasicGameState {
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
-
+        this.winner_banner = new Entity();
     }
 
     @Override
@@ -164,6 +165,9 @@ public class PlayState extends BasicGameState {
             score_keeper.IncrementRedScore(blue_goal.IsGoal(ball.getPosition(),
                     ball.getCoarseGrainedRadius()));
             isWinner = score_keeper.IsBlueWinner();
+//          update the scoreboard for render.
+            score_board.setBlueScore(score_keeper.getBlueScore());
+            score_board.setRedScore(score_keeper.getRedScore());
 
             if(isWinner){
                 DeclareBlueWinner();
@@ -181,7 +185,7 @@ public class PlayState extends BasicGameState {
     }
 
     private void DeclareBlueWinner() {
-        
+
     }
 
     private void DeclareRedWinner() {
