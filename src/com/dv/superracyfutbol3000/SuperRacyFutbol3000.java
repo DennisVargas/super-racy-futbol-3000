@@ -68,7 +68,8 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static boolean isQuadrantDebug;
     public static boolean isGoalieDebug;
     public static boolean isScoreDebug;
-
+    public static String splash_red_goal_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/RedGoalScored.png";
+    public static String splash_blue_goal_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/BlueGoalScored.png";
     public SuperRacyFutbol3000() {
         super(NAME);
     }
