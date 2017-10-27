@@ -1,6 +1,7 @@
 package com.dv.superracyfutbol3000;
 
 import jig.Collision;
+import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
@@ -25,6 +26,10 @@ public class PlayState extends BasicGameState {
     Rectangle rect2 = new Rectangle (0,0,23,35);
     Ball ball;
     Goalie goalies;
+    Entity start_game_banner;
+    Entity countdown_start_timer;
+
+
     boolean isWinner = false;
     //  field area by left and right goal ellipse
     //  center = 320x352
@@ -46,9 +51,9 @@ public class PlayState extends BasicGameState {
     private int time;
     private Goals red_goal;
     private Goals blue_goal;
-    int red_score, blue_score;
-    private ScoreKeeper score_keeper;
 
+    private ScoreKeeper score_keeper;
+    private ScoreBoard score_board;
 
     public PlayState(int stateID) {
         super();
