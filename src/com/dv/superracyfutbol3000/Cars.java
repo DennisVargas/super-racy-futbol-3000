@@ -38,7 +38,7 @@ public class Cars extends Entity{
     private double prev_turn_rads;
     private double turn_rads = (PI / 180) * this.getRotation();
 
-    private double turn_increment = PI / 175; // angular acceleration
+    private double turn_increment = PI / 90; // angular acceleration
     private double deg_turn_increment = (180 * turn_increment) / PI;
     private float top_speed = 3.5f;
     private float acceleration = 1.075f;

@@ -147,7 +147,7 @@ public class PlayState extends BasicGameState {
 
             //  Check for collisions with the next move before processing
             //  todo: passing in Time into collisions to have a delay between ball collisions for testing later
-            CollidesHelper.CheckWorldCollisions(teams, ball,ellipse,ellipse2,rect,time);
+            CollidesHelper.CheckWorldCollisions(teams, ball, ellipse,ellipse2,rect,time);
 
             //  Update the Team Position based on collisions and input
             teams.ProcessTeamsNextMove(ellipse,ellipse2,rect);

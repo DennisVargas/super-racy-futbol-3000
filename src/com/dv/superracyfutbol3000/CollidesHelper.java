@@ -127,6 +127,38 @@ public abstract class CollidesHelper {
         }
     }
 
+    public static void GoalieBallCollide(Goalie goalie, Ball ball){
+        float goalie_x = goalie.getX();
+        float goalie_y = goalie.getY();
+        float goalie_height = goalie.goalie_rect.getHeight();
+
+        if(goalie_x < SuperRacyFutbol3000.WIDTH/2){
+            if(ball.getNext_move_location().getX()-ball.getCoarseGrainedRadius() <= goalie_x){
+                //  check the top height
+                if(ball.getNext_move_location().getY() >= goalie_y - goalie_height/2f
+                        && ball.getNext_move_location().getY() <= goalie_y + goalie_height/2f){
+                    ball.setPosition(ball.getX()+10f, ball.getY());
+                    ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX()*-1f,
+                            ball.getNext_move_direction().getY()));
+                }
+            }
+        }
+        if(goalie_x > SuperRacyFutbol3000.WIDTH/2){
+            if(ball.getNext_move_location().getX()+ball.getCoarseGrainedRadius() >= goalie_x){
+                //  check the top height
+                if(ball.getNext_move_location().getY() >= goalie_y - goalie_height/2f
+                        && ball.getNext_move_location().getY() <= goalie_y + goalie_height/2f){
+                    ball.setPosition(ball.getX()-10f, ball.getY());
+                    ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX()*-1f,
+                            ball.getNext_move_direction().getY()));
+                }
+            }
+        }
+
+    }
+
+
+
     public static void CheckWorldCollisions(Teams teams, Ball ball, Ellipse left_boundary, Ellipse right_boundary,
                                             Rectangle center_boundary,int time) {
         //  for each car check if it is gonna run into another car, ball, or wall....
@@ -171,15 +203,15 @@ public abstract class CollidesHelper {
                                 left_boundary, center_boundary)) {
                             //  don't keep this behavior but it works for now
                             //  translate in positive x direction to the right if wall hit
-                            car.setX(car.getX() + 10f);
+                            car.setX(car.getX() + 13f);
 
                             car.ReduceHealth(wall_hit);
 
                             //  if y coordinate is less than screen middle increase y
                             if (car.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
-                                car.setY(car.getY() + 10f);
+                                car.setY(car.getY() + 13f);
                             else//  decrease y its in the lower half
-                                car.setY(car.getY() - 10f);
+                                car.setY(car.getY() - 13f);
                             //car.getTranslate_next_move().setY(28f);
                         }
                     }
@@ -216,10 +248,9 @@ public abstract class CollidesHelper {
                 collision = ball.collides(car);
 
                 if(collision!=null){
-                    System.out.println("Stop TOUCHING ME");
+//                    System.out.println("Stop TOUCHING ME");
 
-                   // ball.setNext_move_direction(ball.getNext_move_direction().bounce(80)) ;
-                    //ball.setTranslateNextMove(ball.getNext_move_direction().add(car.getTranslate_next_move()),1);
+
 
                     //  Gets a direction multiplied by the current magnitude but the car force is not added
 //                    Vector result_bounced_direction = ball.getNext_move_direction().bounce(90-car.getTurn_degs()%180);
@@ -228,11 +259,12 @@ public abstract class CollidesHelper {
                     //  sets ball direction to the resulting direction after the collision
                     ball.setNext_move_direction(result_bounced_direction);
 
-                    System.out.println("Bounced dir x: "+result_bounced_direction.getX());
-                    System.out.println("Bounced dir y: "+result_bounced_direction.getY());
+//                    System.out.println("Bounced dir x: "+result_bounced_direction.getX());
+//                    System.out.println("Bounced dir y: "+result_bounced_direction.getY());
                     //  sets ball speed to 1.5 of the cars in hopes it will move out in front and not collide again.
                     //  todo: may need a top speed
-                    ball.setSpeed((ball.getSpeed()+ 1.75f*car.getSpeed())%ball.getTopSpeed());//car speed carries direction forward and back
+                    ball.setSpeed((ball.getSpeed()+ 1.25f*car.getSpeed())%ball.getTopSpeed());//car speed carries direction forward and back
+
 
                     //  create a translation vector multiplying speed*direction
                     Vector result_translate = new Vector(ball.getSpeed()*result_bounced_direction.getX(),
@@ -244,17 +276,39 @@ public abstract class CollidesHelper {
                     //  it can then be verified for wall collisions
                     ball.setTranslateNextMove(result_translate);
 
+                    //  bounce away from car to avoid another collision
+                    //  ball to left of car
+                    if(ball.getX() < car.getX()){
+                        //  ball left and above car
+                        if(ball.getY()< car.getY()){
+                            ball.setPosition(ball.getX()-2f,ball.getY() - 2f);
+                        }else if(ball.getY()> car.getY()){
+                            ball.setPosition(ball.getX()-2f, ball.getY()+2f);
+                        }else if (ball.getY() == car.getY()){
+                            ball.setPosition(ball.getX()-2f, ball.getY());
+                        }
+                    }
+                    else if(ball.getX() > car.getX()){
+                        //  ball left and above car
+                        if(ball.getY()< car.getY()){
+                            ball.setPosition(ball.getX()+2f,ball.getY() - 2f);
+                        }else if(ball.getY()> car.getY()){
+                            ball.setPosition(ball.getX()+2f, ball.getY()+2f);
+                        }else if (ball.getY() == car.getY()){
+                            ball.setPosition(ball.getX()+2f, ball.getY());
+                        }
+                    } else if (ball.getX() == 0){
+                        //  ball left and above car
+                        if(ball.getY()< SuperRacyFutbol3000.HEIGHT/2){
+                            ball.setPosition(ball.getX(),ball.getY() - 2f);
+                        }else if(ball.getY()> SuperRacyFutbol3000.HEIGHT/2){
+                            ball.setPosition(ball.getX(), ball.getY()+2f);
+                        }
+                    }
                     //  takes all translation vector and generates a potential next move
                     //  this will be used to test against wall collisions, goals, and goalie conditions
                     ball.GenerateNextMove();
 
-                    //ball.setTranslateNextMove();
-//                    ball.setPosition(ball.getX()+ball.getNext_move_direction().getX()*ball.getSpeed(),
-//                            ball.getY()+ball.getNext_move_direction().getY()*ball.getSpeed());
-
-                  //  ball.setSpeed(ball.getSpeed()+car.getSpeed());
-                    /*ball.setTranslateNextMove(car.getTranslate_next_move(),
-                            car.getAcceleration()*5);*/
                 }// end car ball collisions
 
                 //  =========================
@@ -268,10 +322,10 @@ public abstract class CollidesHelper {
                             car.setNextDirection(CarCarCollides(car, carB));
                         }
                     }
-
                 }
             }// end car per team
         }// end team list
+
 
         //  BEGIN BALL COLLISION TESTING (walls, goals, goalies)
         //  check ball collisions with walls
@@ -283,18 +337,13 @@ public abstract class CollidesHelper {
             //  Send left ellipse to wall collide and evaluate next ball move
             if (WallCollide(ball.getNext_move_location(),
                     left_boundary, center_boundary)) {
-
                 ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX()*-1f,
                         ball.getNext_move_direction().getY()*-1f));
-//                //  don't keep this behavior but it works for now
-//                //  translate in positive x direction to the right if wall hit
-//                ball.setX(ball.getX() + 20f);
-//                //  if y coordinate is less than screen middle increase y
-//                if (ball.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
-//                    ball.setY(ball.getY() + 20f);
-//                else//  decrease y its in the lower half
-//                    ball.setY(ball.getY() - 20f);
-//                //car.getTranslate_next_move().setY(28f);
+                //  if y coordinate is less than screen middle increase y
+                if (ball.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                    ball.setPosition(ball.getX()+10f,ball.getY() + 10f);
+                else//  decrease y its in the lower half
+                    ball.setPosition(ball.getX()+10f,ball.getY() - 10f);
             }
         }// END LEFT FIELD BALL WALL COLLISION
 
@@ -308,7 +357,10 @@ public abstract class CollidesHelper {
                             (float) asin((ball.getPosition().getY()-360)/360 )));*/
                 ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX() * -1f,
                         ball.getNext_move_direction().getY() * -1f));
-
+                if (ball.getNext_move_location().getY() < SuperRacyFutbol3000.HEIGHT / 2)
+                    ball.setPosition(ball.getX()-10f,ball.getY() + 10f);
+                else//  decrease y its in the lower half
+                    ball.setPosition(ball.getX()-10f,ball.getY() - 10f);
             }// END RIGHT SIDE BALL WALL COLLISION TEST
         }
             //  BEGIN BALL IN RECTANGLE COLLISION TEST
@@ -323,6 +375,7 @@ public abstract class CollidesHelper {
                         // set direction to bottom of screen positive direction
                         ball.setNext_move_direction(new Vector(ball.getNext_move_direction().getX(),
                                 ball.getNext_move_direction().getY() * -1f));
+                        ball.setPosition(ball.getX(),ball.getY() + 10f);
                     }
                     //  ball is in the lower part of the screen
                     else {
@@ -332,6 +385,7 @@ public abstract class CollidesHelper {
                                 ball.getNext_move_direction().getY() * -1f);
                         System.out.println("reflectX: " + ball_reflect_dir.getX() + "reflectY: " + ball_reflect_dir.getY());
                         ball.setNext_move_direction(ball_reflect_dir);
+                        ball.setPosition(ball.getX(),ball.getY() - 10f);
 //                    ball.setY(ball.getY() + 10f);
                     }
                     //  Adjust speed - none for now
@@ -339,7 +393,11 @@ public abstract class CollidesHelper {
                     ball.GenerateNextMove();
                 }
             }// END BALL RECTANGLE COLLISION TEST
+        //  Begin Ball Goalie Collision Test
+            GoalieBallCollide(teams.blue_goalie, ball);
+            GoalieBallCollide(teams.red_goalie, ball);
         }
+
 
 
 
