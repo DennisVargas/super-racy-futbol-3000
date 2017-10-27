@@ -160,9 +160,58 @@ public class Cars extends Entity{
         setStartPosition();
         SetCarImage();
         next_move_direction = new Vector(1f,0f);
-
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
 //        this.debugThis = true;
 //        Entity.setDebug(true);
+    }
+
+    private void SetOriginalRotations() {
+        this.original_jig_rot = (float) this.getRotation();
+        this.original_turn_rads = (float) this.turn_rads;
+    }
+
+    private void ResetToOriginalRotations(){
+
+        if(this.original_turn_rads < this.turn_rads)
+            this.turn_rads += this.original_turn_rads;
+        else
+            this.turn_rads -= this.original_turn_rads;
+
+        if (this.original_jig_rot < this.getRotation())
+            this.rotate(this.getRotation()+this.original_jig_rot);
+        else
+            this.rotate(this.original_jig_rot-this.getRotation());
+    }
+
+
+    public void InitHealthBarRect() {
+        float car_width,car_height;
+
+        car_width = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        car_height = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+        car_health_bar = new Rectangle(this.getX()-car_width/2,
+                this.getY()+car_height/2,
+                car_width,
+                car_height*0.2f);
+    }
+
+    public void UpdateHealthBarLocation(){
+        float car_width,car_height;
+        car_width = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        car_height = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+            car_health_bar.setLocation(this.getX()-car_width/2,
+                    this.getY() + car_height/2);
+            car_health_bar.setWidth(car_width*health_level);
+    }
+
+    private void setHealthLevel(float car_health) {
+        this.health_level = car_health;
+    }
+
+    public void ReviveCar(){
+        this.health_level = 1f;
     }
 
     private void setStartPosition() {
