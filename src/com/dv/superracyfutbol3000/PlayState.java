@@ -200,6 +200,26 @@ public class PlayState extends BasicGameState {
         }
     }
 
+    private void PauseForSplash() {
+        //  draw red goal on screen if is red goal
+        //  draw blue goal on screen if is blue goal
+        //   draw red winner on scree if is red winner
+        //  draw blue winner on screen if is winner
+        //  do count down after goals
+        if(is_red_goal_scored){
+            red_goal_scored.addImage(ResourceManager.getImage(SuperRacyFutbol3000.splash_red_goal_rsc));
+        }
+
+    }
+
+    //  returns time left
+    private int DoCountdown(int time){
+        return time - countdown_start_time;
+    }
+    private void InitCountdown(int time){
+        this.countdown_start_time = time;
+    }
+
     private void DeclareBlueWinner() {
 
     }
