@@ -114,10 +114,29 @@ public class Cars extends Entity{
     public void ResetToStart() {
         this.setPosition(this.start_location);
         this.setNextDirection(new Vector(0,0));
+//      can't get this correct
+//     this.ResetToOriginalRotations();
     }
 
     public void setNextTranslation(Vector resultA) {
         this.translate_next_move = resultA;
+    }
+
+    public Rectangle getHealthBar() {
+        return car_health_bar;
+    }
+
+    public void setTimeOfDeath(int time) {
+        if(second_of_death <0)
+            this.second_of_death = time;
+    }
+
+    public void IsTimeToRevive(int time){
+        if((time - this.second_of_death)>= death_timeout){
+            ReviveCar();
+            this.isDead = false;
+            ResetToStart();
+        }
     }
 
     enum TurnDirection {Left, Right}
