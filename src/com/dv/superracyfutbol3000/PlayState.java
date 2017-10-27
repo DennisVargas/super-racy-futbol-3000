@@ -100,8 +100,19 @@ public class PlayState extends BasicGameState {
         ball.RenderBall(graphics);
 //        graphics.drawString("Time : " + time/1000+" seconds", 100, 100);
         //  Render the score board
+        RenderScoreBoard(graphics);
     }
 
+    private void RenderScoreBoard(Graphics g) {
+        score_board.setRedScoreLeastSigImage();
+        score_board.setRedScoreMostSigImage();
+        score_board.setBlueScoreLeastSigImage();
+        score_board.setBlueScoreMostSigImage();
+        score_board.getBlueLeastSigEntity().render(g);
+        score_board.getBlueMostSigEntity().render(g);
+        score_board.getRedLeastSigEntity().render(g);
+        score_board.getRedMostSigEntity().render(g);
+    }
 
     @Override
     public void update(GameContainer gameContainer,
