@@ -167,22 +167,30 @@ public class PlayState extends BasicGameState {
 
     private void DoScoreKeeping() {
         if(!isWinner){
+
+            int new_score =0;
             //   does score keeping stuff
-            score_keeper.IncrementBlueScore(red_goal.IsGoal(ball.getPosition(),
-                    ball.getCoarseGrainedRadius()));
-            score_keeper.IncrementRedScore(blue_goal.IsGoal(ball.getPosition(),
-                    ball.getCoarseGrainedRadius()));
-            isWinner = score_keeper.IsBlueWinner();
+            if((new_score = red_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
+                //  reset the ball to start
+                ball.ResetBallStart();
+                score_keeper.IncrementBlueScore(new_score);
+                PauseForSplash();
+            }else if((new_score = blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
+                ball.ResetBallStart();
+                score_keeper.IncrementRedScore(new_score);
+            }
+
 //          update the scoreboard for render.
             score_board.setBlueScore(score_keeper.getBlueScore());
             score_board.setRedScore(score_keeper.getRedScore());
 
-            if(isWinner){
+            isWinner = score_keeper.IsBlueWinner();
+            if(is_blue_winner = score_keeper.IsBlueWinner()){
                 DeclareBlueWinner();
                 System.out.println("BlueWins");
             }
-            isWinner = score_keeper.IsRedWinner();
-            if (isWinner) {
+
+            if (is_red_winner = score_keeper.IsRedWinner()) {
                 DeclareRedWinner();
                 System.out.println("RedWins");
             }
