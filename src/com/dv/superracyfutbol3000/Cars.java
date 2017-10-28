@@ -7,7 +7,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.PI;
@@ -20,7 +23,7 @@ public class Cars extends Entity{
 
 //  Holds resulting hit vectors that will be added to in the update method
     ArrayList<CollidesHelper.CollisionReport> collision_reports;
-
+    CarAI carAI;
     private Vector next_move_location = new Vector(0,0);
     private Vector translate_next_move = new Vector(0,0);
 
@@ -63,6 +66,21 @@ public class Cars extends Entity{
     private boolean isDead=false;
     private int second_of_death=-1;
     private int death_timeout = 2;
+    private LinkedList<MoveOrder> move_orders;
+
+    public Cars() {
+        super(320,360);
+        this.controlling_player = new Players();
+        setStartPosition();
+        SetCarImage();
+        next_move_direction = new Vector(1f,0f);
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
+        //InitCarAI();
+//        this.debugThis = true;
+//        Entity.setDebug(true);
+    }
 
     public Vector getNext_move_direction() {
         return next_move_direction;
