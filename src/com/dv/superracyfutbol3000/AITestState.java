@@ -41,7 +41,9 @@ public class AITestState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-        car.ProcessInput(input);
+//        car.ProcessInput(input);
+        car.GenerateNextMove(input);
+        car.UpdateCar();
         car.UpdateHealthBarLocation();
     }
 }
