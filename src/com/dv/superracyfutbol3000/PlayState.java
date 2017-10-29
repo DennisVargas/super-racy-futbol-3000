@@ -58,7 +58,6 @@ public class PlayState extends BasicGameState {
 
     private ScoreKeeper score_keeper;
     private ScoreBoard score_board;
-    private Entity goal_scored_banner;
     private int countdown_start_time;
     private boolean pause_for_splash = false;
     private int goal_timeout = 2;
@@ -86,8 +85,18 @@ public class PlayState extends BasicGameState {
         this.blue_goal_scored_banner = new Entity(640,360);
         this.red_winner_banner = new Entity(640,360);
         this.blue_winner_banner = new Entity(640,360);
+        this.is_red_winner = false;
+        this.is_blue_winner = false;
+        this.is_blue_goal_scored = false;
+        this. is_red_goal_scored = false;
+        score_keeper = new ScoreKeeper();
+        score_board = new ScoreBoard();
         score_board.setBlueScore(0);
         score_board.setRedScore(0);
+        score_keeper.setBlueScore(3);
+        score_keeper.setRedScore(0);
+        score_board.InitDigitEntities();
+        score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
         score_board.InitScoreBoardImages();
         countdown_start_time = -1;
     }
