@@ -318,7 +318,8 @@ public class Cars extends Entity{
                 }
                 break;
             case AI:
-                MoveOrder order = this.getNextMoveOrder();
+                System.out.println("process AI input Here");
+//                MoveOrder order = this.getNextMoveOrder();
                 break;
             default:
                 break;
@@ -386,7 +387,7 @@ public class Cars extends Entity{
     }
 
     //  implements the translation on the next move
-    public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
+    public void UpdateCar(/*Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds*/){
         this.translate(translate_next_move);
     }
 
