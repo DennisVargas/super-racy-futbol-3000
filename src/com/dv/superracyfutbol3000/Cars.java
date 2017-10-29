@@ -203,6 +203,11 @@ public class Cars extends Entity{
 //        Entity.setDebug(true);
     }
 
+    private void setMoveOrders(LinkedList<MoveOrder> new_orders) {
+        //  initializes the move orders list
+        move_orders = new_orders;
+    }
+
     private void SetOriginalRotations() {
         this.original_jig_rot = (float) this.getRotation();
         this.original_turn_rads = (float) this.turn_rads;
@@ -312,9 +317,21 @@ public class Cars extends Entity{
                         Steer(TurnDirection.Right);
                 }
                 break;
+            case AI:
+                MoveOrder order = this.getNextMoveOrder();
+                break;
+            default:
+                break;
         }
     }
 
+    public MoveOrder getNextMoveOrder() {
+        return this.move_orders.pop();
+    }
+
+    public void InitCarAI(){
+        carAI = new CarAI();
+    }
     private void Steer(TurnDirection dir) {
         prev_turn_rads = turn_rads;
         if(reverse ){
