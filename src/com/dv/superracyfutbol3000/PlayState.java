@@ -105,12 +105,7 @@ public class PlayState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
        // Ball.setDebug(true);
-        score_keeper = new ScoreKeeper();
-        score_keeper.setBlueScore(0);
-        score_keeper.setRedScore(0);
-        score_board = new ScoreBoard();
-        score_board.InitDigitEntities();
-        score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
+
     }
 
     @Override
@@ -276,8 +271,12 @@ public class PlayState extends BasicGameState {
                 is_red_goal_scored = false;
                 is_blue_goal_scored = false;
                 countdown_start_time = -1;
-                if(is_red_winner || is_blue_winner)
+                if(is_red_winner || is_blue_winner){
+                    is_blue_winner = false;
+                    is_red_winner = false;
                     sbg.enterState(SuperRacyFutbol3000.MAINMENUSTATE);
+                }
+
             }
         }
     }
@@ -291,6 +290,7 @@ public class PlayState extends BasicGameState {
     private int DoCountdown(int time){
         return time - countdown_start_time;
     }
+
     private void InitCountdown(int time){
         this.countdown_start_time = time;
     }
@@ -340,8 +340,6 @@ public class PlayState extends BasicGameState {
         blue_goalie.render(g);
     }
 
-
-
     private void RenderFieldDebugOverlay(Graphics graphics) {
         graphics.setColor(Color.white);
         graphics.fill(ellipse);
@@ -381,6 +379,7 @@ public class PlayState extends BasicGameState {
             rect2.setY((next_y) + 360f);
         }
     }
+
     private void VectorTest(){
         //  Testing the vector addition functions
        // System.out.println("high fverscters");
