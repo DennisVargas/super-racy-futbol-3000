@@ -37,14 +37,14 @@ public class ScoreKeeper {
     }
 
     public boolean IsBlueWinner() {
-        if (this.blue_score> this.red_score)
+        if (this.blue_score >= this.score_limit && this.blue_score != this.blue_score)
             return true;
         else
             return false;
     }
 
     public boolean IsRedWinner() {
-        if(this.red_score > this.score_limit && this.blue_score != this.red_score)
+        if(this.red_score >= this.score_limit && this.blue_score != this.red_score)
             return true;
         else
             return false;
