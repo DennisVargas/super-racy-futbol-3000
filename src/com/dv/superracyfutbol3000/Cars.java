@@ -170,6 +170,10 @@ public class Cars extends Entity{
         }
     }
 
+    public void setCarAI(CarAI carAI) {
+        this.carAI = carAI;
+    }
+
     enum TurnDirection {Left, Right}
 
     public Vector getNext_move_location() {
