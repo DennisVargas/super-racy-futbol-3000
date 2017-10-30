@@ -46,29 +46,29 @@ public class CarAI {
         float x = ball_x-x_screen_center;
         float y = y_screen_center-ball_y;
         double angle_to_ball_from_center =  Math.atan2(y,x);
-        if(angle_to_ball_from_center < 0)
-            angle_to_ball_from_center += 2*PI;
+//        if(angle_to_ball_from_center < 0)
+//            angle_to_ball_from_center += 2*PI;
 //        x = car_x-x_screen_center;
 //        y = y_screen_center-car_y;
 
         x = ball_x - car_x;
         y =  car_y- ball_y;
         double angle_to_ball_from_car =  Math.atan2(y,x);
-//        if(angle_to_car_from_center < 0)
-//            angle_to_car_from_center += 2*PI;
+//        if(angle_to_ball_from_car < 0)
+//            angle_to_ball_from_car+= 2*PI;
         System.out.println("angle_to_ball_from_center: " +(180/Math.PI)*angle_to_ball_from_center);
         System.out.println("angle_to_ball_from_car: " +(180/Math.PI)*angle_to_ball_from_car);
         System.out.println("turn_rads: "+ car.getTurn_rads());
         System.out.println("turn_degs: " +car.getTurn_degs());
 
         double turn_angle_diff;
-        if(car_x >= ball_x)
-            turn_angle_diff = car.getTurn_rads() - angle_to_ball_from_car;
+        if(car_x <= ball_x)
+            turn_angle_diff =  car.getTurn_rads()-angle_to_ball_from_car ;
         else
             turn_angle_diff = car.getTurn_rads()-angle_to_ball_from_center;
         System.out.println("turn_angle_diff : " +turn_angle_diff);
         if(Math.abs(turn_angle_diff) >= Math.PI/64 ){
-            if(angle_to_ball_from_car > 0){
+            if(angle_to_ball_from_car> 0){
 //                if(car_x > ball_x)
 //                    order.setAccelCommand(MoveOrder.CarCommands.deccelerate);
                 if(car.getSpeed() < 1.0f)
