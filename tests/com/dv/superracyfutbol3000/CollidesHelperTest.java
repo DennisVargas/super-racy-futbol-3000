@@ -41,8 +41,8 @@ class CollidesHelperTest {
         //  atan2(y,x)
         double x, y,x_point,y_point,center_x,center_y;
         //  points in screen space
-        x_point = 420;
-        y_point = 400;
+        x_point = 1280;
+        y_point = 0;
         center_x = 640;
         center_y = 360;
         //  difference between point and center of screen
