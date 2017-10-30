@@ -148,8 +148,14 @@ public class Teams {
         }
     }
 
-    public Teams(){
+    public Teams(Rectangle blue_goal, Rectangle red_goal, Ball ball){
+        InitCarAI();
+        SetTeamsCarAI(blue_goal, red_goal, ball);
         FillTeams();
+    }
+
+    private void InitCarAI() {
+        this.carAI = new CarAI();
     }
 
     public ArrayList<Cars> getRed_team() {
