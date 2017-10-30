@@ -58,7 +58,6 @@ public class PlayState extends BasicGameState {
 
     private ScoreKeeper score_keeper;
     private ScoreBoard score_board;
-    private Entity goal_scored_banner;
     private int countdown_start_time;
     private boolean pause_for_splash = false;
     private int goal_timeout = 2;
@@ -78,7 +77,6 @@ public class PlayState extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
@@ -86,22 +84,30 @@ public class PlayState extends BasicGameState {
         this.blue_goal_scored_banner = new Entity(640,360);
         this.red_winner_banner = new Entity(640,360);
         this.blue_winner_banner = new Entity(640,360);
+        this.is_red_winner = false;
+        this.is_blue_winner = false;
+        this.is_blue_goal_scored = false;
+        this. is_red_goal_scored = false;
+        score_keeper = new ScoreKeeper();
+        score_board = new ScoreBoard();
         score_board.setBlueScore(0);
         score_board.setRedScore(0);
+        score_keeper.setBlueScore(0);
+        score_keeper.setRedScore(0);
+        score_board.InitDigitEntities();
+        score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
         score_board.InitScoreBoardImages();
         countdown_start_time = -1;
+
+        this.teams = new Teams(blue_goal.getRectangle(), red_goal.getRectangle(), ball);//SuperRacyFutbol3000.play_settings.GetTeams();
+
     }
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         background = ResourceManager.getImage(SuperRacyFutbol3000.play_field_rsc);
        // Ball.setDebug(true);
-        score_keeper = new ScoreKeeper();
-        score_keeper.setBlueScore(0);
-        score_keeper.setRedScore(0);
-        score_board = new ScoreBoard();
-        score_board.InitDigitEntities();
-        score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
+
     }
 
     @Override
@@ -117,14 +123,14 @@ public class PlayState extends BasicGameState {
         RenderTeams(graphics);
 
         ball.RenderBall(graphics);
-        graphics.drawString("Controls: Up = accelerate;\n Dwn = reverse; \n A = left; \n D = right", 640, 710);
+        graphics.drawString("Controls: \n Up = accelerate;\n Dwn = reverse; \n A = left; \n D = right", 580, 600);
         //  Render the score board
         RenderScoreBoard(graphics);
         if(pause_for_splash){
-            if(is_red_goal_scored && !is_red_winner){
+            if(is_red_goal_scored && !is_blue_winner){
 //                graphics.drawString("Blue Goal Scored!!! ", 640, 360);
                 blue_goal_scored_banner.render(graphics);
-            }else if(is_blue_goal_scored && !is_blue_winner){
+            }else if(is_blue_goal_scored && !is_red_winner){
 //                graphics.drawString("Red Goal Scored!!! ", 640, 360);
                 red_goal_scored_banner.render(graphics);
             }else if(is_blue_winner){
@@ -165,7 +171,7 @@ public class PlayState extends BasicGameState {
                 System.out.println("MouseY: " + mouseY);
             }
             //  Process the Team Input
-            teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds());
+            teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds(), this);
 
 
             //  Check for collisions with the next move before processing
@@ -182,7 +188,7 @@ public class PlayState extends BasicGameState {
             if(teams.GoalieTrackingBallStuck(ball, GetPlayTimeSeconds()))
                 System.out.println("ball Stuck OH NO");
             //  Update the Ball based on collisions
-            ball.UpdateBall(ellipse,ellipse2,rect);
+            ball.UpdateBall(/*ellipse,ellipse2,rect*/);
 
             // test if goal
             //  and
@@ -192,7 +198,6 @@ public class PlayState extends BasicGameState {
             //  declare winner if true
         }else
             PauseForSplash(stateBasedGame);
-
     }
 
     private void DoScoreKeeping(StateBasedGame sbg) {
@@ -206,31 +211,26 @@ public class PlayState extends BasicGameState {
                 score_keeper.IncrementBlueScore(new_score);
                 teams.ResetCarStart();
                 is_red_goal_scored = true;
-                PauseForSplash(sbg);
+
             }else if((new_score = blue_goal.IsGoal(ball.getPosition(), ball.getCoarseGrainedRadius()))> 0){
                 ball.ResetBallStart();
                 score_keeper.IncrementRedScore(new_score);
                 teams.ResetCarStart();
                 is_blue_goal_scored = true;
-                PauseForSplash(sbg);
+
             }
 
 //          update the scoreboard for render.
             score_board.setBlueScore(score_keeper.getBlueScore());
             score_board.setRedScore(score_keeper.getRedScore());
 
-            isWinner = score_keeper.IsBlueWinner();
-            if(is_blue_winner = score_keeper.IsBlueWinner()){
+//            isWinner = score_keeper.IsBlueWinner();
+            is_blue_winner = score_keeper.IsBlueWinner();
+            is_red_winner = score_keeper.IsRedWinner();
+            if(is_blue_winner || is_red_winner || is_red_goal_scored|| is_blue_goal_scored)
                 PauseForSplash(sbg);
 
-            }
-
-            if (is_red_winner = score_keeper.IsRedWinner()) {
-                PauseForSplash(sbg);
-
-            }
         }else{
-
             System.out.println("winner declared");
         }
     }
@@ -241,11 +241,12 @@ public class PlayState extends BasicGameState {
         //   draw red winner on scree if is red winner
         //  draw blue winner on screen if is winner
         //  do count down after goals
-        if(is_red_goal_scored && countdown_start_time < 0){
+        if((is_red_goal_scored && countdown_start_time < 0)&&!is_blue_winner){
             countdown_start_time = GetPlayTimeSeconds();
             pause_for_splash = true;
-            blue_goal_scored_banner.addImageWithBoundingBox(ResourceManager.getImage(SuperRacyFutbol3000.splash_blue_goal_rsc));
-        }else if(is_blue_goal_scored && countdown_start_time <0){
+            blue_goal_scored_banner.addImageWithBoundingBox(
+                    ResourceManager.getImage(SuperRacyFutbol3000.splash_blue_goal_rsc));
+        }else if((is_blue_goal_scored && countdown_start_time <0)&&!is_red_winner){
             countdown_start_time = GetPlayTimeSeconds();
             pause_for_splash = true;
             red_goal_scored_banner.addImageWithBoundingBox(
@@ -267,8 +268,12 @@ public class PlayState extends BasicGameState {
                 is_red_goal_scored = false;
                 is_blue_goal_scored = false;
                 countdown_start_time = -1;
-                if(is_red_winner || is_blue_winner)
+                if(is_red_winner || is_blue_winner){
+                    is_blue_winner = false;
+                    is_red_winner = false;
                     sbg.enterState(SuperRacyFutbol3000.MAINMENUSTATE);
+                }
+
             }
         }
     }
@@ -282,6 +287,7 @@ public class PlayState extends BasicGameState {
     private int DoCountdown(int time){
         return time - countdown_start_time;
     }
+
     private void InitCountdown(int time){
         this.countdown_start_time = time;
     }
@@ -301,6 +307,38 @@ public class PlayState extends BasicGameState {
         Collision collision = carA.collides(carB);
         if(collision!=null)
             System.out.println("collision here");
+    }
+
+    public Ellipse getEllipse() {
+        return ellipse;
+    }
+
+    public Ellipse getEllipse2() {
+        return ellipse2;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public Goalie getGoalies() {
+        return goalies;
+    }
+
+    public Teams getTeams() {
+        return teams;
+    }
+
+    public Goals getRed_goal() {
+        return red_goal;
+    }
+
+    public Goals getBlue_goal() {
+        return blue_goal;
     }
 
     public void RenderTeams(Graphics g){
@@ -330,8 +368,6 @@ public class PlayState extends BasicGameState {
         red_goalie.render(g);
         blue_goalie.render(g);
     }
-
-
 
     private void RenderFieldDebugOverlay(Graphics graphics) {
         graphics.setColor(Color.white);
@@ -372,6 +408,7 @@ public class PlayState extends BasicGameState {
             rect2.setY((next_y) + 360f);
         }
     }
+
     private void VectorTest(){
         //  Testing the vector addition functions
        // System.out.println("high fverscters");
