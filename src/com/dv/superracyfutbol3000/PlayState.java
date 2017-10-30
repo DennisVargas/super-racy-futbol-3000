@@ -188,7 +188,7 @@ public class PlayState extends BasicGameState {
             if(teams.GoalieTrackingBallStuck(ball, GetPlayTimeSeconds()))
                 System.out.println("ball Stuck OH NO");
             //  Update the Ball based on collisions
-            ball.UpdateBall(ellipse,ellipse2,rect);
+            ball.UpdateBall(/*ellipse,ellipse2,rect*/);
 
             // test if goal
             //  and
