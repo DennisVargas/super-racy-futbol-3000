@@ -188,8 +188,6 @@ public class Teams {
                 car.IsTimeToRevive(time);
             }
         }
-        red_goalie.UpdateGoaliePosition();
-        blue_goalie.UpdateGoaliePosition();
     }
 
     //  tracks the ball and updates goalie
@@ -228,5 +226,20 @@ public class Teams {
         for(Cars carB: blue_team){
             carB.ResetToStart();
         }
+    }
+
+    public void setAiGoalLocation(Rectangle blue_goal_rect, Rectangle red_goal_rect) {
+        carAI.setBlueGoalRect(blue_goal_rect);
+        carAI.setRedGoalRect(red_goal_rect);
+    }
+
+    public void SetTeamsCarAI(Rectangle blue_goalRectangle, Rectangle red_goalRectangle, Ball ball) {
+        carAI = new CarAI();
+        setAiGoalLocation(blue_goalRectangle, red_goalRectangle);
+        setAiBallLocation(ball);
+    }
+
+    private void setAiBallLocation(Ball ball) {
+        this.carAI.setBall(ball);
     }
 }
