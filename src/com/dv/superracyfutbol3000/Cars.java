@@ -81,6 +81,20 @@ public class Cars extends Entity{
 //        this.debugThis = true;
 //        Entity.setDebug(true);
     }
+    public Cars(float x, float y, PlayState play_state) {
+        super(x, y);
+        this.controlling_player = new Players();
+//        if (this.controlling_player.control_type == Players.Controller.AI)
+//            InitCarAI();
+        setStartPosition();
+        SetCarImage();
+        next_move_direction = new Vector(1f,0f);
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
+//        this.debugThis = true;
+//        Entity.setDebug(true);
+    }
 
     public Vector getNext_move_direction() {
         return next_move_direction;
