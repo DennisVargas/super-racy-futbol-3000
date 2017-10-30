@@ -339,7 +339,36 @@ public class Cars extends Entity{
                 break;
             case AI:
                 System.out.println("process AI input Here");
-//                MoveOrder order = this.getNextMoveOrder();
+                MoveOrder order = this.getNextMoveOrder();
+                System.out.println(order.getAccelCommand());
+                switch (order.getAccelCommand()){
+                    case accelerate:
+                        Accelerate();
+                        break;
+                    case deccelerate:
+                        Decelerate();
+                        break;
+                    default:
+                        //  If not accelerating or decelerating
+                        //  losing velocity due to friction
+                        if (abs(speed) > min_vel)
+                            speed *= friction;
+                        else
+                            speed = 0f;
+                        break;
+                }
+                if(abs(speed) > 0){
+                    switch(order.getTurnCommand()){
+                        case turn_left:
+                            Steer(TurnDirection.Left);
+                            break;
+                        case turn_right:
+                            Steer(TurnDirection.Right);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 break;
             default:
                 break;
