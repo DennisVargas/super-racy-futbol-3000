@@ -379,8 +379,20 @@ public class Cars extends Entity{
         return this.move_orders.pop();
     }
 
-    public void InitCarAI(){
-        carAI = new CarAI();
+    public void InitCarAI(Rectangle blue_goal, Rectangle red_goal, Ball ball){
+        this.carAI = new CarAI();
+        //  give car ai the goals
+        carAI.setBlueGoalRect(blue_goal);
+        carAI.setRedGoalRect(red_goal);
+        //  give car ai reference to ball
+        carAI.setBall(ball);
+        //  give car ai reference to car
+        carAI.setCar(this);
+        //  set AI to control this car
+    }
+
+    public CarAI getCarAI(){
+        return carAI;
     }
     private void Steer(TurnDirection dir) {
         prev_turn_rads = turn_rads;
