@@ -31,7 +31,7 @@ public class AITestState extends BasicGameState {
         blue_goal = new Goals(false);
         red_goal = new Goals(true);
         car = new Cars(320,360, new Players("Ai Bot 1",false, Players.Controller.AI));
-        ball = new Ball(10,720);
+        ball = new Ball(20,200);
         car.InitCarAI(blue_goal.getRectangle(), red_goal.getRectangle(), ball);
 
         car.rotate(90);
@@ -58,6 +58,9 @@ public class AITestState extends BasicGameState {
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
         LinkedList <MoveOrder> orders = new LinkedList<>();
+        ball.setTranslateNextMove(new Vector(0.4f,0f));
+        ball.UpdateBall();
+
 
         car.GenerateNextMove(input);
         car.UpdateCar();
