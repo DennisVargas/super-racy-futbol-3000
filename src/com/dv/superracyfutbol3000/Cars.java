@@ -223,7 +223,7 @@ public class Cars extends Entity{
 //        Entity.setDebug(true);
     }
 
-    private void setMoveOrders(LinkedList<MoveOrder> new_orders) {
+    public void setMoveOrders(LinkedList<MoveOrder> new_orders) {
         //  initializes the move orders list
         move_orders = new_orders;
     }
