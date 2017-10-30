@@ -24,8 +24,12 @@ public class Teams {
     int total_players = 2*players_per_team;
     int human_players;
     int cpu_players = total_players -human_players;
+    private PlayState current_play_state;
 
 
+    public void setCurrentPlayState(PlayState play_state){
+        this.current_play_state = play_state;
+    }
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
         this.red_team = red_team;
         this.blue_team = blue_team;
@@ -34,7 +38,6 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
-
 
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
