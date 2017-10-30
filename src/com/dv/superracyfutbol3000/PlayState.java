@@ -314,6 +314,38 @@ public class PlayState extends BasicGameState {
             System.out.println("collision here");
     }
 
+    public Ellipse getEllipse() {
+        return ellipse;
+    }
+
+    public Ellipse getEllipse2() {
+        return ellipse2;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public Goalie getGoalies() {
+        return goalies;
+    }
+
+    public Teams getTeams() {
+        return teams;
+    }
+
+    public Goals getRed_goal() {
+        return red_goal;
+    }
+
+    public Goals getBlue_goal() {
+        return blue_goal;
+    }
+
     public void RenderTeams(Graphics g){
         for (Cars car:teams.getRed_team()){
             if(!car.isDead()){
