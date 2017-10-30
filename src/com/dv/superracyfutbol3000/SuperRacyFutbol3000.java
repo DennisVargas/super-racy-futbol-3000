@@ -139,7 +139,6 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     private static boolean CheckDebug(String[] args) {
         for(String x:args){
             if (x.contains("-d") ){
-
                 if(x.contains("-dw")){
                     if(x.contains("-dwB"))
                         isDebugWallBounce = true;
