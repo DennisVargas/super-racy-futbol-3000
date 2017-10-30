@@ -167,17 +167,19 @@ public class Teams {
     }
 
 
-    public void UpdateTeamsNextMove(Input input, int time) {
-        for (Cars car: red_team){
-            if(!car.isDead()){
-                car.GenerateNextMove(input);
-                car.UpdateHealthBarLocation();
-            }else{
-                car.setTimeOfDeath(time);
-                car.IsTimeToRevive(time);
-            }
-        }
-        for (Cars car: blue_team){
+    public void UpdateTeamsNextMove(Input input, int time, PlayState current_play_state) {
+        UpdateTeamMoves(red_team, input, time);
+        UpdateTeamMoves(blue_team, input, time);
+        red_goalie.UpdateGoaliePosition();
+        blue_goalie.UpdateGoaliePosition();
+        UpdateTeamAI();
+    }
+
+    private void UpdateTeamAI() {
+    }
+
+    private void UpdateTeamMoves(ArrayList<Cars> team, Input input, int time){
+        for (Cars car: team){
             if(!car.isDead()){
                 car.GenerateNextMove(input);
                 car.UpdateHealthBarLocation();
