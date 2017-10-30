@@ -3,6 +3,7 @@ package com.dv.superracyfutbol3000;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,8 @@ public class Teams {
     private ArrayList<Cars> red_team = new ArrayList<Cars>();
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
     private ArrayList<Cars> dead_players = new ArrayList<>();
+
+    private CarAI carAI;
 
     //  goalies are controlled seperate from car driven players
     Goalie red_goalie = new Goalie(74,360,true);
