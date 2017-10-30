@@ -8,6 +8,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.LinkedList;
 
+import static java.lang.Math.PI;
+
 public class AITestState extends BasicGameState {
     Cars car;
     Ball ball;
@@ -30,12 +32,12 @@ public class AITestState extends BasicGameState {
         super.enter(container, game);
         blue_goal = new Goals(false);
         red_goal = new Goals(true);
-        car = new Cars(320,360, new Players("Ai Bot 1",false, Players.Controller.AI));
-        ball = new Ball(20,200);
+        car = new Cars(700,125, new Players("Ai Bot 1",false, Players.Controller.AI));
+        ball = new Ball(700,700);
         car.InitCarAI(blue_goal.getRectangle(), red_goal.getRectangle(), ball);
 
-        car.rotate(90);
-        car.setTurn_rads(0);
+        car.rotate(270);
+        car.setTurn_rads(PI);
 
         //  initialize car ai object if car is an AI
         //  do this in constructor.
@@ -60,8 +62,6 @@ public class AITestState extends BasicGameState {
         LinkedList <MoveOrder> orders = new LinkedList<>();
         ball.setTranslateNextMove(new Vector(0.4f,0f));
         ball.UpdateBall();
-
-
         car.GenerateNextMove(input);
         car.UpdateCar();
         car.UpdateHealthBarLocation();
