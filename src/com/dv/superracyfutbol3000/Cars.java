@@ -431,6 +431,11 @@ public class Cars extends Entity{
 
     //  GenerateNextMove should be a function
     public void GenerateNextMove(Input input){
+        //  Generate Ai Move so ProcessInput has a move ready
+        if(this.controlling_player.control_type == Players.Controller.AI)
+            GenerateAiInput();
+
+
         //  input causes turn angle and speed to change
         //  steering will cause a rotation of the entity but not movement
         ProcessInput(input);
@@ -445,6 +450,12 @@ public class Cars extends Entity{
 
         next_move_location = new Vector(this.getX()+speed*next_move_direction.getX(),
                                         this.getY()+speed*next_move_direction.getY());
+    }
+
+    private void GenerateAiInput() {
+        LinkedList <MoveOrder> orders;
+        orders = this.getCarAI().GenerateGotoBall();
+        this.setMoveOrders(orders);
     }
 
     //  implements the translation on the next move
