@@ -105,6 +105,19 @@ public class Teams {
             car.setTurn_rads(PI);
             this.blue_team.add(car);
         }
+        if(car.controlling_player.control_type == Players.Controller.AI){
+            car.InitCarAI(carAI.getBlueGoalRect(),carAI.getRedGoalRect(), carAI.getBall());
+//                        setCarAiCar(car);
+//            AddAiToCar(car);
+        }
+    }
+
+    private void AddAiToCar(Cars car) {
+        car.setCarAI(carAI);
+    }
+
+    private void setCarAiCar(Cars car) {
+        this.carAI.setCar(car);
     }
 
 
