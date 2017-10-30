@@ -77,7 +77,6 @@ public class PlayState extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        this.teams = SuperRacyFutbol3000.play_settings.GetTeams();
         this.ball = new Ball(SuperRacyFutbol3000.WIDTH/2, SuperRacyFutbol3000.HEIGHT/2);
         this.red_goal = new Goals(true);
         this.blue_goal = new Goals(false);
@@ -93,12 +92,15 @@ public class PlayState extends BasicGameState {
         score_board = new ScoreBoard();
         score_board.setBlueScore(0);
         score_board.setRedScore(0);
-        score_keeper.setBlueScore(3);
+        score_keeper.setBlueScore(0);
         score_keeper.setRedScore(0);
         score_board.InitDigitEntities();
         score_keeper.setScoreLimit(SuperRacyFutbol3000.play_settings.getScoreLimit());
         score_board.InitScoreBoardImages();
         countdown_start_time = -1;
+
+        this.teams = new Teams(blue_goal.getRectangle(), red_goal.getRectangle(), ball);//SuperRacyFutbol3000.play_settings.GetTeams();
+
     }
 
     @Override
