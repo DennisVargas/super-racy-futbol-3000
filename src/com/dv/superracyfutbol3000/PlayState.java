@@ -171,7 +171,7 @@ public class PlayState extends BasicGameState {
                 System.out.println("MouseY: " + mouseY);
             }
             //  Process the Team Input
-            teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds());
+            teams.UpdateTeamsNextMove(input, GetPlayTimeSeconds(), this);
 
 
             //  Check for collisions with the next move before processing
