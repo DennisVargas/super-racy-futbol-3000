@@ -31,7 +31,7 @@ public class AITestState extends BasicGameState {
         blue_goal = new Goals(false);
         red_goal = new Goals(true);
         car = new Cars(320,360, new Players("Ai Bot 1",false, Players.Controller.AI));
-        ball = new Ball(1280,400);
+        ball = new Ball(10,720);
         car.InitCarAI(blue_goal.getRectangle(), red_goal.getRectangle(), ball);
 
         car.rotate(90);
@@ -47,6 +47,9 @@ public class AITestState extends BasicGameState {
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         car.render(graphics);
+
+        ball.render(graphics);
+        graphics.fill(ball.getBall_Sphere());
         graphics.setColor(Color.red);
         graphics.fill(car.getHealthBar());
     }
@@ -54,12 +57,8 @@ public class AITestState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-//        car.ProcessInput(input);
-        MoveOrder move_order = new MoveOrder(MoveOrder.CarCommands.none, MoveOrder.CarCommands.turn_right);
         LinkedList <MoveOrder> orders = new LinkedList<>();
-//        orders.add(move_order);
-        orders = car.getCarAI().GenerateGotoBall();
-        car.setMoveOrders(orders);
+
         car.GenerateNextMove(input);
         car.UpdateCar();
         car.UpdateHealthBarLocation();
