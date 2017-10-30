@@ -211,6 +211,8 @@ public class Cars extends Entity{
     public Cars(float x, float y, Players controlling_player) {
         super(x, y);
         this.controlling_player = controlling_player;
+//        if (this.controlling_player.control_type == Players.Controller.AI)
+//            InitCarAI();
         setStartPosition();
         SetCarImage();
         next_move_direction = new Vector(1f,0f);
