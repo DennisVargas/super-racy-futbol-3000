@@ -46,9 +46,9 @@ public class PlaySettings {
         this.players_per_team = players_per_team;
     }
 
-    public void SetTeams(){
-        teams = new Teams();
-    }
+//    public void SetTeams(){
+//        teams = new Teams();
+//    }
     public Teams GetTeams(){
         return teams;
     }

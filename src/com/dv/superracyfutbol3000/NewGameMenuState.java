@@ -206,7 +206,7 @@ public class NewGameMenuState extends MenuBase {
                 human_players.add(new Players("player 1", this.isRedTeam, Players.Controller.Keyboard));
                 SuperRacyFutbol3000.play_settings.players = human_players;
                 SuperRacyFutbol3000.play_settings.SetHumanPlayers(human_players.size());
-                SuperRacyFutbol3000.play_settings.SetTeams();
+                //SuperRacyFutbol3000.play_settings.SetTeams();
                 SuperRacyFutbol3000.play_settings.SetScoreLimit(3);
                 SuperRacyFutbol3000.play_settings.SetTimeLimit(0);
                 stateBasedGame.enterState(SuperRacyFutbol3000.PLAYSTATE);

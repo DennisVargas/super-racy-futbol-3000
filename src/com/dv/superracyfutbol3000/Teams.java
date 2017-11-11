@@ -3,6 +3,7 @@ package com.dv.superracyfutbol3000;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
+import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,8 @@ public class Teams {
     private ArrayList<Cars> blue_team = new ArrayList<Cars>();
     private ArrayList<Cars> dead_players = new ArrayList<>();
 
+    private CarAI carAI;
+
     //  goalies are controlled seperate from car driven players
     Goalie red_goalie = new Goalie(74,360,true);
     Goalie blue_goalie = new Goalie(1210,360,false);
@@ -21,8 +24,12 @@ public class Teams {
     int total_players = 2*players_per_team;
     int human_players;
     int cpu_players = total_players -human_players;
+    private PlayState current_play_state;
 
 
+    public void setCurrentPlayState(PlayState play_state){
+        this.current_play_state = play_state;
+    }
     public Teams(ArrayList<Cars> red_team, ArrayList blue_team) {
         this.red_team = red_team;
         this.blue_team = blue_team;
@@ -31,7 +38,6 @@ public class Teams {
     //  fills teams with human players then fills the teams with computer players
     private void FillTeams() {
         Players player = null;
-
 
         human_players = SuperRacyFutbol3000.play_settings.GetHumanPlayers();
         cpu_players = total_players - human_players;
@@ -99,6 +105,19 @@ public class Teams {
             car.setTurn_rads(PI);
             this.blue_team.add(car);
         }
+        if(car.controlling_player.control_type == Players.Controller.AI){
+            car.InitCarAI(carAI.getBlueGoalRect(),carAI.getRedGoalRect(), carAI.getBall());
+//                        setCarAiCar(car);
+//            AddAiToCar(car);
+        }
+    }
+
+    private void AddAiToCar(Cars car) {
+        car.setCarAI(carAI);
+    }
+
+    private void setCarAiCar(Cars car) {
+        this.carAI.setCar(car);
     }
 
 
@@ -107,30 +126,36 @@ public class Teams {
         for (Cars car: red_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
 //                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 RED: " + car.controlling_player.name);
-                car.UpdateCar(ellipse1, rect);
+                car.UpdateCar(/*ellipse1, rect*/);
             }
             else{
 //                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Red: " + car.controlling_player.name);
-                car.UpdateCar(ellipse2, rect);
+                car.UpdateCar(/*ellipse2, rect*/);
             }
 
         }
         for (Cars car: blue_team){
             if(car.getX() < SuperRacyFutbol3000.WIDTH/2){
 //                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse1 Blue: " + car.controlling_player.name+" width/2: "+SuperRacyFutbol3000.WIDTH/2 +" CarX: "+car.getX());
-                car.UpdateCar(ellipse1, rect);
+                car.UpdateCar(/*ellipse1, rect*/);
             }
 
             else{
 //                if(SuperRacyFutbol3000.isWallDebug)System.out.println("Ellipse2 Blue: " + car.controlling_player.name);
-                car.UpdateCar(ellipse2, rect);
+                car.UpdateCar(/*ellipse2, rect*/);
             }
 
         }
     }
 
-    public Teams(){
+    public Teams(Rectangle blue_goal, Rectangle red_goal, Ball ball){
+        InitCarAI();
+        SetTeamsCarAI(blue_goal, red_goal, ball);
         FillTeams();
+    }
+
+    private void InitCarAI() {
+        this.carAI = new CarAI();
     }
 
     public ArrayList<Cars> getRed_team() {
@@ -142,27 +167,27 @@ public class Teams {
     }
 
 
-    public void UpdateTeamsNextMove(Input input, int time) {
-        for (Cars car: red_team){
-            if(!car.isDead()){
-                car.GenerateNextMove(input);
-                car.UpdateHealthBarLocation();
-            }else{
-                car.setTimeOfDeath(time);
-                car.IsTimeToRevive(time);
-            }
-        }
-        for (Cars car: blue_team){
-            if(!car.isDead()){
-                car.GenerateNextMove(input);
-                car.UpdateHealthBarLocation();
-            }else{
-                car.setTimeOfDeath(time);
-                car.IsTimeToRevive(time);
-            }
-        }
+    public void UpdateTeamsNextMove(Input input, int time, PlayState current_play_state) {
+        UpdateTeamMoves(red_team, input, time);
+        UpdateTeamMoves(blue_team, input, time);
         red_goalie.UpdateGoaliePosition();
         blue_goalie.UpdateGoaliePosition();
+        UpdateTeamAI();
+    }
+
+    private void UpdateTeamAI() {
+    }
+
+    private void UpdateTeamMoves(ArrayList<Cars> team, Input input, int time){
+        for (Cars car: team){
+            if(!car.isDead()){
+                car.GenerateNextMove(input);
+                car.UpdateHealthBarLocation();
+            }else{
+                car.setTimeOfDeath(time);
+                car.IsTimeToRevive(time);
+            }
+        }
     }
 
     //  tracks the ball and updates goalie
@@ -201,5 +226,20 @@ public class Teams {
         for(Cars carB: blue_team){
             carB.ResetToStart();
         }
+    }
+
+    public void setAiGoalLocation(Rectangle blue_goal_rect, Rectangle red_goal_rect) {
+        carAI.setBlueGoalRect(blue_goal_rect);
+        carAI.setRedGoalRect(red_goal_rect);
+    }
+
+    public void SetTeamsCarAI(Rectangle blue_goalRectangle, Rectangle red_goalRectangle, Ball ball) {
+        carAI = new CarAI();
+        setAiGoalLocation(blue_goalRectangle, red_goalRectangle);
+        setAiBallLocation(ball);
+    }
+
+    private void setAiBallLocation(Ball ball) {
+        this.carAI.setBall(ball);
     }
 }

@@ -12,6 +12,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final int WIDTH = 1280;   // 1280x(height = 720)
     public static final int HEIGHT = (WIDTH/16)*9;    // adjust height with 16:9 ratio
     public static final float SCALE = 1f;
+
     public static boolean isDebug = false;
     public static boolean isWallDebug = false;
     public static boolean isDebugWallBounce = false;
@@ -20,7 +21,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final int NEWGAMEMENUSTATE = 1;
     public static final int OPTIONSMENUSTATE = 2;
     public static final int PLAYSTATE = 3;
-
+    public static final int AITESTSTATE = 4;
     public static final String main_menu_bkgrnd_rsc = "com/dv/superracyfutbol3000/gfx/main_menu/MainMenu2.png";
     public static final String main_menu_new_game3_rsc = "com/dv/superracyfutbol3000/gfx/main_menu/new_game3.png";
     public static final String main_menu_new_game4_rsc = "com/dv/superracyfutbol3000/gfx/main_menu/new_game4.png";
@@ -58,7 +59,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     public static final String num_9_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/9.png";
     public static final String num_0_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/0.png";
     public static final String blue_winner_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/Blue_Winner.png";
-    public static final String red_winner_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/Red_Winner.png";
+    public static final String red_winner_rsc = "com/dv/superracyfutbol3000/gfx/play_state/Score/RedWinner.png";
     public static boolean isDebugCarCreation = false;
     public static boolean isDebugCarExtents = false;
     public static boolean isMouseDebug= false;
@@ -78,6 +79,7 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
+//        this.addState(new AITestState(AITESTSTATE));
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewGameMenuState(NEWGAMEMENUSTATE));
         this.addState(new PlayState(PLAYSTATE));
@@ -137,7 +139,6 @@ public class SuperRacyFutbol3000 extends StateBasedGame{
     private static boolean CheckDebug(String[] args) {
         for(String x:args){
             if (x.contains("-d") ){
-
                 if(x.contains("-dw")){
                     if(x.contains("-dwB"))
                         isDebugWallBounce = true;

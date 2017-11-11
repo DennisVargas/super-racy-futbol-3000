@@ -7,7 +7,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
 import static java.lang.Math.PI;
@@ -20,7 +23,7 @@ public class Cars extends Entity{
 
 //  Holds resulting hit vectors that will be added to in the update method
     ArrayList<CollidesHelper.CollisionReport> collision_reports;
-
+    CarAI carAI;
     private Vector next_move_location = new Vector(0,0);
     private Vector translate_next_move = new Vector(0,0);
 
@@ -63,6 +66,35 @@ public class Cars extends Entity{
     private boolean isDead=false;
     private int second_of_death=-1;
     private int death_timeout = 2;
+    private LinkedList<MoveOrder> move_orders;
+
+    public Cars() {
+        super(320,360);
+        this.controlling_player = new Players();
+        setStartPosition();
+        SetCarImage();
+        next_move_direction = new Vector(1f,0f);
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
+        //InitCarAI();
+//        this.debugThis = true;
+//        Entity.setDebug(true);
+    }
+    public Cars(float x, float y, PlayState play_state) {
+        super(x, y);
+        this.controlling_player = new Players();
+//        if (this.controlling_player.control_type == Players.Controller.AI)
+//            InitCarAI();
+        setStartPosition();
+        SetCarImage();
+        next_move_direction = new Vector(1f,0f);
+        setHealthLevel(1f);
+        InitHealthBarRect();
+        SetOriginalRotations();
+//        this.debugThis = true;
+//        Entity.setDebug(true);
+    }
 
     public Vector getNext_move_direction() {
         return next_move_direction;
@@ -138,6 +170,10 @@ public class Cars extends Entity{
         }
     }
 
+    public void setCarAI(CarAI carAI) {
+        this.carAI = carAI;
+    }
+
     enum TurnDirection {Left, Right}
 
     public Vector getNext_move_location() {
@@ -175,6 +211,8 @@ public class Cars extends Entity{
     public Cars(float x, float y, Players controlling_player) {
         super(x, y);
         this.controlling_player = controlling_player;
+//        if (this.controlling_player.control_type == Players.Controller.AI)
+//            InitCarAI();
         setStartPosition();
         SetCarImage();
         next_move_direction = new Vector(1f,0f);
@@ -183,6 +221,11 @@ public class Cars extends Entity{
         SetOriginalRotations();
 //        this.debugThis = true;
 //        Entity.setDebug(true);
+    }
+
+    public void setMoveOrders(LinkedList<MoveOrder> new_orders) {
+        //  initializes the move orders list
+        move_orders = new_orders;
     }
 
     private void SetOriginalRotations() {
@@ -294,9 +337,63 @@ public class Cars extends Entity{
                         Steer(TurnDirection.Right);
                 }
                 break;
+            case AI:
+                System.out.println("process AI input Here");
+                MoveOrder order = this.getNextMoveOrder();
+                System.out.println(order.getAccelCommand());
+                switch (order.getAccelCommand()){
+                    case accelerate:
+                        Accelerate();
+                        break;
+                    case deccelerate:
+                        Decelerate();
+                        break;
+                    default:
+                        //  If not accelerating or decelerating
+                        //  losing velocity due to friction
+                        if (abs(speed) > min_vel)
+                            speed *= friction;
+                        else
+                            speed = 0f;
+                        break;
+                }
+                if(abs(speed) > 0){
+                    switch(order.getTurnCommand()){
+                        case turn_left:
+                            Steer(TurnDirection.Left);
+                            break;
+                        case turn_right:
+                            Steer(TurnDirection.Right);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
+    public MoveOrder getNextMoveOrder() {
+        return this.move_orders.pop();
+    }
+
+    public void InitCarAI(Rectangle blue_goal, Rectangle red_goal, Ball ball){
+        this.carAI = new CarAI();
+        //  give car ai the goals
+        carAI.setBlueGoalRect(blue_goal);
+        carAI.setRedGoalRect(red_goal);
+        //  give car ai reference to ball
+        carAI.setBall(ball);
+        //  give car ai reference to car
+        carAI.setCar(this);
+        //  set AI to control this car
+    }
+
+    public CarAI getCarAI(){
+        return carAI;
+    }
     private void Steer(TurnDirection dir) {
         prev_turn_rads = turn_rads;
         if(reverse ){
@@ -334,6 +431,11 @@ public class Cars extends Entity{
 
     //  GenerateNextMove should be a function
     public void GenerateNextMove(Input input){
+        //  Generate Ai Move so ProcessInput has a move ready
+        if(this.controlling_player.control_type == Players.Controller.AI)
+            GenerateAiInput();
+
+
         //  input causes turn angle and speed to change
         //  steering will cause a rotation of the entity but not movement
         ProcessInput(input);
@@ -350,8 +452,14 @@ public class Cars extends Entity{
                                         this.getY()+speed*next_move_direction.getY());
     }
 
+    private void GenerateAiInput() {
+        LinkedList <MoveOrder> orders;
+        orders = this.getCarAI().GenerateGotoBall();
+        this.setMoveOrders(orders);
+    }
+
     //  implements the translation on the next move
-    public void UpdateCar(Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds){
+    public void UpdateCar(/*Ellipse goal_ellipse_bounds, Rectangle center_rectangle_bounds*/){
         this.translate(translate_next_move);
     }
 

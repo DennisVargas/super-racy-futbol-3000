@@ -123,7 +123,7 @@ public class Ball extends Entity{
     }
 
     //  Update Ball
-    public void UpdateBall(Ellipse left_walls, Ellipse right_walls, Rectangle center_walls){
+    public void UpdateBall(/*Ellipse left_walls, Ellipse right_walls, Rectangle center_walls*/){
 //        AddCollides();
         this.translate(translate_next_move);
 
