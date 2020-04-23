@@ -4,12 +4,9 @@ import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.LinkedList;
 
 import static com.dv.superracyfutbol3000.SuperRacyFutbol3000.*;
@@ -81,6 +78,7 @@ public class Cars extends Entity{
 //        this.debugThis = true;
 //        Entity.setDebug(true);
     }
+
     public Cars(float x, float y, PlayState play_state) {
         super(x, y);
         this.controlling_player = new Players();
